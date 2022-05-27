@@ -3,7 +3,6 @@
 
     #include <Arduino.h>
     #define ES32LAB_VERSION "0.4.0"
-    //Eder
 
     #define P_KEYBOARD      33
     #define P_LED_GREEN     17

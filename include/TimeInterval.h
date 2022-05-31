@@ -3,7 +3,6 @@
   WhatsApp +55 69 98463 9009
   Data de criação: 28/12/2018
   Ultima Alteração: 31/05/2022
-  Versão: 0.3.0
   Controla o intervalo de tempo no estilo Thread
 
   Dica: Há mil microssegundos em um milissegundo e um milhão de microssegundos em um segundo.
@@ -14,6 +13,7 @@
 
 #include <Arduino.h>
 
+#define TIMEINTERVAL_VERSON "0.3.1 update date 05/31/2022"
 // <<<<<<<<<<<<<<< Classe Botão Externo >>>>>>>>>>>>>>
 class TimeInterval{
   private:

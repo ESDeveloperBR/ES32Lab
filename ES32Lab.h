@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.5.2"
+    #define ES32LAB_VERSION "0.6.1"
 
     #define P_KEYBOARD      33
     #define P_LED_GREEN     17

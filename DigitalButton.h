@@ -3,6 +3,7 @@
   WhatsApp +55 69 98463 9009
   Data de criação: 12/12/2018
   Ultima Alteração: 31/05/20222
+  Versão: 0.2.0
 */
 
 #ifndef DigitalButton_H

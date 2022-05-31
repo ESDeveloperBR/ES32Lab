@@ -34,9 +34,12 @@
     #define P_SCK           18
     #define P_SD_CS         5
 
-    //#include<TFT_eSPI.h>
-    #include<AnalogKeyboard.h>
-    #include<BuzzerESP.h>
+    #include <TFT_eSPI.h>
+    #include <TFT_Plus.h>
+    #include "AnalogKeyboard.h"
+    #include "BuzzerESP.h"
+    #include "DigitalButton.h"
+    #include "TimeInterval.h"
 
     class ES32Lab {
         private:    

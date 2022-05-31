@@ -2,15 +2,13 @@
   Autor: Eder João Santini
   WhatsApp +55 69 98463 9009
   Data de criação: 12/12/2018
-  Ultima Alteração: 31/05/20222
-  Versão: 0.2.1
 */
-
 #ifndef DigitalButton_H
 #define DigitalButton_H
 
 #include <Arduino.h>
 
+#define DIGITALBUTTON_VERSION "0.2.2 update date 05/31/2022"
 // <<<<<<<<<<<<<<< Classe Botão Externo >>>>>>>>>>>>>>
 class DigitalButton{
   private:

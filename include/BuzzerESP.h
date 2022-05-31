@@ -1,9 +1,7 @@
 /*
   Autor: Eder João Santini
   WhatsApp +55 69 98463 9009
-  Data de criação: 31/05/20222
-  Ultima Alteração: 31/05/20222
-  Versão: 0.1.0
+  Data de criação: 05/31/20222
 */
 #ifndef __BUZZERESP_h
 #define __BUZZERESP_h

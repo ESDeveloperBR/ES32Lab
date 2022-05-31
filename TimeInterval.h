@@ -17,22 +17,22 @@
 // <<<<<<<<<<<<<<< Classe Botão Externo >>>>>>>>>>>>>>
 class TimeInterval{
   private:
-    long _temp_Millis_Inicial = millis();
-    long _temp_Micros_Inicial = micros();
+    long _start_Millis = millis();
+    long _start_Micros = micros();
      
   public:
     // <<<<<<<< Método >>>>>>
     boolean intervalMillis(long millisTime);    // Retorna "true" quando o tempo em milissegundos tiver terminado
     void    updateMillis();                     // Atualizar leitura de milissegundos para a contagem de tempo para o proximo intervalo
 
-    boolean intervalMicros(long microsTime);   // Retorna "true" quando o tempo em microssegundos tiver terminado
-    void    atualizarMicros();                  // Atualizar leitura de microssegundos para a contagem de tempo para o proximo intervalo
+    boolean intervalMicros(long microsTime);    // Retorna "true" quando o tempo em microssegundos tiver terminado
+    void    updadeMicros();                     // Atualizar leitura de microssegundos para a contagem de tempo para o proximo intervalo
 
-    void    cronometroInicioMillis();           // Marca o inicio para uma contagem em um cronometroInicioMillis
-    long    cronometroFinalMillis();            // Marca o final da marcação de tempo e retorna o valor em millis       
+    void    stopwatchStartMillis();             // Inicializa o cronômetro em Milissegundos
+    long    stopwatchStopMillis();              // Parar cronômetro em Milissegundos e retornar o valor obtido
 
-    void    cronometroInicioMicros();           // Marca o inicio para uma contagem em um cronometroInicioMicros
-    long    cronometroFinalMicros();            // Marca o final da marcação de tempo e retorna o valor em Micros       
+    void    stopwatchStartMicros();             // Inicializa o cronômetro em Microssegundos
+    long    stopwatchStopMicros();              // Parar cronômetro em Microssegundos e retornar o valor obtido
 };
 // <<<<<<<<< Retorna "true" quando o tempo em milissegundos tiver terminado >>>>>>>>>>
 /*Returns "true" when the time in milliseconds has elapsed
@@ -41,8 +41,8 @@ class TimeInterval{
 boolean TimeInterval::intervalMillis(long millisTime){
     long tempMillisAtual = millis();
 
-    if( (tempMillisAtual - _temp_Millis_Inicial) >= millisTime ){
-        _temp_Millis_Inicial = millis();
+    if( (tempMillisAtual - _start_Millis) >= millisTime ){
+        _start_Millis = millis();
         return true;
     }else{
         return false;
@@ -52,7 +52,7 @@ boolean TimeInterval::intervalMillis(long millisTime){
 /* Update millisecond reading for time count for next interval
 */
 void TimeInterval::updateMillis(){
-    _temp_Millis_Inicial = millis();
+    _start_Millis = millis();
 }
 
 // <<<<<<<<< Retorna "true" quando o tempo em microssegundos tiver terminado >>>>>>>>>>
@@ -62,42 +62,42 @@ void TimeInterval::updateMillis(){
 boolean TimeInterval::intervalMicros(long microsTime){
     long tempMicrosAtual = micros();
 
-    if( (tempMicrosAtual - _temp_Micros_Inicial) >= microsTime ){
-        _temp_Micros_Inicial = micros();
+    if( (tempMicrosAtual - _start_Micros) >= microsTime ){
+        _start_Micros = micros();
         return true;
     }else{
         return false;
     }
 }
-
-
-
-
-
-
-
-
-
-
 // <<<<<< Atualizar leitura de microssegundos para a contagem de tempo para o proximo intervalo >>>>>>>>>>>>>>>>>>>>>>
-void TimeInterval::atualizarMicros(){
-    _temp_Micros_Inicial = micros();
+/* Update microsecond reading for time count for next interval
+*/
+void TimeInterval::updadeMicros(){
+    _start_Micros = micros();
 }
-// <<<<<<<<<< Inicializa o cronometro em Millis segundos >>>>>>>>>>>>>>>
-void TimeInterval::cronometroInicioMillis(){
-    _temp_Millis_Inicial = millis();
+// <<<<<<<<<< Inicializa o cronômetro em Milissegundos >>>>>>>>>>>>>>>
+/* Initializes the stopwatch in milliseconds
+*/
+void TimeInterval::stopwatchStartMillis(){
+    _start_Millis = millis();
 }
-// <<<<<<<<<<<<<< Finaliza a marcação de tempo do cronometro em Millis >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-long TimeInterval::cronometroFinalMillis(){
-    return  millis() - _temp_Millis_Inicial; 
+// <<<<<<<<<<<<<< Parar cronômetro em Milissegundos e retornar o valor obtido >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/* Stop stopwatch - Milliseconds and return the obtained value
+*/
+long TimeInterval::stopwatchStopMillis(){
+    return  millis() - _start_Millis; 
 }
-// <<<<<<<<<< Inicializa o cronometro em Micros segundos >>>>>>>>>>>>>>>
-void TimeInterval::cronometroInicioMicros(){
-    _temp_Micros_Inicial = micros();
+// <<<<<<<<<< Inicializa o cronômetro em Microssegundos >>>>>>>>>>>>>>>
+/* Initializes the stopwatch in microseconds
+*/
+void TimeInterval::stopwatchStartMicros(){
+    _start_Micros = micros();
 }
-// <<<<<<<<<<<<<< Finaliza a marcação de tempo do cronometro em Millis >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-long TimeInterval::cronometroFinalMicros(){
-    return  micros() - _temp_Micros_Inicial; 
+// <<<<<<<<<<<<<< Parar cronômetro em Microssegundos e retornar o valor obtido >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/* Stop stopwatch - Microseconds and return the obtained value
+*/
+long TimeInterval::stopwatchStopMicros(){
+    return  micros() - _start_Micros; 
 }
 // <<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>
 #endif

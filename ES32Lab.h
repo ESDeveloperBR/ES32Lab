@@ -37,9 +37,9 @@
     #include <TFT_eSPI.h>
     #include <TFT_Plus.h>
     #include "AnalogKeyboard.h"
-    #include "BuzzerESP.h"
-    #include "DigitalButton.h"
-    #include "TimeInterval.h"
+    #include "include/BuzzerESP.h"
+    #include "include/DigitalButton.h"
+    #include "include/TimeInterval.h"
 
     class ES32Lab {
         private:    

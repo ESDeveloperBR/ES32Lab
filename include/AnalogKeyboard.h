@@ -1,9 +1,7 @@
 /*
   Autor: Eder João Santini
   WhatsApp +55 69 98463 9009
-  Data de criação: 31/05/20222
-  Ultima Alteração: 31/05/20222
-  Versão: 0.3.0
+  Data de criação: 05/31/20222
 */
 
 #ifndef _ANALOGKEYBOARD_h
@@ -11,6 +9,8 @@
 
 #include <Arduino.h>
 
+#define ANALOGKEYBOARD_VERSION "0.3.1 update date 05/31/2022"
+// <<<<<<<<<<<<<<< Classe AnalogKeyboard >>>>>>>>>>>>>>
 class AnalogKeyboard {
     private:    
         uint8_t  _pinKeyboard;      // Keyboard read pin 

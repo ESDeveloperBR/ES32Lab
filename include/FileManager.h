@@ -2,8 +2,6 @@
 Autor: Eder João Santini
 WhatsApp: +55(69)98463-9009
 Iniciado: 28/10/2019 (Derivada da LIB ArquivoManutencao v.2.0.3)
-Ultima Alteração: 31/05/2022
-Versão: 2.1.0
 
 Esta LIB axilia na manipulação de arquivos seja no SD ou SPIFFS
 */
@@ -15,6 +13,8 @@ Esta LIB axilia na manipulação de arquivos seja no SD ou SPIFFS
 #include <SD.h>
 #include <SPIFFS.h>
 #include <FS.h>
+
+#define FILEMANAGER_VERSION "2.1.1 update date 05/31/2022"
 
 // Classe FileManager e suas funções
 class FileManager{

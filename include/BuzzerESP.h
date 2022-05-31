@@ -10,6 +10,8 @@
 
 #include "Arduino.h"
 
+#define BUZZERESP_VERSION "0.1.1 update date 05/31/2022"
+// <<<<<<<<<<<<<<< Classe BuzzerESP >>>>>>>>>>>>>>
 class BuzzerESP {
     private:    
         int _pinBuzzer;

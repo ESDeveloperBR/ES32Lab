@@ -12,7 +12,7 @@
 
 #include <Arduino.h>
 
-#define TIMEINTERVAL_VERSON "0.3.1 update date 05/31/2022"
+#define TIMEINTERVAL_VERSION "0.3.1 update date 05/31/2022"
 // <<<<<<<<<<<<<<< Classe Botão Externo >>>>>>>>>>>>>>
 class TimeInterval{
   private:

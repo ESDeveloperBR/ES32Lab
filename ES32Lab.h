@@ -40,6 +40,7 @@
     #include "include/BuzzerESP.h"
     #include "include/DigitalButton.h"
     #include "include/TimeInterval.h"
+    #include "include/FileManager.h"
 
     class ES32Lab {
         private:    

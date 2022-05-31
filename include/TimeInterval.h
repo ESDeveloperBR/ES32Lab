@@ -7,7 +7,6 @@
 
   Dica: Há mil microssegundos em um milissegundo e um milhão de microssegundos em um segundo.
 */
-
 #ifndef TimeInterval_H
 #define TimeInterval_H
 

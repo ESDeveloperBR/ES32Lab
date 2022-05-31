@@ -14,7 +14,7 @@
 #include <JPEGDecoder.h>
 #include "include/FileManager.h"
 
-#define TFT_PULS_VERSION "0.3.0"
+#define TFT_PULS_VERSION "0.3.1 update date 05/31/2022"
 
 // Classe TFT_Plus 
 class TFT_Plus{

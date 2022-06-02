@@ -8,7 +8,7 @@ ATTENTION: ES32Lab depends on the library download
     https://github.com/ederjsantini/TFT_eSPI_ES32Lab
 
   - JPEGDecoder
-    https://github.com/Bodmer/JPEGDecoder
+    https://github.com/ederjsantini/JPEGDecoder_ES32Lab
     
 Objective:
 - Simple reading of potentiometers 1, 2 and printing on serial terminal

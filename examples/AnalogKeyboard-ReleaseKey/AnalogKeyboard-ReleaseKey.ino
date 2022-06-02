@@ -2,6 +2,14 @@
 Author: Eder João Santini
 email: ederjsantini@gmail.com
 Library Download: https://github.com/ederjsantini/ES32Lab
+
+ATTENTION: ES32Lab depends on the library download
+  - TFT_eSPI_ES32Lab
+    https://github.com/ederjsantini/TFT_eSPI_ES32Lab
+
+  - JPEGDecoder
+    https://github.com/Bodmer/JPEGDecoder
+    
 Example of using the CLASS AnalogKeyboard.
 - Release key.
 */

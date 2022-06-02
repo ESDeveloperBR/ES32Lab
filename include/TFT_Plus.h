@@ -13,7 +13,7 @@
 #include <JPEGDecoder.h>
 #include "include/FileManager.h"
 
-#define TFT_PLUS_VERSION "0.8.0 update 06/02/2022"
+#define TFT_PLUS_VERSION "0.8.1 update 06/02/2022"
 
 // Classe TFT_Plus 
 class TFT_Plus{
@@ -161,26 +161,33 @@ class TFT_Plus{
   void     readRectRGB(int32_t x, int32_t y, int32_t w, int32_t h, uint8_t *data);
   */
 
-  // Text rendering - value returned is the pixel width of the rendered text
-  int16_t  drawNumber(long intNumber, int32_t x, int32_t y, uint8_t font), // Draw integer using specified font number
-           drawNumber(long intNumber, int32_t x, int32_t y),               // Draw integer using current font
-           
-           // Decimal is the number of decimal places to render
-           // Use with setTextDatum() to position values on TFT, and setTextPadding() to blank old displayed values
-           drawFloat(float floatNumber, uint8_t decimal, int32_t x, int32_t y, uint8_t font), // Draw float using specified font number
-           drawFloat(float floatNumber, uint8_t decimal, int32_t x, int32_t y) /*,               // Draw float using current font
+        // Text rendering - value returned is the pixel width of the rendered text
+        int16_t drawNumber(long intNumber, int32_t x, int32_t y, uint8_t font), // Draw integer using specified font number
+                drawNumber(long intNumber, int32_t x, int32_t y),               // Draw integer using current font
 
-           // Handle char arrays
-           // Use with setTextDatum() to position string on TFT, and setTextPadding() to blank old displayed strings
-           drawString(const char *string, int32_t x, int32_t y, uint8_t font),  // Draw string using specified font number
-           drawString(const char *string, int32_t x, int32_t y),                // Draw string using current font
-           drawString(const String& string, int32_t x, int32_t y, uint8_t font),// Draw string using specified font number
-           drawString(const String& string, int32_t x, int32_t y)*/;              // Draw string using current font
+                drawFloat(float floatNumber, uint8_t decimal, int32_t x, int32_t y, uint8_t font), // Draw float using specified font number
+                drawFloat(float floatNumber, uint8_t decimal, int32_t x, int32_t y),               // Draw float using current font
 
-  int16_t  drawCentreString(const char *string, int32_t x, int32_t y, uint8_t font),  // Deprecated, use setTextDatum() and drawString()
-           drawRightString(const char *string, int32_t x, int32_t y, uint8_t font),   // Deprecated, use setTextDatum() and drawString()
-           drawCentreString(const String& string, int32_t x, int32_t y, uint8_t font),// Deprecated, use setTextDatum() and drawString()
-           drawRightString(const String& string, int32_t x, int32_t y, uint8_t font); // Deprecated, use setTextDatum() and drawString()
+                // Handle char arrays
+                // Use with setTextDatum() to position string on TFT, and setTextPadding() to blank old displayed strings
+                drawString(const char *string, int32_t x, int32_t y, uint8_t font),  // Draw string using specified font number
+                drawString(const char *string, int32_t x, int32_t y),                // Draw string using current font
+                drawString(const String& string, int32_t x, int32_t y, uint8_t font),// Draw string using specified font number
+                drawString(const String& string, int32_t x, int32_t y);              // Draw string using current font
+
+        int16_t drawCentreString(const char *string, int32_t x, int32_t y, uint8_t font),  // Deprecated, use setTextDatum() and drawString()
+                drawRightString(const char *string, int32_t x, int32_t y, uint8_t font),   // Deprecated, use setTextDatum() and drawString()
+                drawCentreString(const String& string, int32_t x, int32_t y, uint8_t font),// Deprecated, use setTextDatum() and drawString()
+                drawRightString(const String& string, int32_t x, int32_t y, uint8_t font), // Deprecated, use setTextDatum() and drawString()
+
+                drawCentreScreenString(const char *string, int32_t y, uint8_t font),
+                drawCentreScreenString(const String& string, int32_t y, uint8_t font),
+
+                drawRightScreenString(const char *string, int32_t y, uint8_t font),   
+                drawRightScreenString(const String& string, int32_t y, uint8_t font); 
+
+
+
 
     /*
   // Text rendering and font handling support funtions
@@ -696,8 +703,8 @@ void TFT_Plus::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32
     tft.drawChar(x, y, c, color, bg, size);
 }
 
-/* Draw Integer Number
--intNumber: Integer Number;
+/* Draw integer or float Number
+-intNumber: Intege number;
 -x: Initial X coordinate;
 -y: Initial Y coordinate;
 -size: Font size;
@@ -706,8 +713,8 @@ int16_t TFT_Plus::drawNumber(long intNumber, int32_t x, int32_t y, uint8_t font)
     return tft.drawNumber(intNumber, x, y, font);
 }
 
-/* Draw Integer Number
--intNumber: Integer Number;
+/* Draw integer or float Number
+-intNumber: Intege number;
 -x: Initial X coordinate;
 -y: Initial Y coordinate;
 */
@@ -736,12 +743,43 @@ int16_t TFT_Plus::drawFloat(float floatNumber, uint8_t decimal, int32_t x, int32
     return tft.drawFloat(floatNumber, decimal, x, y);
 }
 
+/* Draw string
+-string: Text;
+-x: Initial X coordinate;
+-y: Initial Y coordinate;
+-size: Font size;
+*/
+int16_t TFT_Plus::drawString(const char *string, int32_t x, int32_t y, uint8_t font){
+    return tft.drawString(string,  x,  y,  font);
+}
 
+/* Draw string
+-string: Text;
+-x: Initial X coordinate;
+-y: Initial Y coordinate;
+*/
+int16_t TFT_Plus::drawString(const char *string, int32_t x, int32_t y){
+    return tft.drawString(string,  x,  y);
+}
 
+/* Draw string
+-string: Text;
+-x: Initial X coordinate;
+-y: Initial Y coordinate;
+-size: Font size;
+*/
+int16_t TFT_Plus::drawString(const String& string, int32_t x, int32_t y, uint8_t font){
+    return tft.drawString(string, x, y, font);
+}
 
-
-
-
+/* Draw string
+-string: Text;
+-x: Initial X coordinate;
+-y: Initial Y coordinate;
+*/
+int16_t TFT_Plus::drawString(const String& string, int32_t x, int32_t y){
+    return tft.drawString(string, x, y);
+}
 
 /* Draw Centre String
 - string: Text;
@@ -763,6 +801,24 @@ int16_t TFT_Plus::drawCentreString(const String& string, int32_t x, int32_t y, u
     return tft.drawCentreString(string, x, y, font);
 }
 
+/* Draw Centre Screen String
+- string: Text;
+- y: Initial Y coordinate;
+- font: Font Size
+*/
+int16_t TFT_Plus::drawCentreScreenString(const char *string, int32_t y, uint8_t font){
+    return tft.drawCentreString(string, width()/2, y, font);
+}
+
+/* Draw Centre Screen String
+- string: Text;
+- y: Initial Y coordinate;
+- font: Font Size
+*/
+int16_t TFT_Plus::drawCentreScreenString(const String& string, int32_t y, uint8_t font){
+    return tft.drawCentreString(string, width()/2, y, font);
+}
+
 /* Draw Right String
 - string: Text;
 - x: Initial X coordinate;
@@ -782,6 +838,25 @@ int16_t TFT_Plus::drawRightString(const char *string, int32_t x, int32_t y, uint
 int16_t TFT_Plus::drawRightString(const String& string, int32_t x, int32_t y, uint8_t font){
     return tft.drawRightString(string, x, y, font);
 }
+
+/* Draw Right Screen String
+- string: Text;
+- y: Initial Y coordinate;
+- font: Font Size
+*/
+int16_t TFT_Plus::drawRightScreenString(const char *string, int32_t y, uint8_t font){
+    return tft.drawRightString(string, width(), y, font);
+}
+
+/* Draw Right Screen String
+- string: Text;
+- y: Initial Y coordinate;
+- font: Font Size
+*/
+int16_t TFT_Plus::drawRightScreenString(const String& string, int32_t y, uint8_t font){
+    return tft.drawRightString(string, width(), y, font);
+}
+
 
 /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Cor do texto >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 // Cor do texto

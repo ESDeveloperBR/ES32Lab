@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.6.4"
+    #define ES32LAB_VERSION "0.6.5"
 
     #define P_KEYBOARD      33
     #define P_LED_GREEN     17
@@ -38,7 +38,7 @@
     //#include "include/AnalogKeyboard.h"
     //#include "include/BuzzerESP.h"
     //#include "include/DigitalButton.h"
-    #include "include/TimeInterval.h"
+    #include "include/TimeIntervalNovo.h"
     //#include "include/FileManager.h"
     //#include "include/TFT_Plus.h"
 

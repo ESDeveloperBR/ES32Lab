@@ -35,12 +35,12 @@
     #define P_SD_CS         5
 
     #include <TFT_eSPI.h>
-    #include "include/AnalogKeyboard.h"
-    #include "include/BuzzerESP.h"
-    #include "include/DigitalButton.h"
+    //#include "include/AnalogKeyboard.h"
+    //#include "include/BuzzerESP.h"
+    //#include "include/DigitalButton.h"
     #include "include/TimeInterval.h"
-    #include "include/FileManager.h"
-    #include "include/TFT_Plus.h"
+    //#include "include/FileManager.h"
+    //#include "include/TFT_Plus.h"
 
     class ES32Lab {
         private:    

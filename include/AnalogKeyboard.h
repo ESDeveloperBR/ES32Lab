@@ -9,7 +9,7 @@
 
 #include <Arduino.h>
 
-#define ANALOGKEYBOARD_VERSION "0.3.2 update 06/03/2022"    // mm/dd/yyyy
+#define ANALOGKEYBOARD_VERSION "0.3.3 update 06/03/2022"    // mm/dd/yyyy
 // <<<<<<<<<<<<<<< Classe AnalogKeyboard >>>>>>>>>>>>>>
 class AnalogKeyboard {
   private:    
@@ -20,6 +20,7 @@ class AnalogKeyboard {
     uint8_t  _readingAccuracy;  // Reading accuracy over established analog values
     
   public:
+
     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Constructor >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     /*Constructor of the AnalogKeyboard object.
     - pinKeyboard: Pin for analogue reading of the keyboard circuit (Required);
@@ -30,7 +31,7 @@ class AnalogKeyboard {
     - addressKey4: Analog address of key 4;
     - readingAccuracy: Value in percentage to adjust the recognition accuracy of the analog reading of each key.
     */
-    AnalogKeyboard(uint8_t pinKeyboard, uint16_t addressKey0, uint16_t addressKey1, uint16_t addressKey2, uint16_t addressKey3, uint16_t addressKey4, uint8_t readingAccuracy) {
+    AnalogKeyboard(uint8_t pinKeyboard, uint16_t addressKey0 = 0, uint16_t addressKey1 = 870, uint16_t addressKey2 = 1657, uint16_t addressKey3 = 2457, uint16_t addressKey4 = 3322, uint8_t readingAccuracy = 20 ) {
         _pinKeyboard     = pinKeyboard;
         _readingAccuracy = readingAccuracy;
 

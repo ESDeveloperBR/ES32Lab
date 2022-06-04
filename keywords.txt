@@ -16,23 +16,34 @@ P_I2S_LRC   KEYWORD3
 P_I2S_BCLK  KEYWORD3
 
 # ----- AnalogKeyboard ---------------
+ANALOGKEYBOARD_VERSION  KEYWORD3
 AnalogKeyboard KEYWORD1
 hold        KEYWORD2
 press       KEYWORD2
 release     KEYWORD2
 
 # ----- TimeInterval ---------------
-TimeInterval    KEYWORD1
-intervalMillis  KEYWORD2
-updateMillis    KEYWORD2
-intervalMicros  KEYWORD2
-updadeMicros    KEYWORD2
+TIMEINTERVAL_VERSION    KEYWORD3
+TimeInterval            KEYWORD1
+intervalMillis          KEYWORD2
+updateMillis            KEYWORD2
+intervalMicros          KEYWORD2
+updadeMicros            KEYWORD2
 stopwatchStartMillis    KEYWORD2
 stopwatchStopMillis     KEYWORD2
 stopwatchStartMicros    KEYWORD2
 stopwatchStopMicros     KEYWORD2
 
+# ----- Digital Button ---------------
+DIGITALBUTTON_VERSION   KEYWORD3
+DigitalButton   KEYWORD1
+setPino         KEYWORD2
+hold            KEYWORD2
+press           KEYWORD2
+release         KEYWORD2
+
 # ----- Buzzer -----------------------
+BUZZERESP_VERSION   KEYWORD3
 Buzzer  	KEYWORD1
 begin	    KEYWORD2
 end	        KEYWORD2

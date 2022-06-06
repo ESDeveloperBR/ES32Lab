@@ -8,12 +8,13 @@
 
 #include <Arduino.h>
 
-#define DIGITALBUTTON_VERSION "0.2.4 update 06/03/2022"  // mm/dd/yyyy
+#define DIGITALBUTTON_VERSION "0.2.5 update 06/06/2022"  // mm/dd/yyyy
 // <<<<<<<<<<<<<<< Classe Botão Externo >>>>>>>>>>>>>>
 class DigitalButton{
   private:
     int     _pin;             // Pino a ser utilizado pelo botão ou sensor
     boolean _btPress = false; // Botão pressionado inicia com "false"
+    boolean _btRelease = true;// Botão está solto. "True"
     
   public:
     // <<<<<<<<<<<<<<<< Inicializa o pino do botão >>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -39,11 +40,11 @@ class DigitalButton{
     /* Returns "true" when the button is pressed.
     */
     boolean press(){
-      if( !digitalRead(_pin) & !_btPress ) { 
+      if( !hold() & !_btPress ) { 
         _btPress = true;
-        return true;
-      } else if( digitalRead(_pin) & _btPress ) {
+      } else if( hold() & _btPress ) {
         _btPress = false;
+        return true;
       }
       return false;
     }
@@ -52,11 +53,11 @@ class DigitalButton{
     /* Returns "true" when the button is released.
     */
     boolean release(){
-      if( !digitalRead(_pin) & !_btPress ) {
-        _btPress = true;
-      } else if(digitalRead(_pin) & _btPress ){
-        _btPress = false;
+      if( !hold() & !_btRelease ) {
+        _btRelease = true;
         return true;
+      } else if(hold() & _btRelease ){
+        _btRelease = false;
       }
       return false;
     }

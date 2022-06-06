@@ -174,8 +174,15 @@ void loop() {
 
 A classe _DigitalButton_ tem como objetivo criar uma estrutura de botão utilizando uma GPIO digital, sendo assim, é possível identificar se o objeto instanciado derivado da classe _DigitalButton_ está “pressionado”, “solto” ou “segurando”.
 
+#### Construtor
+
+_DigitalButton(int pin);_
+Cria o objeto a ser usado como botão digital e atribui a GPIO a ser utilizada.
+* pin: GPIO do botão;
+
 #### Métodos
 
+* _**begin():**_ Inicializar o botão instanciado;
 * _**setPino(int pin):**_ Atribui qual o pino (GPIO) será utilizada no objeto;
 * _**boolean press():**_ Retorna verdadeiro quando estiver **pressionado** o botão digital;
 * _**boolean relasse():**_ Retorna verdadeiro quando o botão for **solto**;
@@ -191,11 +198,11 @@ Obs.: A GPIO utilizada para fazer a leitura digital, foi a GPIO 12 (_#define PIN
 
 ```C++
 #include <ES32Lab.h>
-DigitalButton testButton;
-#define PIN_BUTTON 12
+DigitalButton testButton(12);
+
 void setup() {
   Serial.begin(115200);
-  testButton.setPino(PIN_BUTTON);
+  testButton.begin();
 }
 void loop() {
   if(testButton.press()){

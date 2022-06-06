@@ -22,13 +22,13 @@ Mostra todos os estágios de um botão:
 
 #include <Arduino.h>
 #include <ES32Lab.h>
-DigitalButton testButton;
-#define PIN_BUTTON 12
+DigitalButton testButton(12);
+
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<< Setup >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 void setup() {
   Serial.begin(115200);
-  testButton.setPino(PIN_BUTTON);
+  testButton.begin();
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<< Loop >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

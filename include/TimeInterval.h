@@ -12,7 +12,7 @@
 
 #include <Arduino.h>
 
-#define TIMEINTERVAL_VERSION "0.3.4 update 06/03/2022"  // mm/dd/yyyy
+#define TIMEINTERVAL_VERSION "0.3.5 update 06/06/2022"  // mm/dd/yyyy
 // <<<<<<<<<<<<<<< Classe Botão Externo >>>>>>>>>>>>>>
 class TimeInterval{
   private:
@@ -21,8 +21,10 @@ class TimeInterval{
      
   public:
     // <<<<<<<<< Retorna "true" quando o tempo em milissegundos tiver terminado >>>>>>>>>>
-    /*Returns "true" when the time in milliseconds has elapsed
-    - millisTime: Time in milliseconds
+    /*
+    Returns “true” when the time in milliseconds passed by parameter (millisTime) reaches the end;
+    --- (Português BR) ---
+    Retorna “verdadeiro” quando o tempo em milissegundos passado por parâmetro (millisTime) chegar ao final;
     */
     boolean intervalMillis(long millisTime){
         long tempMillisAtual = millis();
@@ -35,16 +37,21 @@ class TimeInterval{
         }
     }
 
-    // <<<<<< Atualizar leitura de milissegundos para a contagem de tempo para o proximo intervalo >>>>>>>>>>>>>>>>>>>>>>
-    /* Update millisecond reading for time count for next interval
+    // <<<<<< Reiniciar o contador de milissegundos associado ao método intervalMillis() >>>>>>>>>>>>>>>>>>>>>>
+    /* 
+    Reset millisecond counter associated with intervalMillis() method.
+    --- (Português BR) ---
+    Reiniciar o contador de milissegundos associado ao método intervalMillis().
     */
-    void updateMillis(){
+    void resetMillis(){
         _start_Millis = millis();
     }
 
     // <<<<<<<<< Retorna "true" quando o tempo em microssegundos tiver terminado >>>>>>>>>>
-    /* Returns "true" when the time in microseconds has elapsed
-    - microsTime: Time in microseconds
+    /*
+    Returns “true” when the time in microseconds passed by parameter (microsTime) reaches the end;
+    --- (Português BR) ---
+    Retorna “verdadeiro” quando o tempo em microssegundos passado por parâmetro (microsTime) chegar ao final;
     */
     boolean intervalMicros(long microsTime){
         long tempMicrosAtual = micros();
@@ -57,36 +64,50 @@ class TimeInterval{
         }
     }
 
-    // <<<<<< Atualizar leitura de microssegundos para a contagem de tempo para o proximo intervalo >>>>>>>>>>>>>>>>>>>>>>
-    /* Update microsecond reading for time count for next interval
+    // <<<<<< Reiniciar o contador de microssegundos associado ao método intervalMicros() >>>>>>>>>>>>>>>>>>>>>>
+    /* 
+    Reset the microseconds counter associated with the intervalMicros() method.
+    --- (Português BR) ---
+    Reiniciar o contador de microssegundos associado ao método intervalMicros().
     */
-    void updadeMicros(){
+    void resetMicros(){
         _start_Micros = micros();
     }
 
-    // <<<<<<<<<< Inicializa o cronômetro em Milissegundos >>>>>>>>>>>>>>>
-    /* Initializes the stopwatch in milliseconds
+    // <<<<<<<<<< Inicializa um cronômetro em Milissegundos. >>>>>>>>>>>>>>>
+    /*
+    Initializes the stopwatch in milliseconds.
+    --- (Português BR) ---
+    Inicializa um cronômetro em Milissegundos.
     */
     void stopwatchStartMillis(){
         _start_Millis = millis();
     }
 
-    // <<<<<<<<<<<<<< Parar cronômetro em Milissegundos e retornar o valor obtido >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    /* Stop stopwatch - Milliseconds and return the obtained value
+    // <<<<<<<<<<<<<< Parar cronômetro - Retornar o valor obtido em milissegundos. >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    /*
+    Stop stopwatch - Return the obtained value in milliseconds.
+    --- (Português BR) ---
+    Parar cronômetro - Retornar o valor obtido em milissegundos.
     */
     long stopwatchStopMillis(){
         return  millis() - _start_Millis; 
     }
 
-    // <<<<<<<<<< Inicializa o cronômetro em Microssegundos >>>>>>>>>>>>>>>
+    // <<<<<<<<<< Inicializa um cronômetro em Microssegundos >>>>>>>>>>>>>>>
     /* Initializes the stopwatch in microseconds
+    --- (Português BR) ---
+    Inicializa um cronômetro em Microssegundos.
     */
     void stopwatchStartMicros(){
         _start_Micros = micros();
     }
 
-    // <<<<<<<<<<<<<< Parar cronômetro em Microssegundos e retornar o valor obtido >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    /* Stop stopwatch - Microseconds and return the obtained value
+    // <<<<<<<<<<<<<< Parar cronômetro - Retornar o valor obtido em microssegundos >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    /*
+    Stop stopwatch - Return the value obtained in microseconds.
+    --- (Português BR) ---
+    Parar cronômetro - Retornar o valor obtido em microssegundos.
     */
     long stopwatchStopMicros(){
         return  micros() - _start_Micros; 

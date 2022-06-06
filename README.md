@@ -189,26 +189,9 @@ A classe _DigitalButton_ tem como objetivo criar uma estrutura de botão utiliza
 
 #### Exemplo prático
 ```C++
-#include <ES32Lab.h>
-DigitalButton testButton;
-
-void setup() {
-  Serial.begin(115200);
-  testButton.setPino(12);
-}
-
-void loop() {
-  if(testButton.press()){
-    Serial.println("Button - Press");
-  }
-
-  if(testButton.release()){
-    Serial.println("Button - Release");
-  }
-  if(testButton.hold()){
-    Serial.println("Button - Hold");
-  }
-}
+xxxxx
+xxxxx
+xxxxx
 ```
 
 ### Classe FileManager

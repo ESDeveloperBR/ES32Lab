@@ -1,21 +1,16 @@
 ﻿# Índice
-* [ES32Lab biblioteca](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#es32lab-biblioteca)
-	* [Endereço das GPIOs do ESP32 com conexões aos circuitos da ES32Lab](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#endere%C3%A7o-das-gpios-do-esp32-com-conex%C3%B5es-aos-circuitos-da-es32lab)
-	* [Exemplo de utilização de GPIO](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#exemplo-de-utiliza%C3%A7%C3%A3o-de-gpio)
-	* [Conjunto de classes contidas na LIB ES32Lab](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#conjunto-de-classes-contidas-na-lib-es32lab)
-		* [Classe AnalogKeyboard](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-analogkeyboard)
-		* [Classe BuzzerESP](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-buzzeresp)
-		* [Classe DigitalButton](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-digitalbutton)
-		* [Classe FileManager](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-filemanager)
-		* [Classe TFT_Plus](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-tft_plus)
-		* [Classe TimeInterval](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-timeinterval)
-
-		
+* [ES32Lab biblioteca](https://github.com/ederjsantini/ES32Lab#es32lab-biblioteca)
+	* [Endereço das GPIOs do ESP32 com conexões aos circuitos da ES32Lab](https://github.com/ederjsantini/ES32Lab#endere%C3%A7o-das-gpios-do-esp32-com-conex%C3%B5es-aos-circuitos-da-es32lab)
+	* [Exemplo de utilização de GPIO](https://github.com/ederjsantini/ES32Lab#exemplo-de-utiliza%C3%A7%C3%A3o-de-gpio)
+	* [Conjunto de classes contidas na LIB ES32Lab](https://github.com/ederjsantini/ES32Lab#conjunto-de-classes-contidas-na-lib-es32lab)
+		* [Classe AnalogKeyboard](https://github.com/ederjsantini/ES32Lab#classe-analogkeyboard)
+		* [Classe BuzzerESP](https://github.com/ederjsantini/ES32Lab#classe-buzzeresp)
+		* [Classe DigitalButton](https://github.com/ederjsantini/ES32Lab#classe-digitalbutton)
+		* [Classe FileManager](https://github.com/ederjsantini/ES32Lab#classe-filemanager)
+		* [Classe TFT_Plus](https://github.com/ederjsantini/ES32Lab#classe-tft_plus)
+		* [Classe TimeInterval](https://github.com/ederjsantini/ES32Lab#classe-timeinterval)
 
 2. [Hardware]()
-
-
-[Classe-BuzzerESP](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-buzzeresp)
 
 
 # ES32Lab biblioteca

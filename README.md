@@ -1,3 +1,23 @@
+﻿# Índice
+* [ES32Lab biblioteca](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#es32lab-biblioteca)
+	* [Endereço das GPIOs do ESP32 com conexões aos circuitos da ES32Lab](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#endere%C3%A7o-das-gpios-do-esp32-com-conex%C3%B5es-aos-circuitos-da-es32lab)
+	* [Exemplo de utilização de GPIO](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#exemplo-de-utiliza%C3%A7%C3%A3o-de-gpio)
+	* [Conjunto de classes contidas na LIB ES32Lab](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#conjunto-de-classes-contidas-na-lib-es32lab)
+		* [Classe AnalogKeyboard](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-analogkeyboard)
+		* [Classe BuzzerESP](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-buzzeresp)
+		* [Classe DigitalButton](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-digitalbutton)
+		* [Classe FileManager](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-filemanager)
+		* [Classe TFT_Plus](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-tft_plus)
+		* [Classe TimeInterval](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-timeinterval)
+
+		
+
+2. [Hardware]()
+
+
+[Classe-BuzzerESP](https://github.com/ederjsantini/ES32Lab/edit/main/README.md#classe-buzzeresp)
+
+
 # ES32Lab biblioteca
 
 Para o funcionamento da biblioteca ES32Lab é necessário atualmente a instalação obrigatória da dependência [TFT_eSPI_ES32Lab](https://github.com/ederjsantini/TFT_eSPI_ES32Lab), que é uma variação da biblioteca TFT_eSPI de licença MIT desenvolvida por [Bobmer]( https://github.com/Bodmer).
@@ -32,6 +52,8 @@ Para facilitar a programação da ES32Lab foram criadas diversas constantes com 
 - P_SCK = GPIO18
 - P_SD_CS = GPIO5
 
+## Exemplo de utilização de GPIO
+
 Para exemplificar a utilização das constantes citadas acima, usarei como exemplo um código para piscar de forma intermitente o LED verde da ES32Lab.
 ```C++
 #include <ES32Lab.h>
@@ -49,9 +71,9 @@ void loop() {
 Nesse exemplo a GPIO utilizada para controlar o LED verde foi a 17 que pode ser substituída pela constante P_LED_GREEN, dispensando assim que o programador tenha que memorizar todos os endereços GPIOs utilizadas pela ES32Lab.
 Todas as constantes de endereços seguem a mesma linha de raciocínio em sua nomenclatura, tonando assim mais intuitiva sua utilização. No exemplo abaixo explicarei o raciocíno a qual foi utilizado para a criação te dotas as constantes de GPIOs na ES32Lab.
 P_LED_GREEN: 
-* “P”: Pino;
-* “LED”: Circuito na ES32Lab;
-* “GREEN”: Cor do LED;
+* _*“P”:*_ Pino;
+* _*“LED”:*_ Circuito na ES32Lab;
+* _*“GREEN”:*_ Cor do LED;
 
 Se seguirmos essa linha de raciocínio, a constante de controle do LED vermelho será a P_LED_RED, a do buzzer será a P_BUZZER, potenciômetro 1 será P_POT1 e assim por diante.
 
@@ -64,7 +86,7 @@ A biblioteca da ES32Lab conta com diversas classes para programação orientada 
 * TFT_Plus;
 * TimeInterval;
 
-### AnalogKeyboard
+### Classe AnalogKeyboard
 A classe _AnalogKeyboard_ é responsável pelo funcionamento do teclado analógico de 5 teclas da placa ES32Lab, sua estrutura é constituída da seguinte forma:
 #### Construtor
 _AnalogKeyboard(uint8_t pinKeyboard, uint16_t addressKey0 = 0, uint16_t addressKey1 = 870, uint16_t addressKey2 = 1657, uint16_t addressKey3 = 2457, uint16_t addressKey4 = 3322, uint8_t readingAccuracy = 20 );_
@@ -109,3 +131,167 @@ void loop() {
   }
 }
 ```
+
+### Classe BuzzerESP
+A classe _BuzzerESP_ tem como objetivo executar bips e melodias no buzzer da placa ES32Lab através de comandos de alto nível.
+
+#### Construtor
+_BuzzerESP(int pinBuzzer, int channel = 0);_
+No momento da criação de um objeto derivado da classe _BuzzerESP_, pode-se passar alguns parâmetros:
+* _**pinBuzer:**_ Pino (GPIO) ao qual será conectado do buzzer ao ESP32;
+* _**channel:**_ Canal PWM que será utilizado para execução dos sons no buzzer;
+
+#### Métodos
+* _**begin(int pause):**_ Esse método é utilizado para dar uma pausa em milissegundos no **início** de uma música ou bip;
+* _**end(int pause):**_ Esse método é utilizado para dar uma pausa em milissegundos no **final** de uma música ou bip;
+* _**sound(int note, int duration):**_ Esse método executa uma nota musical e estabelece o seu tempo de duração em milissegundos;
+* _**distortion(int noteFrom, int noteTo):**_ Método responsável em criar uma distorção entre duas notas musicais;
+
+#### Notas musicais
+NOTE_C0, NOTE_CS0, NOTE_D0, NOTE_DS0, NOTE_E0, NOTE_F0, NOTE_FS0, NOTE_G0, NOTE_GS0, NOTE_A0, NOTE_AS0, NOTE_B0, NOTE_C1, NOTE_CS1, NOTE_D1, NOTE_DS1, NOTE_E1, NOTE_F1, NOTE_FS1, NOTE_G1, NOTE_GS1, NOTE_A1, NOTE_AS1, NOTE_B1, NOTE_C2, NOTE_CS2, NOTE_D2, NOTE_DS2, NOTE_E2, NOTE_F2, NOTE_FS2, NOTE_G2, NOTE_GS2, NOTE_A2, NOTE_AS2, NOTE_B2, NOTE_C3, NOTE_CS3, NOTE_D3, NOTE_DS3, NOTE_E3, NOTE_F3, NOTE_FS3, NOTE_G3, NOTE_GS3, NOTE_A3, NOTE_AS3, NOTE_B3, NOTE_C4, NOTE_CS4, NOTE_D4, NOTE_DS4, NOTE_E4, NOTE_F4, NOTE_FS4, NOTE_G4, NOTE_GS4, NOTE_A4, NOTE_AS4, NOTE_B4, NOTE_C5, NOTE_CS5, NOTE_D5, NOTE_DS5, NOTE_E5, NOTE_F5, NOTE_FS5, NOTE_G5, NOTE_GS5, NOTE_A5, NOTE_AS5, NOTE_B5, NOTE_C6, NOTE_CS6, NOTE_D6, NOTE_DS6, NOTE_E6, NOTE_F6, NOTE_FS6, NOTE_G6, NOTE_GS6, NOTE_A6, NOTE_AS6, NOTE_B6, NOTE_C7, NOTE_CS7, NOTE_D7, NOTE_DS7, NOTE_E7, NOTE_F7, NOTE_FS7, NOTE_G7, NOTE_GS7, NOTE_A7, NOTE_AS7, NOTE_B7, NOTE_C8, NOTE_CS8, NOTE_D8, NOTE_DS8, NOTE_E8, NOTE_F8, NOTE_FS8, NOTE_G8, NOTE_GS8, NOTE_A8, NOTE_AS8, NOTE_B8
+
+#### Exemplo prático
+```C++
+#include <ES32Lab.h>
+BuzzerESP buzzer(P_BUZZER);   // Buzzer Pin
+void setup(){
+
+}
+void loop() {
+  buzzer.begin(100);
+
+  buzzer.sound(NOTE_E7, 80);
+  buzzer.sound(NOTE_E7, 80);
+  buzzer.sound(0, 80);
+  buzzer.sound(NOTE_E7, 80);
+  buzzer.sound(0, 80);
+  buzzer.sound(NOTE_C7, 80);
+  buzzer.sound(NOTE_E7, 80);
+  buzzer.sound(0, 80);
+  buzzer.sound(NOTE_G7, 80);
+  buzzer.sound(0, 240);
+
+  buzzer.end(2000);
+}
+```
+
+### Classe DigitalButton
+
+A classe _DigitalButton_ tem como objetivo criar uma estrutura de botão utilizando uma GPIO digital, sendo assim, é possível identificar se o objeto instanciado derivado da classe _DigitalButton_ está “pressionado”, “solto” ou “segurando”.
+
+#### Métodos
+
+* _**setPino(int pin):**_ Atribui qual o pino (GPIO) será utilizada no objeto;
+* _**boolean press():**_ Retorna verdadeiro quando estiver **pressionado** o botão digital;
+* _**boolean relasse():**_ Retorna verdadeiro quando o botão for **solto**;
+* _**boolean hold():**_ Retorna verdadeiro **enquanto o botão estiver pressionado**;
+
+
+#### Exemplo prático
+```C++
+#include <ES32Lab.h>
+DigitalButton testButton;
+
+void setup() {
+  Serial.begin(115200);
+  testButton.setPino(12);
+}
+
+void loop() {
+  if(testButton.press()){
+    Serial.println("Button - Press");
+  }
+
+  if(testButton.release()){
+    Serial.println("Button - Release");
+  }
+  if(testButton.hold()){
+    Serial.println("Button - Hold");
+  }
+}
+```
+
+### Classe FileManager
+A classe _FileManager_ tem como objetivo facilitar a manipulação de arquivos, não importando se eles sejam no cartão SD ou na memória SPIFFS.
+
+**Atenção:** Atualmente essa classe não está com sua estrutura totalmente definida, por esse motivo não será distrito sua forma de utilização ou quais são seus métodos.
+
+### Classe TFT_Plus
+Essa classe tem como objetivo facilitar a utilização de display TFT através de códigos de alto nível, sejam para a exibição de um simples texto ou até a abertura de uma imagem JPEG.
+
+**Atenção:** Atualmente essa classe não está com sua estrutura totalmente definida, por esse motivo não será distrito sua forma de utilização ou quais são seus métodos.
+
+### Classe TimeInterval
+A classe _TimeInterval_ tem como objetivo facilitar a utilização dos comandos _”micros()”_ e _“millis()”_, tornando assim mais intuitivo o controle de tempo sem a paralização do programa principal.
+
+#### Métodos
+* _**boolean intervalMillis(long millisTime):**_ Retorna “verdadeiro” quando o tempo em milissegundos passado por parâmetro _(millisTime)_ chegar ao final;
+* _**resetMillis():**_ Reiniciar o contador de milissegundos associado ao método intervalMillis();
+* _**boolean intervalMicros(long microsTime):**_ Retorna “verdadeiro” quando o tempo em microssegundos passado por parâmetro _(microsTime)_ chegar ao final;
+* _**void resetMicros():**_ Reiniciar o contador de microssegundos associado ao método _intervalMicros()_;
+* _**void stopwatchStartMillis():**_ **Inicializa** um cronômetro em Milissegundos.
+* _**long stopwatchStopMillis():**_ **Parar cronômetro** - Retornar o valor obtido em milissegundos.
+* _**void stopwatchStartMicros():**_ **Inicializa** um cronômetro em Microssegundos.
+* _**long stopwatchStopMicros():**_ **Parar cronômetro** - Retornar o valor obtido em microssegundos.
+
+
+#### Exemplos práticos
+
+**Exemplo 1:** O exemplos abaixo utiliza a classe "TimeInterval" para gerencia o tempo através do comando "intervalMillis()", não parando o código em execução
+
+```C++
+#include <ES32Lab.h>
+
+TimeInterval intervalTest;
+void setup() {
+  Serial.begin(115200);
+}
+void loop() {
+  /*
+    boolean TimeInterval::intervalMillis(long millisTime)
+    Returns "true" when the time in milliseconds has elapsed
+    - millisTime: Time in milliseconds
+  */
+  if(intervalTest.intervalMillis(2000)){  // Execute command every 2000 milliseconds
+    Serial.println("It's not stopping the main loop.");
+  }
+
+}
+```
+
+**Exemplo 2:** Utilizar a classe "TimeInterval" para criar um cronometro para identificar quanto tempo leva para executar alguns comandos "Serial.print()".
+
+```C++
+#include <ES32Lab.h>
+
+TimeInterval intervalTest;
+void setup() {
+  Serial.begin(115200);
+}
+void loop() {
+  /*
+    void TimeInterval::stopwatchStartMicros()
+    Initializes the stopwatch in microseconds
+  */
+  intervalTest.stopwatchStartMicros();
+
+  Serial.println("*************");
+  Serial.println("Hello World");
+  Serial.println("*************");
+
+  /*
+    long TimeInterval::stopwatchStopMicros()
+    Stop stopwatch - Microseconds and return the obtained value  
+  */
+  long returnStopwatch = intervalTest.stopwatchStopMicros();
+
+  Serial.print("Execution of all previous println commands takes ");
+  Serial.print(returnStopwatch);
+  Serial.println(" microsconds.");
+  Serial.println("");
+  delay(5000);
+}
+
+```
+
+

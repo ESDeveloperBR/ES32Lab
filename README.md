@@ -183,10 +183,32 @@ A classe _DigitalButton_ tem como objetivo criar uma estrutura de botão utiliza
 
 
 #### Exemplo prático
+Esse exemplo mostra como utilizar todos os estágios de um botão:
+* Pressionar;
+* Soltar;
+* Segurar;
+Obs.: A GPIO utilizada para fazer a leitura digital, foi a GPIO 12 (_#define PIN_BUTTON 12_).
+
 ```C++
-xxxxx
-xxxxx
-xxxxx
+#include <ES32Lab.h>
+DigitalButton testButton;
+#define PIN_BUTTON 12
+void setup() {
+  Serial.begin(115200);
+  testButton.setPino(PIN_BUTTON);
+}
+void loop() {
+  if(testButton.press()){
+    Serial.println("Button - Press");
+  }
+  if(testButton.release()){
+    Serial.println("Button - Release");
+  }
+  if(testButton.hold()){
+    Serial.println("Button - Hold");
+  }
+  delay(100);
+}
 ```
 
 ### Classe FileManager

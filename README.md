@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿# Índice
+=======
+# Índice
+>>>>>>> 357365016f9b60e8c4d59592d5156a77fc0b7bec
 * [ES32Lab biblioteca](https://github.com/ederjsantini/ES32Lab#es32lab-biblioteca)
 	* [Endereço das GPIOs do ESP32 com conexões aos circuitos da ES32Lab](https://github.com/ederjsantini/ES32Lab#endere%C3%A7o-das-gpios-do-esp32-com-conex%C3%B5es-aos-circuitos-da-es32lab)
 	* [Exemplo de utilização de GPIO](https://github.com/ederjsantini/ES32Lab#exemplo-de-utiliza%C3%A7%C3%A3o-de-gpio)

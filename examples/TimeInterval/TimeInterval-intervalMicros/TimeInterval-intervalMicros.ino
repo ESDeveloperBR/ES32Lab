@@ -6,9 +6,6 @@ Library Download: https://github.com/ederjsantini/ES32Lab
 ATTENTION: ES32Lab depends on the library download
   - TFT_eSPI_ES32Lab
     https://github.com/ederjsantini/TFT_eSPI_ES32Lab
-
-  - JPEGDecoder
-    https://github.com/ederjsantini/JPEGDecoder_ES32Lab
     
 Objective:
 - Use the "TimeInterval" class that manages the time through the "micros()" command, not stopping the code in execution;

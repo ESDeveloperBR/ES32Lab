@@ -6,9 +6,6 @@ Library Download: https://github.com/ederjsantini/ES32Lab
 ATTENTION: ES32Lab depends on the library download
   - TFT_eSPI_ES32Lab
     https://github.com/ederjsantini/TFT_eSPI_ES32Lab
-
-  - JPEGDecoder
-    https://github.com/ederjsantini/JPEGDecoder_ES32Lab
     
 Objective:
 - Use the "TimeInterval" class to create a stopwatch to identify how long it takes to execute some "Serial.print()" commands.

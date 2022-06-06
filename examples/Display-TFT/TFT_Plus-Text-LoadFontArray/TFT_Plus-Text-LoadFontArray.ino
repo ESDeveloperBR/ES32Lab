@@ -16,12 +16,12 @@ Example of using the CLASS TFT_Plus
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-#include <Fonts/ES32Lab/Final_Frontier_28.h>
-#include <Fonts/ES32Lab/Latin_Hiragana_24.h>
-#include <Fonts/ES32Lab/NotoSansBold15.h>
-#include <Fonts/ES32Lab/NotoSansBold36.h>
-#include <Fonts/ES32Lab/NotoSansMonoSCB20.h>
-#include <Fonts/ES32Lab/Unicode_Test_72.h>
+#include <FontsArray/Final_Frontier_28.h>
+#include <FontsArray/Latin_Hiragana_24.h>
+#include <FontsArray/NotoSansBold15.h>
+#include <FontsArray/NotoSansBold36.h>
+#include <FontsArray/NotoSansMonoSCB20.h>
+#include <FontsArray/Unicode_Test_72.h>
 
 TFT_Plus display;
 // ********************************************************************************************************

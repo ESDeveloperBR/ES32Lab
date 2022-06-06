@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.6.11 update 06/03/2022"   // mm/dd/yyyy
+    #define ES32LAB_VERSION "0.7.0 update 06/05/2022"   // mm/dd/yyyy
 
     #define P_KEYBOARD      33
     #define P_LED_GREEN     17
@@ -33,14 +33,13 @@
     #define P_MISSO         19
     #define P_SCK           18
     #define P_SD_CS         5
-
-    #include <TFT_eSPI.h>
-    #include "include/AnalogKeyboard.h"
-    #include "include/BuzzerESP.h"
-    #include "include/DigitalButton.h"
-    #include "include/TimeInterval.h"
-    //#include "include/FileManager.h"
-    //#include "include/TFT_Plus.h"
+    
+    #include "AnalogKeyboard/AnalogKeyboardb.h"
+    #include "BuzzerESP/BuzzerESP.h"
+    #include "FileManager/FileManager.h"
+    #include "TimeInterval.h"
+    #include "DigitalButton.h"
+    #include "TFT_Plus/TFT_Plus.h"
 
     class ES32Lab {
         private:    

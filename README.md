@@ -74,12 +74,13 @@ Se seguirmos essa linha de raciocínio, a constante de controle do LED vermelho 
 
 ## Conjunto de classes contidas na LIB ES32Lab
 A biblioteca da ES32Lab conta com diversas classes para programação orientada a objeto, que tem como objetivo facilitar a criação de programas em C++ para controle da placa de desenvolvimento e prototipagem ES32Lab, são elas:
-* AnalogKeyboard;
-* BuzzerESP;
-* DigitalButton;
-* FileManager;
-* TFT_Plus;
-* TimeInterval;
+* [AnalogKeyboard](https://github.com/ederjsantini/ES32Lab#classe-analogkeyboard)
+* [BuzzerESP](https://github.com/ederjsantini/ES32Lab#classe-buzzeresp)
+* [DigitalButton](https://github.com/ederjsantini/ES32Lab#classe-digitalbutton)
+* [FileManager](https://github.com/ederjsantini/ES32Lab#classe-filemanager)
+* [TFT_Plus](https://github.com/ederjsantini/ES32Lab#classe-tft_plus)
+* [TimeInterval](https://github.com/ederjsantini/ES32Lab#classe-timeinterval)
+
 
 ### Classe AnalogKeyboard
 A classe _AnalogKeyboard_ é responsável pelo funcionamento do teclado analógico de 5 teclas da placa ES32Lab, sua estrutura é constituída da seguinte forma:
@@ -180,9 +181,14 @@ _DigitalButton(int pin);_
 Cria o objeto a ser usado como botão digital e atribui a GPIO a ser utilizada.
 * pin: GPIO do botão;
 
+_DigitalButton();_
+Cria o objeto a ser usado como botão digital **sem a atribuição** da GPIO a ser utilizada.
+
+
 #### Métodos
 
-* _**begin():**_ Inicializar o botão instanciado;
+* _**begin():**_ Inicializar o botão instanciado. Atenção: Para a utilização do "begin()" dessa forma, será necessário a declaração do pino (GPIO) no momento da instanciação do objeto;
+* _**begin(int pin):**_ Inicializar o botão instanciado e atribui um pino (GPIO);
 * _**setPino(int pin):**_ Atribui qual o pino (GPIO) será utilizada no objeto;
 * _**boolean press():**_ Retorna verdadeiro quando estiver **pressionado** o botão digital;
 * _**boolean relasse():**_ Retorna verdadeiro quando o botão for **solto**;

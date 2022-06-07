@@ -177,12 +177,10 @@ A classe _DigitalButton_ tem como objetivo criar uma estrutura de botão utiliza
 
 #### Construtor
 
-_DigitalButton(int pin);_
-Cria o objeto a ser usado como botão digital e atribui a GPIO a ser utilizada.
+_**DigitalButton(int pin):**_ Cria o objeto a ser usado como botão digital e atribui a GPIO a ser utilizada.
 * pin: GPIO do botão;
 
-_DigitalButton();_
-Cria o objeto a ser usado como botão digital **sem a atribuição** da GPIO a ser utilizada.
+_**DigitalButton():**_ Cria o objeto a ser usado como botão digital **sem a atribuição** da GPIO a ser utilizada.
 
 
 #### Métodos

@@ -8,7 +8,7 @@
 
 #include <Arduino.h>
 
-#define DIGITALBUTTON_VERSION "0.2.6 update 06/06/2022"  // mm/dd/yyyy
+#define DIGITALBUTTON_VERSION "0.2.7 update 07/06/2022"  // mm/dd/yyyy
 // <<<<<<<<<<<<<<< Classe Botão Externo >>>>>>>>>>>>>>
 /*
   class DigitalButton
@@ -20,7 +20,8 @@ class DigitalButton{
     boolean _btRelease = true;// Botão está solto. "True"
     
   public:
-    DigitalButton(int pin);
+    DigitalButton(int pin = -1);
+    void begin(int pin);
     void begin();
     void setPino(int pin);
     boolean hold();

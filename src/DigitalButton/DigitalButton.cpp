@@ -19,7 +19,21 @@ Begin the instantiated button.
 Inicializar o botão instanciado.
 */
 void DigitalButton::begin(){
-  pinMode(_pin, INPUT_PULLUP);
+  begin(_pin);
+}
+
+/*
+Begin the instantiated button.
+- pin: Address of the GPIO that is connected to the button or sensor.
+--- (Português BR) ---
+Inicializar o botão instanciado.
+- pin: Endereço da GPIO que está conectado ao botão ou sensor.
+*/
+void DigitalButton::begin(int pin){
+  _pin = pin;
+  if(_pin >= 0){
+    pinMode(_pin, INPUT_PULLUP);
+  }
 }
 
 // <<<<<<<<<<<<<<<< Inicializa o pino do botão >>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -31,8 +45,7 @@ Inicializa o pino do botão.
 - pin: Endereço da GPIO que está conectado ao botão ou sensor.
 */
 void DigitalButton::setPino(int pin){
-  _pin = pin;
-  begin();
+  begin(pin);
 }
 
 // <<<<<<< Retorna "true" enquanto o botão estiver pressionado >>>>>>>>>>>>>>>>

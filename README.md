@@ -1,23 +1,22 @@
 # Índice
-* [ES32Lab biblioteca](https://github.com/ederjsantini/ES32Lab#es32lab-biblioteca)
-	* [Endereço das GPIOs do ESP32 com conexões aos circuitos da ES32Lab](https://github.com/ederjsantini/ES32Lab#endere%C3%A7o-das-gpios-do-esp32-com-conex%C3%B5es-aos-circuitos-da-es32lab)
-	* [Exemplo de utilização de GPIO](https://github.com/ederjsantini/ES32Lab#exemplo-de-utiliza%C3%A7%C3%A3o-de-gpio)
-	* [Conjunto de classes contidas na LIB ES32Lab](https://github.com/ederjsantini/ES32Lab#conjunto-de-classes-contidas-na-lib-es32lab)
-		* [Classe AnalogKeyboard](https://github.com/ederjsantini/ES32Lab#classe-analogkeyboard)
-		* [Classe BuzzerESP](https://github.com/ederjsantini/ES32Lab#classe-buzzeresp)
-		* [Classe DigitalButton](https://github.com/ederjsantini/ES32Lab#classe-digitalbutton)
-		* [Classe FileManager](https://github.com/ederjsantini/ES32Lab#classe-filemanager)
-		* [Classe TFT_Plus](https://github.com/ederjsantini/ES32Lab#classe-tft_plus)
-		* [Classe TimeInterval](https://github.com/ederjsantini/ES32Lab#classe-timeinterval)
+* [ES32Lab biblioteca](https://github.com/ESDeveloperBR/ES32Lab#es32lab-biblioteca)
+	* [Endereço das GPIOs do ESP32 com conexões aos circuitos da ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#endere%C3%A7o-das-gpios-do-esp32-com-conex%C3%B5es-aos-circuitos-da-es32lab)
+	* [Exemplo de utilização de GPIO](https://github.com/ESDeveloperBR/ES32Lab#exemplo-de-utiliza%C3%A7%C3%A3o-de-gpio)
+	* [Conjunto de classes contidas na LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#conjunto-de-classes-contidas-na-lib-es32lab)
+		* [Classe AnalogKeyboard](https://github.com/ESDeveloperBR/ES32Lab#classe-analogkeyboard)
+		* [Classe BuzzerESP](https://github.com/ESDeveloperBR/ES32Lab#classe-buzzeresp)
+		* [Classe DigitalButton](https://github.com/ESDeveloperBR/ES32Lab#classe-digitalbutton)
+		* [Classe FileManager](https://github.com/ESDeveloperBR/ES32Lab#classe-filemanager)
+		* [Classe TFT_Plus](https://github.com/ESDeveloperBR/ES32Lab#classe-tft_plus)
+		* [Classe TimeInterval](https://github.com/ESDeveloperBR/ES32Lab#classe-timeinterval)
 
 2. [Hardware]()
 
-
 # ES32Lab biblioteca
 
-Para o funcionamento da biblioteca ES32Lab é necessário atualmente a instalação obrigatória da dependência [TFT_eSPI_ES32Lab](https://github.com/ederjsantini/TFT_eSPI_ES32Lab), que é uma variação da biblioteca TFT_eSPI de licença MIT desenvolvida por [Bobmer]( https://github.com/Bodmer).
+Para o funcionamento da biblioteca ES32Lab é necessário atualmente a instalação obrigatória da dependência [TFT_eSPI_ES32Lab](https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab), que é uma variação da biblioteca TFT_eSPI de licença MIT desenvolvida por [Bobmer]( https://github.com/Bodmer).
 
-**ATENÇÃO!** Logo para o funcionamento da biblioteca ES32Lab, torna-se indispensável o download da biblioteca [TFT_eSPI_ES32Lab](https://github.com/ederjsantini/TFT_eSPI_ES32Lab).
+**ATENÇÃO!** Logo para o funcionamento da biblioteca ES32Lab, torna-se indispensável o download da biblioteca [TFT_eSPI_ES32Lab](https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab).
 
 ## Endereço das GPIOs do ESP32 com conexões aos circuitos da ES32Lab
 
@@ -74,18 +73,18 @@ Se seguirmos essa linha de raciocínio, a constante de controle do LED vermelho 
 
 ## Conjunto de classes contidas na LIB ES32Lab
 A biblioteca da ES32Lab conta com diversas classes para programação orientada a objeto, que tem como objetivo facilitar a criação de programas em C++ para controle da placa de desenvolvimento e prototipagem ES32Lab, são elas:
-* [AnalogKeyboard](https://github.com/ederjsantini/ES32Lab#classe-analogkeyboard)
-* [BuzzerESP](https://github.com/ederjsantini/ES32Lab#classe-buzzeresp)
-* [DigitalButton](https://github.com/ederjsantini/ES32Lab#classe-digitalbutton)
-* [FileManager](https://github.com/ederjsantini/ES32Lab#classe-filemanager)
-* [TFT_Plus](https://github.com/ederjsantini/ES32Lab#classe-tft_plus)
-* [TimeInterval](https://github.com/ederjsantini/ES32Lab#classe-timeinterval)
+* [AnalogKeyboard](https://github.com/ESDeveloperBR/ES32Lab#classe-analogkeyboard)
+* [BuzzerESP](https://github.com/ESDeveloperBR/ES32Lab#classe-buzzeresp)
+* [DigitalButton](https://github.com/ESDeveloperBR/ES32Lab#classe-digitalbutton)
+* [FileManager](https://github.com/ESDeveloperBR/ES32Lab#classe-filemanager)
+* [TFT_Plus](https://github.com/ESDeveloperBR/ES32Lab#classe-tft_plus)
+* [TimeInterval](https://github.com/ESDeveloperBR/ES32Lab#classe-timeinterval)
 
 
 ### Classe AnalogKeyboard
 A classe _AnalogKeyboard_ é responsável pelo funcionamento do teclado analógico de 5 teclas da placa ES32Lab, sua estrutura é constituída da seguinte forma:
 #### Construtor
-_AnalogKeyboard(uint8_t pinKeyboard, uint16_t addressKey0 = 0, uint16_t addressKey1 = 870, uint16_t addressKey2 = 1657, uint16_t addressKey3 = 2457, uint16_t addressKey4 = 3322, uint8_t readingAccuracy = 20 );_
+_AnalogKeyboard(uint8_t pinKeyboard, uint16_t addressKey0 = 0, uint16_t addressKey1 = 870, uint16_t addressKey2 = 1657, uint16_t addressKey3 = 2457, uint16_t addressKey4 = 3322, uint8_t readingAccuracy = 21 );_
 
 No momento da criação de um objeto derivado da classe _AnalogKeyboard_ pode-se passar alguns valores de ajustes, como:
 * _**pinKeyboard:**_ Pino (GPIO) ao qual será conectado o teclado analógico da placa ES32Lab ao ESP32. Exemplo: _ AnalogKeyboard keyboard(P_KEYBOARD);_

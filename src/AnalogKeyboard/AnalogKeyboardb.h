@@ -9,7 +9,7 @@
 
 #include <Arduino.h>
 
-#define ANALOGKEYBOARD_VERSION "0.3.4 date 06/05/2022" // mm/dd/yy
+#define ANALOGKEYBOARD_VERSION "0.3.5 date 16/08/2022" // mm/dd/yy
 // <<<<<<<<<<<<<<< Classe AnalogKeyboard >>>>>>>>>>>>>>
 class AnalogKeyboard {
     private:    

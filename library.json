@@ -1,0 +1,20 @@
+{
+    "name": "ES32Lab",
+    "keywords": "i2c,wire",
+    "description": "Library to facilitate the development of programs that use the ES32Lab board.",
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/ESDeveloperBR/ES32Lab"
+    },
+    "authors":
+    {
+        "name": "ESDeveloperBR",
+        "url": "https://github.com/ESDeveloperBR/ES32Lab",
+        "maintainer": true
+    },
+    "version": "0.7.7",
+    "license": "MIT",
+    "frameworks": "arduino",
+    "platforms": "esp32"
+}

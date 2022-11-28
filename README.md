@@ -51,13 +51,13 @@ Uma característica importante na ES32Lab é a agilidade no desenvolvimento de p
 Conheça cada detalhe de configuração do hardware da ES32Lab de forma simples e intuitiva. Crie projetos com ESP32 do zero em tempo recorde com essa poderosa ferramenta de desenvolvimento e prototipagem, assista o vídeo e veja com é simples ajustar o hardware da ES32Lab para atender seu projeto.
 
 Tópicos importantes do vídeo explicativo no YouTube:
-- ![Compatível com diversas shields de ESP32;](https://youtu.be/xpoNbSA8pPM?t=40)
-- ![Alimentaçãode tensão da ES32Lab;](https://youtu.be/xpoNbSA8pPM?t=107)
-- ![Circuitos e conectores da ES32Lab;](https://youtu.be/xpoNbSA8pPM?t=182)
-- ![Parte inferior da ES32Lab;](https://youtu.be/xpoNbSA8pPM?t=234)
-- ![Legendas de fácil compreensão;](https://youtu.be/xpoNbSA8pPM?t=251)
-- ![Configuração e ajustes intuitivos;](https://youtu.be/xpoNbSA8pPM?t=292)
-- ![Tamanho compacto;](https://youtu.be/xpoNbSA8pPM?t=450)
+- [Compatível com diversas shields de ESP32;](https://youtu.be/xpoNbSA8pPM?t=40)
+- [Alimentaçãode tensão da ES32Lab;](https://youtu.be/xpoNbSA8pPM?t=107)
+- [Circuitos e conectores da ES32Lab;](https://youtu.be/xpoNbSA8pPM?t=182)
+- [Parte inferior da ES32Lab;](https://youtu.be/xpoNbSA8pPM?t=234)
+- [Legendas de fácil compreensão;](https://youtu.be/xpoNbSA8pPM?t=251)
+- [Configuração e ajustes intuitivos;](https://youtu.be/xpoNbSA8pPM?t=292)
+- [Tamanho compacto;](https://youtu.be/xpoNbSA8pPM?t=450)
 
 
 # ES32Lab biblioteca

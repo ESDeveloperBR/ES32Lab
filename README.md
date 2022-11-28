@@ -12,6 +12,35 @@
 
 2. [Hardware]()
 
+# Introdução
+## Projeto ES32Lab
+![](doc/imgs/ganheTempo.jpeg)
+A ES32Lab é um conjunto de circuitos eletrônicos montados, com o objetivo de facilitar a utilização e estudo do microcontrolador da ESPRESSIF ESP32, que está disponível no mercado como uma alternativa mais potente e contemporânea se comparado ao consagrado Arduino.
+Aplicações e circuitos onboard da ES32Lab:
+- Aceita as seguintes Shields de ESP32: DEVKit32S, DEVKit32C V4 e NodeMCU32;
+- Fonte de 5v e 3.3v;
+- Carregador 2S de baterias de íon lítio;
+- Ponte H para dois motores DC;
+- Sensor de tensão DC;
+- Teclado com 5 teclas;
+- 2 Potenciômetros;
+- 6 LEDs;
+- Sensor de temperatura analógico;
+- Sensor LDR;
+- Leitor de cartão micro SD;
+- Conector pronto para câmera de vídeo OV2640;
+- GPIOs do ESP32 organizadas em ordem crescente;
+- Expansão de 8 GPIOs extras por i2C;
+- Conexão ponta para RTC físico i2C;
+- Buzzer;
+- Conector P2 para testes com áudio com a porta DAC nativa do ESP32;
+- Conector para expansões i2S;
+- Conector para os dois modelos mais comuns de display SPI TFT colorido;
+- Tamanho de 10x10cm;
+- Cabe dentro de uma caixa de passagem elétrica;
+Uma característica importante na ES32Lab é a agilidade no desenvolvimento de projetos utilizando o microcontrolador da ESPRESSIF ESP32, visto que seu conjunto de circuitos eletrônicos atende a necessidade de uma gama enorme de projetos e ainda dispensa a utilização de cases especializados, podendo ser acomodada em uma simples caixa de passagem elétrica comprada em qualquer loja de materiais de construção.
+
+
 # ES32Lab biblioteca
 
 Para o funcionamento da biblioteca ES32Lab é necessário atualmente a instalação obrigatória da dependência [TFT_eSPI_ES32Lab](https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab), que é uma variação da biblioteca TFT_eSPI de licença MIT desenvolvida por [Bobmer]( https://github.com/Bodmer).

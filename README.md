@@ -1,4 +1,5 @@
 # Índice
+* [Introdução](https://github.com/ESDeveloperBR/ES32Lab#projeto-es32lab)
 * [ES32Lab biblioteca](https://github.com/ESDeveloperBR/ES32Lab#es32lab-biblioteca)
 	* [Endereço das GPIOs do ESP32 com conexões aos circuitos da ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#endere%C3%A7o-das-gpios-do-esp32-com-conex%C3%B5es-aos-circuitos-da-es32lab)
 	* [Exemplo de utilização de GPIO](https://github.com/ESDeveloperBR/ES32Lab#exemplo-de-utiliza%C3%A7%C3%A3o-de-gpio)
@@ -14,7 +15,7 @@
 
 # Introdução
 ## Projeto ES32Lab
-![](doc/imgs/ganheTempo.jpeg)
+![](doc/imgs/ganheTempo.jpg)
 A ES32Lab é um conjunto de circuitos eletrônicos montados, com o objetivo de facilitar a utilização e estudo do microcontrolador da ESPRESSIF ESP32, que está disponível no mercado como uma alternativa mais potente e contemporânea se comparado ao consagrado Arduino.
 Aplicações e circuitos onboard da ES32Lab:
 - Aceita as seguintes Shields de ESP32: DEVKit32S, DEVKit32C V4 e NodeMCU32;

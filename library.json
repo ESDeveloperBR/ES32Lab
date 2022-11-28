@@ -1,6 +1,6 @@
 {
     "name": "ES32Lab",
-    "keywords": "i2c,wire",
+    "keywords": "es32lab",
     "description": "Library to facilitate the development of programs that use the ES32Lab board.",
     "repository":
     {

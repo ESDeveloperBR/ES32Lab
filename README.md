@@ -1,5 +1,7 @@
 # Índice
-* [Introdução](https://github.com/ESDeveloperBR/ES32Lab#projeto-es32lab)
+* [Introdução](https://github.com/ESDeveloperBR/ES32Lab#introdu%C3%A7%C3%A3o)
+  * [O que é o projeto ES32Lab?]()
+  * [ESP32 sem protoboard!? Conheça cada detalhe do hardware da ES32Lab]()
 * [ES32Lab biblioteca](https://github.com/ESDeveloperBR/ES32Lab#es32lab-biblioteca)
 	* [Endereço das GPIOs do ESP32 com conexões aos circuitos da ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#endere%C3%A7o-das-gpios-do-esp32-com-conex%C3%B5es-aos-circuitos-da-es32lab)
 	* [Exemplo de utilização de GPIO](https://github.com/ESDeveloperBR/ES32Lab#exemplo-de-utiliza%C3%A7%C3%A3o-de-gpio)
@@ -11,11 +13,11 @@
 		* [Classe TFT_Plus](https://github.com/ESDeveloperBR/ES32Lab#classe-tft_plus)
 		* [Classe TimeInterval](https://github.com/ESDeveloperBR/ES32Lab#classe-timeinterval)
 
-2. [Hardware]()
 
 # Introdução
-## Projeto ES32Lab
+## O que é o projeto ES32Lab?
 ![](doc/imgs/ganheTempo.jpg)
+[Vídeo de introdução - YouTube](https://www.youtube.com/watch?v=F3Kxc9TrW4A)
 A ES32Lab é um conjunto de circuitos eletrônicos montados, com o objetivo de facilitar a utilização e estudo do microcontrolador da ESPRESSIF ESP32, que está disponível no mercado como uma alternativa mais potente e contemporânea se comparado ao consagrado Arduino.
 Aplicações e circuitos onboard da ES32Lab:
 - Aceita as seguintes Shields de ESP32: DEVKit32S, DEVKit32C V4 e NodeMCU32;
@@ -41,6 +43,10 @@ Aplicações e circuitos onboard da ES32Lab:
 - Cabe dentro de uma caixa de passagem elétrica;
 Uma característica importante na ES32Lab é a agilidade no desenvolvimento de projetos utilizando o microcontrolador da ESPRESSIF ESP32, visto que seu conjunto de circuitos eletrônicos atende a necessidade de uma gama enorme de projetos e ainda dispensa a utilização de cases especializados, podendo ser acomodada em uma simples caixa de passagem elétrica comprada em qualquer loja de materiais de construção.
 
+## ESP32 sem protoboard!? Conheça cada detalhe do hardware da ES32Lab
+![](doc/imgs/ESP32semProtoboard.jpg)
+[Vídeo - YouTube](https://www.youtube.com/watch?v=xpoNbSA8pPM)
+Conheça cada detalhe de configuração do hardware da ES32Lab de forma simples e intuitiva. Crie projetos com ESP32 do zero em tempo recorde com essa poderosa ferramenta de desenvolvimento e prototipagem, assista o vídeo e veja com é simples ajustar o hardware da ES32Lab para atender seu projeto.
 
 # ES32Lab biblioteca
 

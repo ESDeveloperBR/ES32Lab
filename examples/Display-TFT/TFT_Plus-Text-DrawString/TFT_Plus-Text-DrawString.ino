@@ -1,11 +1,11 @@
 /*
-Author: Eder João Santini
-email: ederjsantini@gmail.com
-Library Download: https://github.com/ederjsantini/ES32Lab
+Author: Eder Joao Santini
+email: esdeveloperbr@gmail.com
+Library Download: https://github.com/ESDeveloperBR/ES32Lab
 
 ATTENTION: ES32Lab depends on the library download
   - TFT_eSPI_ES32Lab
-    https://github.com/ederjsantini/TFT_eSPI_ES32Lab
+    https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab
 
 Example of using the CLASS TFT_Plus
 - Draw String

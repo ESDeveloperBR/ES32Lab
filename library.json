@@ -1,6 +1,6 @@
 {
     "name": "ES32Lab",
-    "keywords": "es32lab, ESDeveloperBR, ESDeveloper, Eder Santini",
+    "keywords": "es32lab, ESDeveloperBR, ESDeveloper, Eder Santini, ESP32, display, SD, SPIFFS, file, LDR, i2c 8574, H bridge, keyboard",
     "description": "Library to facilitate the development of programs that use the ES32Lab board.",
     "repository":
     {
@@ -13,7 +13,7 @@
         "url": "https://github.com/ESDeveloperBR/ES32Lab",
         "maintainer": true
     },
-    "version": "0.7.7beta",
+    "version": "0.7.8",
     "license": "MIT",
     "frameworks": "arduino",
     "platforms": "esp32"

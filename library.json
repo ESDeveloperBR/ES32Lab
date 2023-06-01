@@ -13,7 +13,7 @@
         "url": "https://github.com/ESDeveloperBR/ES32Lab",
         "maintainer": true
     },
-    "version": "0.7.9",
+    "version": "0.8.0",
     "license": "MIT",
     "frameworks": "arduino",
     "platforms": "espressif32"

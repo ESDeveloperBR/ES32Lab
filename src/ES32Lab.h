@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.8.0 update 01/06/2023"   // dd/mm/yyyy
+    #define ES32LAB_VERSION "0.8.1 update 02/06/2023"   // dd/mm/yyyy
 
     #define P_KEYBOARD      33
     #define P_LED_GREEN     17

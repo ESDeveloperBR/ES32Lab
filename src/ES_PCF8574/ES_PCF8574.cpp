@@ -65,3 +65,52 @@ uint8_t ES_PCF8574::digitalRead(uint8_t pin) {
   uint8_t data = Wire.read();
   return (data >> pin) & 1;
 }
+
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<< btHold >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/**
+ * The 'true' condition is returned while the expansion GPIO is being used as a button input and remains pressed, meaning it stays at a logical high level.
+ * |
+ * A condição 'true' é retornada enquanto a GPIO da expansão estiver sendo utilizada como entrada de botão e permanecer pressionada, ou seja, mantendo-se em nível lógico alto.
+ * 
+ * @param pin Number of the GPIO to be read. | Número da GPIO que será lida.
+*/
+boolean ES_PCF8574::btHold(uint8_t pin){
+  if( digitalRead(pin) ) { 
+    return true;
+  }
+  return false;
+}
+
+// <<<<<<<<<<<<<<<<<<<<<< btPress >>>>>>>>>>>>>>>>>>>
+/**
+ * The 'true' condition is returned at the exact moment when the expansion GPIO is used as a button input and there is a transition from a low to high logical level, that is, when the button is pressed.
+ * |
+ * A condição 'true' é retornada no exato momento em que a GPIO da expansão é utilizada como entrada de botão e ocorre a transição do nível lógico de baixo para alto, ou seja, quando o botão é pressionado.
+ * @param pin Number of the GPIO to be read. | Número da GPIO que será lida.
+*/
+boolean ES_PCF8574::btPress(uint8_t pin){
+  if( !btHold(pin) & !_btPress[pin] ) { 
+    _btPress[pin] = true;
+  } else if( btHold(pin) & _btPress[pin] ) {
+    _btPress[pin] = false;
+    return true;
+  }
+  return false;
+}
+
+// <<<<<<<<<<<<<<<<< btRelease >>>>>>>>>>>>>>>>>>>>>>>>
+/**
+ * The 'true' condition is returned at the exact moment when the expansion GPIO is used as a button input and there is a transition from a high to low logical level, that is, when the button is release.
+ * |
+ * A condição 'true' é retornada no exato momento em que a GPIO da expansão é utilizada como entrada de botão e ocorre a transição do nível lógico de alto para baixo, ou seja, quando o botão é solto.
+ * @param pin Number of the GPIO to be read. | Número da GPIO que será lida.
+*/
+boolean ES_PCF8574::btRelease(uint8_t pin){
+  if( !btHold(pin) & !_btRelease[pin] ) {
+    _btRelease[pin] = true;
+    return true;
+  } else if(btHold(pin) & _btRelease[pin] ){
+    _btRelease[pin] = false;
+  }
+  return false;
+}

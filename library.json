@@ -1,14 +1,12 @@
 {
     "name": "ES32Lab",
-    "keywords": "es32lab, ESDeveloperBR, ESDeveloper, Eder Santini, ESP32, display, SD, SPIFFS, file, LDR, i2c 8574, H bridge, keyboard",
-    "description": "Library provided by ESDeveloperBR to facilitate the development of programs that use the ES32Lab board. ATTENTION: This LIB depends on the TFT_eSPI_ES32Lab LIB.",
-    "repository":
-    {
+    "keywords": "es32lab, ESDeveloperBR, ESDeveloper, Eder Santini, ESP32, display, SD, SPIFFS, file, LDR, i2c 8574, H bridge, keyboard, PCF8574",
+    "description": "Library provided by ESDeveloperBR to facilitate the development of programs that utilize the ES32Lab board. ATTENTION: This library depends on the TFT_eSPI_ES32Lab library.",
+    "repository": {
         "type": "git",
         "url": "https://github.com/ESDeveloperBR/ES32Lab"
     },
-    "authors":
-    {
+    "authors": {
         "name": "ESDeveloperBR",
         "url": "https://github.com/ESDeveloperBR/ES32Lab",
         "maintainer": true

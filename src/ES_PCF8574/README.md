@@ -1,5 +1,6 @@
 | [Retornar ao Índece da LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#%C3%ADndice) |
 | :------: |
+-----
 
 # Classe ES_PCF8574
 A classe ES_PCF8574 é responsável pelo controle de um expansor de GPIO baseado no PCF8574. Ela fornece métodos para configurar e controlar os pinos de entrada/saída do expansor.
@@ -88,7 +89,8 @@ A condição `true` é retornada no exato momento em que a GPIO da expansão é 
 Retorna `true` no exato momento em que o botão é solto, ou seja, quando ocorre a transição do nível lógico de alto para baixo. Retorna `false` caso contrário.
 
 
-## Exemplo Prático
+## Exemplos Práticos
+### digitalWrite(uint8_t pin, boolean value)
 Aqui está um exemplo prático completo que demonstra o uso da classe ES_PCF8574 para controlar dois LEDs intermitentes:
 
 Exemplo:
@@ -117,5 +119,68 @@ void loop() {
 
 Neste exemplo, os pinos EX0 e EX1 são configurados como saídas e alternam entre os valores HIGH e LOW a cada 1 segundo, resultando no piscar intermitente de dois LEDs conectados aos respectivos pinos.
 
+
+### digitalRead(uint8_t pin)
+Aqui está um exemplo prático completo que demonstra o uso da classe ES_PCF8574 para fazer a leitura digital de uma determinada GPIO.
+
+Exemplo:
+```C++
+#include <Arduino.h>
+#include <ES32Lab.h>  // Library used to facilitate the use of the ES32Lab board | Biblioteca usada para facilitar o uso da placa ES32Lab
+ES_PCF8574 expander(0x38); // Instantiates the 'expander' object with the given address | Instancia o objeto 'expander' com o endereço fornecido
+
+// <<<<<<<<<< setup >>>>>>>>>>
+void setup() {
+  Serial.begin(115200); // Initializes the serial communication | Inicializa a comunicação serial
+  expander.begin(); // Initializes the i2C PCF8574 expander | Inicializa o expansor i2C PCF8574
+}
+
+// <<<<<<<<<< loop >>>>>>>>>>
+void loop() {
+  boolean readExpander; // Variable to store the GPIO read value from the expander | Variável para armazenar o valor lido da GPIO do expansor
+  readExpander = expander.digitalRead(EX0); // Reads the GPIO 0 of the ES32Lab expander | Lê a GPIO 0 do expansor ES32Lab
+  Serial.println(readExpander); // If the GPIO EX0 of the expander receives a logic high signal, the number 1 will be displayed on the serial terminal | Se a GPIO EX0 do expansor receber um sinal lógico alto, o número 1 será exibido no terminal serial
+  delay(1000); // Waits for 1 second | Aguarda 1 segundo
+}
+```
+
+
+### Digital Button
+
+Este código utiliza o expansor I2C PCF8574 da ES32Lab para conectar botões às suas GPIOs e ler os estados do botão, como pressionado, segurando e solto.
+
+
+Exemplo:
+```C++
+#include <Arduino.h>
+#include <ES32Lab.h>  // Library used to facilitate the use of the ES32Lab board | LIB utilizada para facilitar a utilização da placa ES32Lab
+ES_PCF8574 expander(0x38);  // Instantiates the 'expander' object with the given address | Instancia o objeto 'expander' com o endereço fornecido
+
+int GPIO_EX = EX4;
+
+void setup() {
+  Serial.begin(115200);
+  expander.begin(); // Initializes the i2C PCF8574 expander | Inicializa o expansor i2C PCF8574
+}
+
+void loop() {
+  // ---- Button 0 ----
+  if(expander.btPress(EX0)){  // When the button connected to the expansion GPIO is pressed, execute: | Quando o botão conectado à GPIO de expansão for pressionado, execute:
+    Serial.println("Button 0 Press");  // Display on the serial monitor. | Exibe no monitor serial.
+  }
+
+  if(expander.btHold(EX0)){  // When the button connected to the expansion GPIO is pressed, execute: | Quando o botão conectado à GPIO de expansão estiver pressionado, execute:
+    Serial.println("Button 0 Hold");  // Display on the serial monitor. | Exibe no monitor serial.
+    delay(500);  // Wait for 500 milliseconds. | Aguarda 500 milissegundos.
+  }
+
+  if(expander.btRelease(EX0)){  // When the button connected to the expansion GPIO is released, execute: | Quando o botão conectado à GPIO de expansão for solto, execute:
+    Serial.println("Button 0 released");  // Display on the serial monitor. | Exibe no monitor serial.
+  }
+}
+```
+
+
+-----
 | [Retornar ao Índece da LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#%C3%ADndice) |
 | :------: |

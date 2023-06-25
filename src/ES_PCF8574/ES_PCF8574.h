@@ -1,10 +1,11 @@
 #ifndef ES_PCF8574_H
 #define ES_PCF8574_H
 
-#include <Wire.h>
 #include <Arduino.h>
+#include <Wire.h>
+#include "TimeInterval/TimeInterval.h"
 
-#define ES_PCF8574_VERSION "0.2.0 update 06/03/2023"  // mm/dd/yyyy
+#define ES_PCF8574_VERSION "0.3.3 update 06/25/2023"  // mm/dd/yyyy
 #define EX0 0
 #define EX1 1
 #define EX2 2
@@ -14,21 +15,64 @@
 #define EX6 6
 #define EX7 7
 
+#define TASK_PWM_SIM_STACK_DEPTH 90000  // Sets the amount of memory available for local variables and function calls within the PWM simulator. | Define a quantidade de memória disponível para as variáveis locais e chamadas de função dentro do simulador PWM.
+#define TASK_PWM_SIM_PRIORITY 2         // Represents the task priority. Higher values indicate higher priority. | Representa a prioridade da tarefa. Valores maiores indicam maior prioridade.
+#define TASK_PWM_SIM_CORE_ID 0          // Specifies the processor core where the PWM simulator will run. | Especifica o núcleo do processador onde o simulador PWM será executado.
+
 class ES_PCF8574 {
-  public:
-    ES_PCF8574(uint8_t address);
-    boolean begin();
-    void digitalWrite(uint8_t pin, boolean value);
-    uint8_t digitalRead(uint8_t pin);
-    boolean btHold(uint8_t pin);
-    boolean btPress(uint8_t pin);
-    boolean btRelease(uint8_t pin);
 
   private:
     uint8_t _address;
     uint8_t _value;
     boolean _btPress[8] = {false, false, false, false, false, false, false, false}; // Button pressed starts with "false"
     boolean _btRelease[8] = {true, true, true, true, true, true, true, true}; // The button is released "True"  
+    boolean _pwmSimulation(uint8_t pin); // Gera o siclo do pulso PWM.
+    boolean _pwmSimulationStatus; // Indica se o simulador de PWM está ativo.
+
+    float   _pwmDutyCycle[8] = {0, 0, 0, 0, 0, 0, 0, 0};  // Matriz onde cada endereço representa uma GPIO da expansão i2C, onde será armazenado o comprimento do Duty Cycle.
+    float   _pwmFrequency[8] = {0, 0, 0, 0, 0, 0, 0, 0};  // Matriz onde cada endereço representa uma GPIO da expansão i2C, onde será armazenado a frequência PWM independente de cada GPIO.
+    TimeInterval _pwmDutyTime[8]; // Matriz do tipo 'TimeInterval' responsável com controlar o tempo de ciclo de cada GPIO a ser utilizada para gerar pulso PWM.
+
+    uint8_t _motorFrequency[4] = {20, 20, 20, 20};
+    uint8_t _motorPin1[4];
+    uint8_t _motorPin2[4];
+    bool    _motorMirrorCommands[4];
+
+  public:
+    ES_PCF8574(uint8_t address);
+
+    boolean begin(boolean pwmSimulation = false);
+    void digitalWrite(uint8_t pin, boolean value);
+    uint8_t digitalRead(uint8_t pin);
+
+    boolean btHold(uint8_t pin);
+    boolean btPress(uint8_t pin);
+    boolean btRelease(uint8_t pin);
+
+    boolean pwmBegin();
+    void pwmWrite(uint8_t pin, uint8_t dutyCycle = 50, uint8_t frequency = 1);
+
+    boolean motorBegin(uint8_t motorID, uint8_t controlPin1, uint8_t controlPin2);
+    void motorRotationA(uint8_t motorID, uint8_t speed);
+    void motorRotationB(uint8_t motorID, uint8_t speed);
+    void motorStop(uint8_t motorID);
+    void motorMirrorCommands(uint8_t motorID);
+    uint8_t motorGetFrequency(uint8_t motorID);
+    void motorSetFrequency(uint8_t motorID, uint8_t frequency);
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
 };
 
 #endif

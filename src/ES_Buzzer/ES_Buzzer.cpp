@@ -1,11 +1,11 @@
-#include "BuzzerESP.h"
+#include "ES_Buzzer.h"
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Constructor >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /* Creates the object to be used as a buzzer and assigns the pin and channel to be used.
 - pinBuzzer: Pin Buzzer;
 - channel: optional ledcAttachPin channel;
 */
-BuzzerESP::BuzzerESP(int pinBuzzer, int channel) {
+ES_Buzzer::ES_Buzzer(int pinBuzzer, int channel) {
     _pinBuzzer  = pinBuzzer;
     _channel    = channel;
     _pause      = 0;
@@ -17,7 +17,7 @@ BuzzerESP::BuzzerESP(int pinBuzzer, int channel) {
 /* Sets the rest before the note.
 - pause: Value in percentage;
 */
-void BuzzerESP::begin(int pause) {
+void ES_Buzzer::begin(int pause) {
     _pause = pause;
 }
 
@@ -25,7 +25,7 @@ void BuzzerESP::begin(int pause) {
 /* Hold the last note and end the melody.
 -pause: Time in milliseconds;
 */
-void BuzzerESP::end(int pause) {
+void ES_Buzzer::end(int pause) {
     delay(pause);
     ledcWriteTone(_channel, 0);
 }
@@ -34,7 +34,7 @@ void BuzzerESP::end(int pause) {
 /* Play the musical note with the set tempo.
 -note: Musical note;
 -duration: Music note duration time in milliseconds; */
-void BuzzerESP::sound(int note, int duration) {
+void ES_Buzzer::sound(int note, int duration) {
     ledcWriteTone(_channel, note);
     delay(duration);
     delay(((duration * _pause) / 100));
@@ -42,7 +42,7 @@ void BuzzerESP::sound(int note, int duration) {
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<< distortion >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /* It creates a distortion effect on the Buzzer */
-void BuzzerESP::distortion(int noteFrom, int noteTo) {
+void ES_Buzzer::distortion(int noteFrom, int noteTo) {
     int nCycles = abs(noteFrom - noteTo);
 
     if (noteFrom > noteTo)

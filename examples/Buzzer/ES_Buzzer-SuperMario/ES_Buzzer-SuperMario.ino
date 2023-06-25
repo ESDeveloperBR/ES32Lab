@@ -7,13 +7,13 @@ ATTENTION: ES32Lab depends on the library download
   - TFT_eSPI_ES32Lab
     https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab
 
-Example of using the CLASS BuzzerESP
-- BuzzerESP playing Super Mario music.
+Example of using the CLASS ES_Buzzer
+- ES_Buzzer playing Super Mario music.
 */
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-BuzzerESP buzzer(P_BUZZER);   // Buzzer Pin
+ES_Buzzer buzzer(P_BUZZER);   // Buzzer Pin
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Setup >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 void setup(){

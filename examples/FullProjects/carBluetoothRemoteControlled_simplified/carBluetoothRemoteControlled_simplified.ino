@@ -1,0 +1,1 @@
+Terá uma versão resumida.

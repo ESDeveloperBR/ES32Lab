@@ -2,184 +2,129 @@
 | :------: |
 -----
 
-# Classe ES_PCF8574
-A classe ES_PCF8574 é responsável pelo controle de um expansor de GPIO baseado no PCF8574. Ela fornece métodos para configurar e controlar os pinos de entrada/saída do expansor.
+# Documentação da Classe ES_PCF8574
 
+A classe `ES_PCF8574` é usada para controlar a comunicação com o expansor de porta PCF8574 no ESP32. Ela fornece métodos para interagir com as GPIOs do PCF8574 e também inclui um simulador PWM.
 
 ## Construtor
-### ES_PCF8574(uint8_t address)
-Cria uma instância da classe ES_PCF8574 com o endereço específico do expansor de GPIO PCF8574.
 
-Parâmetros:
+### `ES_PCF8574(uint8_t address)`
 
-* `address:` O endereço I2C do expansor de GPIO PCF8574.
+Inicializa uma instância da classe `ES_PCF8574` com o endereço fornecido do PCF8574.
 
-Exemplo:
-```C++
-ES_PCF8574 expander(0x38);
-```
+- Parâmetros:
+  - `address`: Endereço do PCF8574 no protocolo de comunicação I2C.
 
+## Configuração
 
-## Métodos
-### void begin()
-Inicializa o expansor de GPIO PCF8574. Deve ser chamado no início do programa, antes de utilizar os métodos de controle.
+### `boolean begin(boolean pwmSimulation)`
 
-Exemplo:
-```C++
-expander.begin();
-```
+Inicializa a comunicação I2C e configura o PCF8574.
 
+- Parâmetros:
+  - `pwmSimulation`: Quando verdadeiro, ativa o simulador PWM através do expansor I2C.
 
-### void digitalWrite(uint8_t pin, uint8_t value)
-Define o valor lógico `HIGH` ou `LOW` para um pino específico do expansor de GPIO PCF8574.
+- Retorno:
+  - `true` se a comunicação for inicializada com sucesso, caso contrário, `false`.
 
-Parâmetros:
+## Métodos GPIO
 
-* `pin:` O número do pino a ser controlado.
-* `value:` O valor lógico a ser atribuído ao pino (HIGH ou LOW).
+### `void digitalWrite(uint8_t pin, boolean value)`
 
-Exemplo:
-```C++
-expander.digitalWrite(EX0, HIGH);
-```
+Define o valor lógico (HIGH ou LOW) para uma GPIO específica do PCF8574.
 
+- Parâmetros:
+  - `pin`: Número da GPIO a ser alterada.
+  - `value`: Valor lógico a ser atribuído à GPIO (true para HIGH, false para LOW).
 
-### int digitalRead(uint8_t pin)
-Realiza a leitura do valor lógico presente em um pino específico do expansor de GPIO PCF8574.
+### `uint8_t digitalRead(uint8_t pin)`
 
-Parâmetros:
+Lê o valor lógico presente em uma GPIO específica do PCF8574.
 
-* `pin:` O número do pino a ser lido.
+- Parâmetros:
+  - `pin`: Número da GPIO a ser lida.
 
-Retorno:
+- Retorno:
+  - O valor lido como um inteiro de 8 bits (0 para LOW, 1 para HIGH).
 
-* Retorna o valor lógico lido (`HIGH` ou `LOW`).
+### `boolean btHold(uint8_t pin)`
 
-Exemplo:
-```C++
-int value = expander.digitalRead(EX0);
-```
+Retorna `true` enquanto a GPIO estiver sendo utilizada como entrada de botão e permanecer pressionada (nível lógico alto).
 
+- Parâmetros:
+  - `pin`: Número da GPIO a ser lida.
 
-### boolean btHold(uint8_t pin)
+- Retorno:
+  - `true` se o botão estiver sendo pressionado, caso contrário, `false`.
 
-A condição 'true' é retornada enquanto a GPIO da expansão estiver sendo utilizada como entrada de botão e permanecer pressionada, ou seja, mantendo-se em nível lógico alto.
+### `boolean btPress(uint8_t pin)`
 
-- `pin`: O número da GPIO do botão a ser verificado.
+Retorna `true` no momento exato em que a GPIO é utilizada como entrada de botão e ocorre a transição do nível lógico de baixo para alto (quando o botão é pressionado).
 
-Retorna `true` se o botão estiver sendo pressionado, `false` caso contrário.
+- Parâmetros:
+  - `pin`: Número da GPIO a ser lida.
 
+- Retorno:
+  - `true` no momento em que o botão é pressionado, caso contrário, `false`.
 
+### `boolean btRelease(uint8_t pin)`
 
-### boolean btPress(uint8_t pin)
+Retorna `true` no momento exato em que a GPIO é utilizada como entrada de botão e ocorre a transição do nível lógico de alto para baixo (quando o botão é solto).
 
-A condição `true` é retornada no exato momento em que a GPIO da expansão é utilizada como entrada de botão e ocorre a transição do nível lógico de baixo para alto, ou seja, quando o botão é pressionado.
+- Parâmetros:
+  - `pin`: Número da GPIO a ser lida.
 
-- `pin`: O número da GPIO do botão a ser verificado.
+- Retorno:
+  - `true` no momento em que o botão é solto, caso contrário, `false`.
 
-Retorna `true` no exato momento em que o botão é pressionado, ou seja, quando ocorre a transição do nível lógico de baixo para alto. Retorna `false` caso contrário.
+## Simulador PWM
 
+### `boolean pwmBegin()`
 
-### boolean btRelease(uint8_t pin)
+Inicializa o expansor I2C com o simulador PWM ativado.
 
-A condição `true` é retornada no exato momento em que a GPIO da expansão é utilizada como entrada de botão e ocorre a transição do nível lógico de alto para baixo, ou seja, quando o botão é solto.
+- Retorno:
+  - `true` se a comunicação for inicializada com sucesso,caso contrário, `false`.
 
-- `pin`: O número da GPIO do botão a ser verificado.
+### `void pwmWrite(uint8_t pin, uint8_t dutyCycle)`
 
-Retorna `true` no exato momento em que o botão é solto, ou seja, quando ocorre a transição do nível lógico de alto para baixo. Retorna `false` caso contrário.
+Atribui valores como frequência e ciclo de trabalho à GPIO simulada para o sinal PWM.
 
+- Parâmetros:
+  - `pin`: Número da GPIO a ser configurada para o sinal PWM.
+  - `dutyCycle`: Ciclo de trabalho do sinal PWM, especificado como um valor percentual.
 
-## Exemplos Práticos
-### digitalWrite(uint8_t pin, boolean value)
-Aqui está um exemplo prático completo que demonstra o uso da classe ES_PCF8574 para controlar dois LEDs intermitentes:
+## Exemplo de Uso
 
-Exemplo:
-```C++
-#include <Arduino.h>
-#include <ES_PCF8574.h>
+Aqui está um exemplo de uso básico da classe `ES_PCF8574`:
 
-ES_PCF8574 expander(0x38);
+```cpp
+#include <Wire.h>
+#include "ES_PCF8574.h"
+
+ES_PCF8574 pcf8574(0x38); // Criar uma instância com o endereço do PCF8574
 
 void setup() {
-  expander.begin();
-  expander.digitalWrite(EX0, LOW);  // Define o pino 0 como LOW
-  expander.digitalWrite(EX1, LOW);  // Define o pino 1 como LOW
+  Wire.begin();
+  pcf8574.begin(true); // Inicializar a comunicação e ativar o simulador PWM
 }
 
 void loop() {
-  expander.digitalWrite(EX0, HIGH); // Define o pino 0 como HIGH
-  expander.digitalWrite(EX1, LOW);  // Define o pino 1 como LOW
-  delay(1000);
-  
-  expander.digitalWrite(EX0, LOW);  // Define o pino 0 como LOW
-  expander.digitalWrite(EX1, HIGH); // Define o pino 1 como HIGH
-  delay(1000);
-}
-```
+  // Definir o valor lógico HIGH na GPIO 0
+  pcf8574.digitalWrite(EX0, HIGH);
 
-Neste exemplo, os pinos EX0 e EX1 são configurados como saídas e alternam entre os valores HIGH e LOW a cada 1 segundo, resultando no piscar intermitente de dois LEDs conectados aos respectivos pinos.
+  // Ler o valor lógico da GPIO 1
+  uint8_t value = pcf8574.digitalRead(EX1);
 
-
-### digitalRead(uint8_t pin)
-Aqui está um exemplo prático completo que demonstra o uso da classe ES_PCF8574 para fazer a leitura digital de uma determinada GPIO.
-
-Exemplo:
-```C++
-#include <Arduino.h>
-#include <ES32Lab.h>  // Library used to facilitate the use of the ES32Lab board | Biblioteca usada para facilitar o uso da placa ES32Lab
-ES_PCF8574 expander(0x38); // Instantiates the 'expander' object with the given address | Instancia o objeto 'expander' com o endereço fornecido
-
-// <<<<<<<<<< setup >>>>>>>>>>
-void setup() {
-  Serial.begin(115200); // Initializes the serial communication | Inicializa a comunicação serial
-  expander.begin(); // Initializes the i2C PCF8574 expander | Inicializa o expansor i2C PCF8574
-}
-
-// <<<<<<<<<< loop >>>>>>>>>>
-void loop() {
-  boolean readExpander; // Variable to store the GPIO read value from the expander | Variável para armazenar o valor lido da GPIO do expansor
-  readExpander = expander.digitalRead(EX0); // Reads the GPIO 0 of the ES32Lab expander | Lê a GPIO 0 do expansor ES32Lab
-  Serial.println(readExpander); // If the GPIO EX0 of the expander receives a logic high signal, the number 1 will be displayed on the serial terminal | Se a GPIO EX0 do expansor receber um sinal lógico alto, o número 1 será exibido no terminal serial
-  delay(1000); // Waits for 1 second | Aguarda 1 segundo
-}
-```
-
-
-### Digital Button
-
-Este código utiliza o expansor I2C PCF8574 da ES32Lab para conectar botões às suas GPIOs e ler os estados do botão, como pressionado, segurando e solto.
-
-
-Exemplo:
-```C++
-#include <Arduino.h>
-#include <ES32Lab.h>  // Library used to facilitate the use of the ES32Lab board | LIB utilizada para facilitar a utilização da placa ES32Lab
-ES_PCF8574 expander(0x38);  // Instantiates the 'expander' object with the given address | Instancia o objeto 'expander' com o endereço fornecido
-
-int GPIO_EX = EX4;
-
-void setup() {
-  Serial.begin(115200);
-  expander.begin(); // Initializes the i2C PCF8574 expander | Inicializa o expansor i2C PCF8574
-}
-
-void loop() {
-  // ---- Button 0 ----
-  if(expander.btPress(EX0)){  // When the button connected to the expansion GPIO is pressed, execute: | Quando o botão conectado à GPIO de expansão for pressionado, execute:
-    Serial.println("Button 0 Press");  // Display on the serial monitor. | Exibe no monitor serial.
+  // Verificar se o botão na GPIO 2 está sendo pressionado
+  if (pcf8574.btPress(EX2)) {
+    // Realizar alguma ação quando o botão é pressionado
   }
 
-  if(expander.btHold(EX0)){  // When the button connected to the expansion GPIO is pressed, execute: | Quando o botão conectado à GPIO de expansão estiver pressionado, execute:
-    Serial.println("Button 0 Hold");  // Display on the serial monitor. | Exibe no monitor serial.
-    delay(500);  // Wait for 500 milliseconds. | Aguarda 500 milissegundos.
-  }
-
-  if(expander.btRelease(EX0)){  // When the button connected to the expansion GPIO is released, execute: | Quando o botão conectado à GPIO de expansão for solto, execute:
-    Serial.println("Button 0 released");  // Display on the serial monitor. | Exibe no monitor serial.
-  }
+  // Atribuir um ciclo de trabalho de 50% na GPIO 3 para o sinal PWM com a frequência de 2 hertz.
+  pcf8574.pwmWrite(EX3, 50, 2);
 }
 ```
-
 
 -----
 | [Retornar ao Índece da LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#%C3%ADndice) |

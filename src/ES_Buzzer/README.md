@@ -1,3 +1,6 @@
+| [Retornar ao Índece da LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#%C3%ADndice) |
+| :------: |
+-----
 # Classe ES_Buzzer
 
 A classe ES_Buzzer fornece uma interface simples para controlar um circuito de buzzer usando PWM em uma placa ESP32.
@@ -44,3 +47,6 @@ Aplica um efeito de distorção entre duas notas musicais.
 - `noteFrom` (int): A nota musical inicial.
 - `noteTo` (int): A nota musical final.
 
+-----
+| [Retornar ao Índece da LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#%C3%ADndice) |
+| :------: |

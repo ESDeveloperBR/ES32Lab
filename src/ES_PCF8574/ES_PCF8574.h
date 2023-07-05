@@ -5,7 +5,12 @@
 #include <Wire.h>
 #include "TimeInterval/TimeInterval.h"
 
-#define ES_PCF8574_VERSION "0.3.3 update 06/25/2023"  // mm/dd/yyyy
+#define ES_PCF8574_VERSION "0.4.2 update 07/05/2023"  // mm/dd/yyyy
+
+#define ES_PCF8574_TASK_PWM_SIM_STACK_DEPTH 1100  // Sets the amount of memory available for local variables and function calls within the PWM simulator. | Define a quantidade de memória disponível para as variáveis locais e chamadas de função dentro do simulador PWM.
+#define ES_PCF8574_TASK_PWM_SIM_PRIORITY 2         // Represents the task priority. Higher values indicate higher priority. | Representa a prioridade da tarefa. Valores maiores indicam maior prioridade.
+#define ES_PCF8574_TASK_PWM_SIM_CORE_ID 0          // Specifies the processor core where the PWM simulator will run. | Especifica o núcleo do processador onde o simulador PWM será executado.
+
 #define EX0 0
 #define EX1 1
 #define EX2 2
@@ -14,10 +19,6 @@
 #define EX5 5
 #define EX6 6
 #define EX7 7
-
-#define TASK_PWM_SIM_STACK_DEPTH 90000  // Sets the amount of memory available for local variables and function calls within the PWM simulator. | Define a quantidade de memória disponível para as variáveis locais e chamadas de função dentro do simulador PWM.
-#define TASK_PWM_SIM_PRIORITY 2         // Represents the task priority. Higher values indicate higher priority. | Representa a prioridade da tarefa. Valores maiores indicam maior prioridade.
-#define TASK_PWM_SIM_CORE_ID 0          // Specifies the processor core where the PWM simulator will run. | Especifica o núcleo do processador onde o simulador PWM será executado.
 
 class ES_PCF8574 {
 
@@ -59,19 +60,6 @@ class ES_PCF8574 {
     void motorMirrorCommands(uint8_t motorID);
     uint8_t motorGetFrequency(uint8_t motorID);
     void motorSetFrequency(uint8_t motorID, uint8_t frequency);
-
-
-
-
-
-
-    
-
-
-
-
-
-
 
 };
 

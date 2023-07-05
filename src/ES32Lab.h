@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.8.4 update 25/06/2023"   // dd/mm/yyyy
+    #define ES32LAB_VERSION "0.8.5 update 05/07/2023"   // dd/mm/yyyy
 
     #define P_KEYBOARD      33
     #define P_LED_GREEN     17
@@ -33,7 +33,7 @@
     #define P_MISSO         19
     #define P_SCK           18
     #define P_SD_CS         5
-    
+
     #include "AnalogKeyboard/AnalogKeyboardb.h"
     #include "ES_Buzzer/ES_Buzzer.h"
     #include "FileManager/FileManager.h"

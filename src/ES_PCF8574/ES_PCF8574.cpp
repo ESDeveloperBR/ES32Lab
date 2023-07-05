@@ -49,7 +49,7 @@ boolean ES_PCF8574::begin(boolean pwmSimulation){
           }
 
         }
-      }, "loopPWMSimulation", TASK_PWM_SIM_STACK_DEPTH, this, TASK_PWM_SIM_PRIORITY, NULL, TASK_PWM_SIM_CORE_ID); // Creates the LOOP responsible for running the PWM simulator. | Cria o LOOP responsável por executar o simulador PWM.
+      }, "loopPWMSimulation", ES_PCF8574_TASK_PWM_SIM_STACK_DEPTH, this, ES_PCF8574_TASK_PWM_SIM_PRIORITY, NULL, ES_PCF8574_TASK_PWM_SIM_CORE_ID); // Creates the LOOP responsible for running the PWM simulator. | Cria o LOOP responsável por executar o simulador PWM.
     }
   }
   return _return;

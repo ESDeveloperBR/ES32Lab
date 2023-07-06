@@ -1,4 +1,4 @@
-| [Retornar ao Índece da LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#%C3%ADndice) |
+| [Índece de classes contidas na LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#conjunto-de-classes-contidas-na-lib-es32lab) |
 | :------: |
 -----
 # Classe ES_Buzzer
@@ -48,5 +48,5 @@ Aplica um efeito de distorção entre duas notas musicais.
 - `noteTo` (int): A nota musical final.
 
 -----
-| [Retornar ao Índece da LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#%C3%ADndice) |
+| [Índece de classes contidas na LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#conjunto-de-classes-contidas-na-lib-es32lab) |
 | :------: |

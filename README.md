@@ -6,12 +6,7 @@
 	* [Endereço das GPIOs do ESP32 com conexões aos circuitos da ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#endere%C3%A7o-das-gpios-do-esp32-com-conex%C3%B5es-aos-circuitos-da-es32lab)
 	* [Exemplo de utilização de GPIO](https://github.com/ESDeveloperBR/ES32Lab#exemplo-de-utiliza%C3%A7%C3%A3o-de-gpio)
 	* [Conjunto de classes contidas na LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#conjunto-de-classes-contidas-na-lib-es32lab)
-		* [Classe AnalogKeyboard](https://github.com/ESDeveloperBR/ES32Lab#classe-analogkeyboard)
-		* [Classe BuzzerESP](https://github.com/ESDeveloperBR/ES32Lab#classe-buzzeresp)
-		* [Classe DigitalButton](https://github.com/ESDeveloperBR/ES32Lab#classe-digitalbutton)
-		* [Classe FileManager](https://github.com/ESDeveloperBR/ES32Lab#classe-filemanager)
-		* [Classe TFT_Plus](https://github.com/ESDeveloperBR/ES32Lab#classe-tft_plus)
-		* [Classe TimeInterval](https://github.com/ESDeveloperBR/ES32Lab#classe-timeinterval)
+
 
 ---
 # Introdução
@@ -147,9 +142,7 @@ A biblioteca da ES32Lab conta com diversas classes para programação orientada 
 - [ES_PCF8574](https://github.com/ESDeveloperBR/ES32Lab/blob/main/src/ES_PCF8574#readme)
 
 - [FileManager](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/FileManager#readme)
-
 - [TFT_Plus](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/FileManager#readme)
-
 - [TimeInterval](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/TimeInterval#readme)
 
 Essas classes podem ser utilizadas para facilitar o desenvolvimento de programas na ES32Lab, oferecendo recursos específicos e abstrações que simplificam o processo de criação de projetos. Cada classe possui sua própria documentação detalhada, que pode ser acessada através dos links fornecidos acima.

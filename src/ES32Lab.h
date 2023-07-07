@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.8.5 update 05/07/2023"   // dd/mm/yyyy
+    #define ES32LAB_VERSION "0.8.6 update 07/07/2023"   // dd/mm/yyyy
     
     #define P_KEYBOARD      33
     #define P_LED_GREEN     17
@@ -41,6 +41,7 @@
     #include "DigitalButton/DigitalButton.h"
     #include "TFT_Plus/TFT_Plus.h"
     #include "ES_PCF8574/ES_PCF8574.h"
+    #include "ES_CarControl/ES_CarControl.h"
 
     class ES32Lab {
         private:    

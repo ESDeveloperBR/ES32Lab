@@ -5,6 +5,8 @@
 #include "ES_PCF8574/ES_PCF8574.h"
 #include "ES_Buzzer/ES_Buzzer.h"
 
+#define ES_CAR_CONTROL_VERSION "0.1.0 update 07/12/2023"  // mm/dd/yyyy
+
 class ES_CarControl {
   private:
     ES_PCF8574* _pcf8574;

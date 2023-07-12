@@ -242,6 +242,17 @@ void ES_PCF8574::motorMirrorCommands(uint8_t motorID){
   _motorMirrorCommands[motorID] = !_motorMirrorCommands[motorID];
 }
 
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< motorMirrorStatus >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/**
+ * Returns a boolean value indicating whether the motor has been configured to mirror its rotation commands.
+ * | 
+ * Retorna um valor booleano indicando se o motor foi configurado para espelhar seus comandos de rotação.
+ * @param motorID Identification for motor control and association. | Identificação para o controle e associação do motor.
+*/
+boolean ES_PCF8574::motorMirrorStatus(uint8_t motorID){
+  return _motorMirrorCommands[motorID];  
+}
+
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< motorGetFrequency >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
  * Returns the frequency value in hertz associated with a specific motor.

@@ -57,8 +57,10 @@ class ES_PCF8574 {
     void motorRotationA(uint8_t motorID, uint8_t speed);
     void motorRotationB(uint8_t motorID, uint8_t speed);
     void motorStop(uint8_t motorID);
+
     void motorMirrorCommands(uint8_t motorID);
     boolean motorMirrorStatus(uint8_t motorID);
+    
     uint8_t motorGetFrequency(uint8_t motorID);
     void motorSetFrequency(uint8_t motorID, uint8_t frequency);
 

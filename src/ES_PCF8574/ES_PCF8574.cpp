@@ -253,18 +253,18 @@ boolean ES_PCF8574::invertMotorStatus(uint8_t motorID){
   return _invertMotorCommands[motorID];  
 }
 
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< motorGetFrequency >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< getMotorFrequency >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
  * Returns the frequency value in hertz associated with a specific motor.
  * |
  * Retorna o valor da frequência em hertz associado a um motor específico.
  * @param motorID Identification for motor control and association. | Identificação para o controle e associação do motor.
 */
-uint8_t ES_PCF8574::motorGetFrequency(uint8_t motorID){
+uint8_t ES_PCF8574::getMotorFrequency(uint8_t motorID){
   return _motorFrequency[motorID];
 }
 
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< motorSetFrequency >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< setMotorFrequency >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
  * Sends a new frequency value in hertz associated with a specific motor.
  * |
@@ -272,7 +272,7 @@ uint8_t ES_PCF8574::motorGetFrequency(uint8_t motorID){
  * @param motorID Identification for motor control and association. | Identificação para o controle e associação do motor.
  * @param frequency Frequency in hertz associated with the motor. | Frequência em hertz associado ao motor.
 */
-void ES_PCF8574::motorSetFrequency(uint8_t motorID, uint8_t frequency){
+void ES_PCF8574::setMotorFrequency(uint8_t motorID, uint8_t frequency){
   _motorFrequency[motorID] = frequency;
 }
 // ----------------------------------------------------------------------------------------------

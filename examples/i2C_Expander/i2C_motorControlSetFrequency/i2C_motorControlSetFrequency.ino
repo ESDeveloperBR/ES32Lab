@@ -25,9 +25,9 @@ void setup() {
 
   expander.motorBegin(1, EX4, EX5); // Initializes the H-bridge control for motor 1, using GPIO 4 and 5 of the PCF8574 expander from ES32Lab | Inicializa o controle da ponte H para o motor 1, utilizando as GPIO 4 e 5 do expansor PCF8574 da ES32Lab
 
-  expander.motorSetFrequency(1, 50);  // Sets motor 1 to operate with a PWM pulse of 50Hz. | Ajusta o motor 1 para operar com um pulso PWM de 50Hz.
+  expander.setMotorFrequency(1, 50);  // Sets motor 1 to operate with a PWM pulse of 50Hz. | Ajusta o motor 1 para operar com um pulso PWM de 50Hz.
 
-  int frequency = expander.motorGetFrequency(1);  // Returns the value of the frequency in hertz associated with motor 1. | Retorna o valor da frequência em hertz associada ao motor 1.
+  int frequency = expander.getMotorFrequency(1);  // Returns the value of the frequency in hertz associated with motor 1. | Retorna o valor da frequência em hertz associada ao motor 1.
   Serial.print("Frequency: ");
   Serial.println(frequency);
 

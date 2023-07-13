@@ -1,1 +1,2 @@
+- Mudar o nome de mirror para invert;
 - O arquivo Markdown não está finalizado, não estão dos os métodos na documentação.

@@ -1,0 +1,2 @@
+* Criar cabeçalho dos métodos da classe;
+* Criar a documentação markdon;

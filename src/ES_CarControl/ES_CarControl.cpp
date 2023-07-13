@@ -109,7 +109,7 @@ void ES_CarControl::backward() {
 }
 
 void ES_CarControl::left() {
-  if(_pcf8574->motorMirrorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+  if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
     _pcf8574->motorRotationA(0, _speed);
     _pcf8574->motorRotationB(1, _speed);
   }else{
@@ -119,7 +119,7 @@ void ES_CarControl::left() {
 }
 
 void ES_CarControl::right() {
-  if(_pcf8574->motorMirrorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+  if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
     _pcf8574->motorRotationB(0, _speed);
     _pcf8574->motorRotationA(1, _speed);
   }else{
@@ -129,7 +129,7 @@ void ES_CarControl::right() {
 }
 
 void ES_CarControl::forwardLeft() {
-  if(_pcf8574->motorMirrorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+  if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
     _pcf8574->motorRotationA(0, _speed);
     _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
   }else{
@@ -139,7 +139,7 @@ void ES_CarControl::forwardLeft() {
 }
 
 void ES_CarControl::forwardRight() {
-  if(_pcf8574->motorMirrorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+  if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
     _pcf8574->motorRotationA(0, _speed * (_speedDelay / 100.0));
     _pcf8574->motorRotationA(1, _speed);
   }else{
@@ -149,7 +149,7 @@ void ES_CarControl::forwardRight() {
 }
 
 void ES_CarControl::backLeft() {
-  if(_pcf8574->motorMirrorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+  if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
     _pcf8574->motorRotationB(0, _speed);
     _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
   }else{
@@ -159,7 +159,7 @@ void ES_CarControl::backLeft() {
 }
 
 void ES_CarControl::backRight() {
-  if(_pcf8574->motorMirrorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+  if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
     _pcf8574->motorRotationB(0, _speed * (_speedDelay / 100.0));
     _pcf8574->motorRotationB(1, _speed);
   }else{
@@ -267,7 +267,7 @@ void ES_CarControl::controlCommand(Stream& serial){
  * @param motorID Identification for motor control and association. | Identificação para o controle e associação do motor.
 */
 void ES_CarControl::invertMotorCommands(uint8_t motorID){
-  _pcf8574->motorMirrorCommands(motorID);
+  _pcf8574->invertMotorCommands(motorID);
 }
 
 /**
@@ -277,7 +277,7 @@ void ES_CarControl::invertMotorCommands(uint8_t motorID){
  * @param motorID Identification for motor control and association. | Identificação para o controle e associação do motor.
 */
 boolean ES_CarControl::invertMotorStatus(uint8_t motorID){
-  return _pcf8574->motorMirrorStatus(motorID);
+  return _pcf8574->invertMotorStatus(motorID);
 }
 
 /**

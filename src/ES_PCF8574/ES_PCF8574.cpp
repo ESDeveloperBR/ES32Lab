@@ -204,7 +204,7 @@ void ES_PCF8574::motorStop(uint8_t motorID){
 void ES_PCF8574::motorRotationA(uint8_t motorID, uint8_t speed){
   speed = (speed > 100) ? 100 : speed;
 
-  if(_motorMirrorCommands[motorID]){
+  if(_invertMotorCommands[motorID]){
     pwmWrite(_motorPin1[motorID], speed, _motorFrequency[motorID]);
     pwmWrite(_motorPin2[motorID], 0, 0);
   }else{
@@ -222,7 +222,7 @@ void ES_PCF8574::motorRotationA(uint8_t motorID, uint8_t speed){
  * @param speed Speed at which the motor should rotate. This value should range from 0% to 100% of its maximum speed. | Velocidade na qual o motor deve girar. Esse valor deve variar entre 0% e 100% de sua velocidade máxima.
 */
 void ES_PCF8574::motorRotationB(uint8_t motorID, uint8_t speed){
-  if(_motorMirrorCommands[motorID]){
+  if(_invertMotorCommands[motorID]){
     pwmWrite(_motorPin1[motorID], 0, 0);
     pwmWrite(_motorPin2[motorID], speed, _motorFrequency[motorID]);
   }else{
@@ -231,26 +231,26 @@ void ES_PCF8574::motorRotationB(uint8_t motorID, uint8_t speed){
   }
 }
 
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< motorMirrorCommands >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< invertMotorCommands >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
  * Inverts the direction of the 'motorRotationA' and 'motorRotationB' methods. Ideal for when the motor wires are not connected in the order in which the program was written.
  * |
  * Inverte a direção dos métodos 'motorRotationA' e 'motorRotationB'. Ideal para quando os fios do motor não foram ligados na ordem na qual o programa foi escrito.
  * @param motorID Identification for motor control and association. | Identificação para o controle e associação do motor.
 */
-void ES_PCF8574::motorMirrorCommands(uint8_t motorID){
-  _motorMirrorCommands[motorID] = !_motorMirrorCommands[motorID];
+void ES_PCF8574::invertMotorCommands(uint8_t motorID){
+  _invertMotorCommands[motorID] = !_invertMotorCommands[motorID];
 }
 
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< motorMirrorStatus >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< invertMotorStatus >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
- * Returns a boolean value indicating whether the motor has been configured to mirror its rotation commands.
+ * Returns a boolean value indicating whether the motor has been configured to invert its rotation commands.
  * | 
- * Retorna um valor booleano indicando se o motor foi configurado para espelhar seus comandos de rotação.
+ * Retorna um valor booleano indicando se o motor foi configurado para inverter seus comandos de rotação.
  * @param motorID Identification for motor control and association. | Identificação para o controle e associação do motor.
 */
-boolean ES_PCF8574::motorMirrorStatus(uint8_t motorID){
-  return _motorMirrorCommands[motorID];  
+boolean ES_PCF8574::invertMotorStatus(uint8_t motorID){
+  return _invertMotorCommands[motorID];  
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< motorGetFrequency >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

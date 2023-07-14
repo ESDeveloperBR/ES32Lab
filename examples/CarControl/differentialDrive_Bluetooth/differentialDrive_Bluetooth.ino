@@ -52,5 +52,7 @@ void setup() {
 
 // <<<<<<<<<<<<<<<<<<< LOOP >>>>>>>>>>>>>>>>>>>>>>>
 void loop() {
+  // The 'controlCommand' method aims to simplify motor activation through predefined commands. For more information on how to use this method, please refer to the complete documentation available at the following link: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme
+  // | O método 'controlCommand' tem como objetivo simplificar o acionamento de motores através de comandos pré-definidos. Para obter mais informações sobre o uso desse método, consulte a documentação completa disponível no seguinte link: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme
   car.controlCommand(SerialBT);
 }

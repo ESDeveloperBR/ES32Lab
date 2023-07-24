@@ -22,10 +22,12 @@ ES_CarControl::ES_CarControl(ES_PCF8574* pcf8574, ES_Buzzer* buzzer) {
 
 /**
  * 
- * O método differentialDriveBegin tem como objetivo iniciar, de forma fácil e objetiva, um mecanismo de controle de motores usando duas pontes H para a locomoção de um veículo através do método diferencial. Esse método segue o mesmo princípio de locomoção de um trator de esteira, onde cada esteira é acionada por um motor separado, permitindo que elas girem em velocidades diferentes. Para mudar de direção, o trator ajusta a velocidade de rotação de uma esteira em relação à outra. Por exemplo, se o trator deseja girar para a esquerda, ele reduz a velocidade da esteira direita ou aumenta a velocidade da esteira esquerda, criando uma diferença de rotação que faz o trator virar para a esquerda.
+ * O método begin tem como objetivo iniciar, de forma fácil e objetiva, um mecanismo de controle de motores usando duas pontes H para a locomoção de um veículo. É extremamente importante a escolha do parâmetro drivingMode, que indicará qual tipo de direção será utilizado pelo veículo. Caso nenhuma opção seja indicada, será utilizada como padrão a opção 0: Direção Diferencial. Esse tipo de direção segue o mesmo princípio de locomoção de um trator de esteira, onde cada esteira é acionada por um motor separado, permitindo que elas girem em velocidades diferentes. Para mudar de direção, o trator ajusta a velocidade de rotação de uma esteira em relação à outra. Por exemplo, se o trator deseja girar para a esquerda, ele reduz a velocidade da esteira direita ou aumenta a velocidade da esteira esquerda, criando uma diferença de rotação que faz o trator virar para a esquerda.
+ * @param drivingMode Escolha do tipo de direção, entre ela estão: 0: Direção Diferencial; 1: Direção Dianteira
  * @param speedDelay Valor em percentual sobre velocidade nominal do motor. Tem como finalidade gerar um atrazo de um dos motores para curva em movimento cuave.
 */
-void ES_CarControl::differentialDriveBegin(uint8_t motor1Pin1, uint8_t motor1Pin2, uint8_t motor2Pin1, uint8_t motor2Pin2, uint8_t frontLightsPin, uint8_t backLightsPin, uint8_t stop, uint8_t forward, uint8_t back, uint8_t left, uint8_t right, uint8_t forwardLeft, uint8_t forwardRight, uint8_t backLeft, uint8_t backRight, uint8_t frontLightsOn, uint8_t frontLightsOff, uint8_t backLightsOn, uint8_t backLightsOff, uint8_t hornOn, uint8_t hornOff, uint8_t extraOn, uint8_t extraOff, uint8_t speedDelay ) {
+void ES_CarControl::begin(uint8_t drivingMode, uint8_t motor1Pin1, uint8_t motor1Pin2, uint8_t motor2Pin1, uint8_t motor2Pin2, uint8_t frontLightsPin, uint8_t backLightsPin, uint8_t stop, uint8_t forward, uint8_t back, uint8_t left, uint8_t right, uint8_t forwardLeft, uint8_t forwardRight, uint8_t backLeft, uint8_t backRight, uint8_t frontLightsOn, uint8_t frontLightsOff, uint8_t backLightsOn, uint8_t backLightsOff, uint8_t hornOn, uint8_t hornOff, uint8_t extraOn, uint8_t extraOff, uint8_t speedDelay ) {
+  _drivingMode = drivingMode;
   _motor1Pin1 = motor1Pin1;
   _motor1Pin2 = motor1Pin2;
   _motor2Pin1 = motor2Pin1;
@@ -67,14 +69,14 @@ void ES_CarControl::differentialDriveBegin(uint8_t motor1Pin1, uint8_t motor1Pin
   }
 }
 
-void ES_CarControl::differentialDriveBegin(ES_PCF8574* pcf8574, uint8_t motor1Pin1, uint8_t motor1Pin2, uint8_t motor2Pin1, uint8_t motor2Pin2, uint8_t frontLightsPin, uint8_t backLightsPin, uint8_t stop, uint8_t forward, uint8_t back, uint8_t left, uint8_t right, uint8_t forwardLeft, uint8_t forwardRight, uint8_t backLeft, uint8_t backRight, uint8_t frontLightsOn, uint8_t frontLightsOff, uint8_t backLightsOn, uint8_t backLightsOff, uint8_t hornOn, uint8_t hornOff, uint8_t extraOn, uint8_t extraOff, uint8_t speedDelay ) {
+void ES_CarControl::begin(ES_PCF8574* pcf8574, uint8_t drivingMode, uint8_t motor1Pin1, uint8_t motor1Pin2, uint8_t motor2Pin1, uint8_t motor2Pin2, uint8_t frontLightsPin, uint8_t backLightsPin, uint8_t stop, uint8_t forward, uint8_t back, uint8_t left, uint8_t right, uint8_t forwardLeft, uint8_t forwardRight, uint8_t backLeft, uint8_t backRight, uint8_t frontLightsOn, uint8_t frontLightsOff, uint8_t backLightsOn, uint8_t backLightsOff, uint8_t hornOn, uint8_t hornOff, uint8_t extraOn, uint8_t extraOff, uint8_t speedDelay ) {
   _pcf8574 = pcf8574;
-  differentialDriveBegin(motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, frontLightsPin, backLightsPin, stop, forward, back, left, right, forwardLeft, forwardRight, backLeft, backRight, frontLightsOn, frontLightsOff, backLightsOn, backLightsOff, hornOn, hornOff,  extraOn, extraOff, speedDelay );  
+  begin(drivingMode, motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, frontLightsPin, backLightsPin, stop, forward, back, left, right, forwardLeft, forwardRight, backLeft, backRight, frontLightsOn, frontLightsOff, backLightsOn, backLightsOff, hornOn, hornOff,  extraOn, extraOff, speedDelay );  
 }
 
-void ES_CarControl::differentialDriveBegin(ES_PCF8574* pcf8574, ES_Buzzer* buzzer, uint8_t motor1Pin1, uint8_t motor1Pin2, uint8_t motor2Pin1, uint8_t motor2Pin2, uint8_t frontLightsPin, uint8_t backLightsPin, uint8_t stop, uint8_t forward, uint8_t back, uint8_t left, uint8_t right, uint8_t forwardLeft, uint8_t forwardRight, uint8_t backLeft, uint8_t backRight, uint8_t frontLightsOn, uint8_t frontLightsOff, uint8_t backLightsOn, uint8_t backLightsOff, uint8_t hornOn, uint8_t hornOff, uint8_t extraOn, uint8_t extraOff, uint8_t speedDelay ) {
+void ES_CarControl::begin(ES_PCF8574* pcf8574, ES_Buzzer* buzzer, uint8_t drivingMode, uint8_t motor1Pin1, uint8_t motor1Pin2, uint8_t motor2Pin1, uint8_t motor2Pin2, uint8_t frontLightsPin, uint8_t backLightsPin, uint8_t stop, uint8_t forward, uint8_t back, uint8_t left, uint8_t right, uint8_t forwardLeft, uint8_t forwardRight, uint8_t backLeft, uint8_t backRight, uint8_t frontLightsOn, uint8_t frontLightsOff, uint8_t backLightsOn, uint8_t backLightsOff, uint8_t hornOn, uint8_t hornOff, uint8_t extraOn, uint8_t extraOff, uint8_t speedDelay ) {
   _buzzer = buzzer;
-  differentialDriveBegin(pcf8574, motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, frontLightsPin, backLightsPin, stop, forward, back, left, right, forwardLeft, forwardRight, backLeft, backRight, frontLightsOn, frontLightsOff, backLightsOn, backLightsOff, hornOn, hornOff,  extraOn, extraOff, speedDelay );
+  begin(pcf8574, drivingMode, motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, frontLightsPin, backLightsPin, stop, forward, back, left, right, forwardLeft, forwardRight, backLeft, backRight, frontLightsOn, frontLightsOff, backLightsOn, backLightsOff, hornOn, hornOff,  extraOn, extraOff, speedDelay );
 }
 
 void ES_CarControl::setSpeed(uint8_t value) {
@@ -94,77 +96,165 @@ uint8_t ES_CarControl::getSpeedDelay() {
 }
 
 void ES_CarControl::stop() {
-  _pcf8574->motorStop(0);
-  _pcf8574->motorStop(1);
+  if(_drivingMode == 0 ){
+    // --- Direção diferencial ---
+    _pcf8574->motorStop(0);
+    _pcf8574->motorStop(1);
+  }else if(_drivingMode == 1){  
+    // --- Direção dianteira ---
+    _pcf8574->motorStop(0);
+    _pcf8574->motorStop(1);
+  }
 }
 
 void ES_CarControl::forward() {
-  _pcf8574->motorRotationA(0, _speed);
-  _pcf8574->motorRotationA(1, _speed);
+  if(_drivingMode == 0 ){
+    // --- Direção diferencial ---
+    _pcf8574->motorRotationA(0, _speed);
+    _pcf8574->motorRotationA(1, _speed);
+  }else if(_drivingMode == 1){
+    // --- Direção dianteira ---
+    _pcf8574->motorRotationA(0, _speed);
+    _pcf8574->motorStop(1);
+  }
 }
 
 void ES_CarControl::backward() {
-  _pcf8574->motorRotationB(0, _speed);
-  _pcf8574->motorRotationB(1, _speed);
+  if(_drivingMode == 0 ){
+    // --- Direção diferencial ---
+    _pcf8574->motorRotationB(0, _speed);
+    _pcf8574->motorRotationB(1, _speed);
+  }else if(_drivingMode == 1){
+    // --- Direção dianteira ---
+    _pcf8574->motorRotationB(0, _speed);
+    _pcf8574->motorStop(1);
+  }
 }
 
 void ES_CarControl::left() {
-  if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-    _pcf8574->motorRotationA(0, _speed);
-    _pcf8574->motorRotationB(1, _speed);
-  }else{
-    _pcf8574->motorRotationB(0, _speed);
-    _pcf8574->motorRotationA(1, _speed);
+  if(_drivingMode == 0 ){
+    // --- Direção diferencial ---
+    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+      _pcf8574->motorRotationA(0, _speed);
+      _pcf8574->motorRotationB(1, _speed);
+    }else{
+      _pcf8574->motorRotationB(0, _speed);
+      _pcf8574->motorRotationA(1, _speed);
+    }
+  }else if(_drivingMode == 1){
+    // --- Direção dianteira ---
+    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+      _pcf8574->motorRotationB(1, _speed);
+    }else{
+      _pcf8574->motorRotationA(1, _speed);
+    }
   }
 }
 
 void ES_CarControl::right() {
-  if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-    _pcf8574->motorRotationB(0, _speed);
-    _pcf8574->motorRotationA(1, _speed);
-  }else{
-    _pcf8574->motorRotationA(0, _speed);
-    _pcf8574->motorRotationB(1, _speed);
+  if(_drivingMode == 0 ){
+    // --- Direção diferencial ---
+    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+      _pcf8574->motorRotationB(0, _speed);
+      _pcf8574->motorRotationA(1, _speed);
+    }else{
+      _pcf8574->motorRotationA(0, _speed);
+      _pcf8574->motorRotationB(1, _speed);
+    }
+  }else if(_drivingMode == 1){
+    // --- Direção dianteira ---
+    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+      _pcf8574->motorRotationA(1, _speed);
+    }else{
+      _pcf8574->motorRotationB(1, _speed);
+    }
   }
 }
 
 void ES_CarControl::forwardLeft() {
-  if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-    _pcf8574->motorRotationA(0, _speed);
-    _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
-  }else{
-    _pcf8574->motorRotationA(0, _speed * (_speedDelay / 100.0));
-    _pcf8574->motorRotationA(1, _speed);
+  if(_drivingMode == 0 ){
+    // --- Direção diferencial ---
+    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+      _pcf8574->motorRotationA(0, _speed);
+      _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
+    }else{
+      _pcf8574->motorRotationA(0, _speed * (_speedDelay / 100.0));
+      _pcf8574->motorRotationA(1, _speed);
+    }
+  }else if(_drivingMode == 1){
+    // --- Direção Dianteira ---
+    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+      _pcf8574->motorRotationA(0, _speed);
+      _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
+    }else{
+      _pcf8574->motorRotationA(0, _speed);
+      _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
+    }
   }
 }
 
 void ES_CarControl::forwardRight() {
-  if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-    _pcf8574->motorRotationA(0, _speed * (_speedDelay / 100.0));
-    _pcf8574->motorRotationA(1, _speed);
-  }else{
-    _pcf8574->motorRotationA(0, _speed);
-    _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
-  } 
+  if(_drivingMode == 0 ){     
+    // --- Direção diferencial ---
+    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+      _pcf8574->motorRotationA(0, _speed * (_speedDelay / 100.0));
+      _pcf8574->motorRotationA(1, _speed);
+    }else{
+      _pcf8574->motorRotationA(0, _speed);
+      _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
+    }
+  }else if(_drivingMode == 1){
+    // --- Direção Dianteira ---
+    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+      _pcf8574->motorRotationA(0, _speed);
+      _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
+    }else{
+      _pcf8574->motorRotationA(0, _speed);
+      _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
+    }
+  }
 }
 
 void ES_CarControl::backLeft() {
-  if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-    _pcf8574->motorRotationB(0, _speed);
-    _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
-  }else{
-    _pcf8574->motorRotationB(0, _speed * (_speedDelay / 100.0));
-    _pcf8574->motorRotationB(1, _speed);
+  if(_drivingMode == 0 ){
+    // --- Direção diferencial ---
+    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+      _pcf8574->motorRotationB(0, _speed);
+      _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
+    }else{
+      _pcf8574->motorRotationB(0, _speed * (_speedDelay / 100.0));
+      _pcf8574->motorRotationB(1, _speed);
+    }
+  }else if(_drivingMode == 1){
+    // --- Direção dianteira ---
+    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+      _pcf8574->motorRotationB(0, _speed);
+      _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
+    }else{
+      _pcf8574->motorRotationB(0, _speed);
+      _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
+    }    
   }
 }
 
 void ES_CarControl::backRight() {
-  if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-    _pcf8574->motorRotationB(0, _speed * (_speedDelay / 100.0));
-    _pcf8574->motorRotationB(1, _speed);
-  }else{
-    _pcf8574->motorRotationB(0, _speed);
-    _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
+  if(_drivingMode == 0 ){     // <-- Direção diferencial
+    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+      _pcf8574->motorRotationB(0, _speed * (_speedDelay / 100.0));
+      _pcf8574->motorRotationB(1, _speed);
+    }else{
+      _pcf8574->motorRotationB(0, _speed);
+      _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
+    }
+  }else if(_drivingMode == 1){  // <-- Direção dianteira
+    // --- Direção Dianteira ---
+    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
+      _pcf8574->motorRotationB(0, _speed);
+      _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
+    }else{
+      _pcf8574->motorRotationB(0, _speed);
+      _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
+    }
   }
 }
 
@@ -192,7 +282,6 @@ void ES_CarControl::extra(boolean status) {
     _pcf8574->pwmWrite(_backLightsPin, 50, 0);
   }
 }
-
 
 void ES_CarControl::controlCommand(char command){
   if(command == _stop){

@@ -5,10 +5,10 @@
 #include "ES_PCF8574/ES_PCF8574.h"
 #include "ES_Buzzer/ES_Buzzer.h"
 
-#define ES_CAR_CONTROL_VERSION "0.2.3 update 07/23/2023"  // mm/dd/yyyy
+#define ES_CAR_CONTROL_VERSION "0.2.5 update 08/09/2023"  // mm/dd/yyyy
 
 #define DIFFERENTIAL 0  // Modo de direção diferencial
-#define FRONT 1         // Modo de direção dianteira
+#define FRONTAL 1         // Modo de direção dianteira
 
 class ES_CarControl {
   private:
@@ -52,21 +52,7 @@ class ES_CarControl {
     ES_CarControl(ES_PCF8574* pcf8574);
     ES_CarControl(ES_PCF8574* pcf8574, ES_Buzzer* buzzer);
 
-/*
-    void differentialDriveBegin(uint8_t motor1Pin1 = 4, uint8_t motor1Pin2 = 5, uint8_t motor2Pin1 = 6, uint8_t motor2Pin2 = 7, uint8_t frontLightsPin = 0, uint8_t backLightsPin = 1, uint8_t stop = 'S', uint8_t forward = 'F', uint8_t back = 'B', uint8_t left = 'L', uint8_t right = 'R', uint8_t forwardLeft = 'G', uint8_t forwardRight = 'I', uint8_t backLeft = 'H', uint8_t backRight = 'J', uint8_t frontLightsOn = 'W', uint8_t frontLightsOff = 'w', uint8_t backLightsOn = 'U', uint8_t backLightsOff = 'u', uint8_t hornOn = 'V', uint8_t hornOff = 'v', uint8_t extraOn = 'X', uint8_t extraOff = 'x', uint8_t speedDelay = 40);
-    void differentialDriveBegin(ES_PCF8574* pcf8574, uint8_t motor1Pin1 = 4, uint8_t motor1Pin2 = 5, uint8_t motor2Pin1 = 6, uint8_t motor2Pin2 = 7, uint8_t frontLightsPin = 0, uint8_t backLightsPin = 1, uint8_t stop = 'S', uint8_t forward = 'F', uint8_t back = 'B', uint8_t left = 'L', uint8_t right = 'R', uint8_t forwardLeft = 'G', uint8_t forwardRight = 'I', uint8_t backLeft = 'H', uint8_t backRight = 'J', uint8_t frontLightsOn = 'W', uint8_t frontLightsOff = 'w', uint8_t backLightsOn = 'U', uint8_t backLightsOff = 'u', uint8_t hornOn = 'V', uint8_t hornOff = 'v', uint8_t extraOn = 'X', uint8_t extraOff = 'x', uint8_t speedDelay = 40);
-    void differentialDriveBegin(ES_PCF8574* pcf8574, ES_Buzzer* buzzer, uint8_t motor1Pin1 = 4, uint8_t motor1Pin2 = 5, uint8_t motor2Pin1 = 6, uint8_t motor2Pin2 = 7, uint8_t frontLightsPin = 0, uint8_t backLightsPin = 1, uint8_t stop = 'S', uint8_t forward = 'F', uint8_t back = 'B', uint8_t left = 'L', uint8_t right = 'R', uint8_t forwardLeft = 'G', uint8_t forwardRight = 'I', uint8_t backLeft = 'H', uint8_t backRight = 'J', uint8_t frontLightsOn = 'W', uint8_t frontLightsOff = 'w', uint8_t backLightsOn = 'U', uint8_t backLightsOff = 'u', uint8_t hornOn = 'V', uint8_t hornOff = 'v', uint8_t extraOn = 'X', uint8_t extraOff = 'x', uint8_t speedDelay = 40);
-*/
-/*
-    void frontSteeringDriveBegin(uint8_t motor1Pin1 = 4, uint8_t motor1Pin2 = 5, uint8_t motor2Pin1 = 6, uint8_t motor2Pin2 = 7, uint8_t frontLightsPin = 0, uint8_t backLightsPin = 1, uint8_t stop = 'S', uint8_t forward = 'F', uint8_t back = 'B', uint8_t left = 'L', uint8_t right = 'R', uint8_t forwardLeft = 'G', uint8_t forwardRight = 'I', uint8_t backLeft = 'H', uint8_t backRight = 'J', uint8_t frontLightsOn = 'W', uint8_t frontLightsOff = 'w', uint8_t backLightsOn = 'U', uint8_t backLightsOff = 'u', uint8_t hornOn = 'V', uint8_t hornOff = 'v', uint8_t extraOn = 'X', uint8_t extraOff = 'x', uint8_t speedDelay = 40);
-    void frontSteeringDriveBegin(ES_PCF8574* pcf8574, uint8_t motor1Pin1 = 4, uint8_t motor1Pin2 = 5, uint8_t motor2Pin1 = 6, uint8_t motor2Pin2 = 7, uint8_t frontLightsPin = 0, uint8_t backLightsPin = 1, uint8_t stop = 'S', uint8_t forward = 'F', uint8_t back = 'B', uint8_t left = 'L', uint8_t right = 'R', uint8_t forwardLeft = 'G', uint8_t forwardRight = 'I', uint8_t backLeft = 'H', uint8_t backRight = 'J', uint8_t frontLightsOn = 'W', uint8_t frontLightsOff = 'w', uint8_t backLightsOn = 'U', uint8_t backLightsOff = 'u', uint8_t hornOn = 'V', uint8_t hornOff = 'v', uint8_t extraOn = 'X', uint8_t extraOff = 'x', uint8_t speedDelay = 40);
-    void frontSteeringDriveBegin(ES_PCF8574* pcf8574, ES_Buzzer* buzzer, uint8_t motor1Pin1 = 4, uint8_t motor1Pin2 = 5, uint8_t motor2Pin1 = 6, uint8_t motor2Pin2 = 7, uint8_t frontLightsPin = 0, uint8_t backLightsPin = 1, uint8_t stop = 'S', uint8_t forward = 'F', uint8_t back = 'B', uint8_t left = 'L', uint8_t right = 'R', uint8_t forwardLeft = 'G', uint8_t forwardRight = 'I', uint8_t backLeft = 'H', uint8_t backRight = 'J', uint8_t frontLightsOn = 'W', uint8_t frontLightsOff = 'w', uint8_t backLightsOn = 'U', uint8_t backLightsOff = 'u', uint8_t hornOn = 'V', uint8_t hornOff = 'v', uint8_t extraOn = 'X', uint8_t extraOff = 'x', uint8_t speedDelay = 40);
-*/
-
     void begin(uint8_t drivingMode = 0, uint8_t motor1Pin1 = 4, uint8_t motor1Pin2 = 5, uint8_t motor2Pin1 = 6, uint8_t motor2Pin2 = 7, uint8_t frontLightsPin = 0, uint8_t backLightsPin = 1, uint8_t stop = 'S', uint8_t forward = 'F', uint8_t back = 'B', uint8_t left = 'L', uint8_t right = 'R', uint8_t forwardLeft = 'G', uint8_t forwardRight = 'I', uint8_t backLeft = 'H', uint8_t backRight = 'J', uint8_t frontLightsOn = 'W', uint8_t frontLightsOff = 'w', uint8_t backLightsOn = 'U', uint8_t backLightsOff = 'u', uint8_t hornOn = 'V', uint8_t hornOff = 'v', uint8_t extraOn = 'X', uint8_t extraOff = 'x', uint8_t speedDelay = 40);
-    void begin(ES_PCF8574* pcf8574, uint8_t drivingMode = 0, uint8_t motor1Pin1 = 4, uint8_t motor1Pin2 = 5, uint8_t motor2Pin1 = 6, uint8_t motor2Pin2 = 7, uint8_t frontLightsPin = 0, uint8_t backLightsPin = 1, uint8_t stop = 'S', uint8_t forward = 'F', uint8_t back = 'B', uint8_t left = 'L', uint8_t right = 'R', uint8_t forwardLeft = 'G', uint8_t forwardRight = 'I', uint8_t backLeft = 'H', uint8_t backRight = 'J', uint8_t frontLightsOn = 'W', uint8_t frontLightsOff = 'w', uint8_t backLightsOn = 'U', uint8_t backLightsOff = 'u', uint8_t hornOn = 'V', uint8_t hornOff = 'v', uint8_t extraOn = 'X', uint8_t extraOff = 'x', uint8_t speedDelay = 40);
-    void begin(ES_PCF8574* pcf8574, ES_Buzzer* buzzer, uint8_t drivingMode = 0, uint8_t motor1Pin1 = 4, uint8_t motor1Pin2 = 5, uint8_t motor2Pin1 = 6, uint8_t motor2Pin2 = 7, uint8_t frontLightsPin = 0, uint8_t backLightsPin = 1, uint8_t stop = 'S', uint8_t forward = 'F', uint8_t back = 'B', uint8_t left = 'L', uint8_t right = 'R', uint8_t forwardLeft = 'G', uint8_t forwardRight = 'I', uint8_t backLeft = 'H', uint8_t backRight = 'J', uint8_t frontLightsOn = 'W', uint8_t frontLightsOff = 'w', uint8_t backLightsOn = 'U', uint8_t backLightsOff = 'u', uint8_t hornOn = 'V', uint8_t hornOff = 'v', uint8_t extraOn = 'X', uint8_t extraOff = 'x', uint8_t speedDelay = 40);
-
 
     void controlCommand(char command);
     void controlCommand(Stream& serial);

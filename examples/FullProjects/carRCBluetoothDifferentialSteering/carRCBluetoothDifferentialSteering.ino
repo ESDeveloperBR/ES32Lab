@@ -1,5 +1,4 @@
 /**
- * @file carBluetoothRemoteControlled.ino
  * @brief This is an example of using ES32Lab to create a Bluetooth-controlled car using a smartphone. In this project, 
  * all motor control commands and accessory functions such as horn and lights are not manually implemented in the program 
  * source code. It is recommended to use the 'Bluetooth RC Car' app as a remote control for this project. The app can be 

@@ -1,5 +1,4 @@
 /**
- * @file differentialDrive_Bluetooth.ino
  * @brief This example aims to provide an easy and straightforward mechanism for motor control using two H-bridges for the locomotion 
  * of a vehicle through the differential drive method. This method follows the same principle of locomotion as a tank, where each track is driven by a separate motor,
  * allowing them to rotate at different speeds. To change direction, the tank adjusts the rotation speed of one track relative to the other. For example, if 
@@ -27,14 +26,12 @@ BluetoothSerial SerialBT; // Instantiate an object derived from the 'BluetoothSe
 
 // <<<<<<<<<<<<<<<<<< SETUP >>>>>>>>>>>>>>>>>>>>>>
 void setup() {
-  Serial.begin(115200);
-
   SerialBT.begin("ES32Lab_Car");  // Initialize Bluetooth with the name "ES32Lab_Car" so that it can be discovered by other devices. | Inicializa o Bluetooth com o nome "ES32Lab_Car" para que possa ser encontrado por outros dispositivos.
   
-  // To use the differentialDriveBegin method, which is responsible for managing differential drive in a simple and straightforward way, following the methodology used in tanks.
+  // The object "car," derived from the class "ES_CarControl," will be initialized, specifying the type of vehicle steering. For this project, the "DIFFERENTIAL" steering type will be used.
   // |
-  // Para utilizar o método differentialDriveBegin, responsável por gerenciar o tracionamento diferencial de forma simples e objetiva, seguindo a metodologia utilizada em tratores de esteira.
-  car.differentialDriveBegin();
+  // O objeto "car", derivado da classe "ES_CarControl", será inicializado, informando o tipo de direção do veículo. Para este projeto, será utilizada a direção "DIFFERENTIAL".
+  car.begin(DIFFERENTIAL);
 
   car.setSpeed(25);   // Sets an initial value for the vehicle. | Estabelece um valor inicial para o veículo.
   car.setSpeedDelay(20);  // Adjustment of the delay of the wheels on one side of the vehicle, allowing it to turn while moving forward or backward. | Ajuste do atrazo das rodas de um dos lados do veiculo, para que o mesmo faça curva enquanto se movimenta para frete ou para trás.

@@ -69,16 +69,6 @@ void ES_CarControl::begin(uint8_t drivingMode, uint8_t motor1Pin1, uint8_t motor
   }
 }
 
-void ES_CarControl::begin(ES_PCF8574* pcf8574, uint8_t drivingMode, uint8_t motor1Pin1, uint8_t motor1Pin2, uint8_t motor2Pin1, uint8_t motor2Pin2, uint8_t frontLightsPin, uint8_t backLightsPin, uint8_t stop, uint8_t forward, uint8_t back, uint8_t left, uint8_t right, uint8_t forwardLeft, uint8_t forwardRight, uint8_t backLeft, uint8_t backRight, uint8_t frontLightsOn, uint8_t frontLightsOff, uint8_t backLightsOn, uint8_t backLightsOff, uint8_t hornOn, uint8_t hornOff, uint8_t extraOn, uint8_t extraOff, uint8_t speedDelay ) {
-  _pcf8574 = pcf8574;
-  begin(drivingMode, motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, frontLightsPin, backLightsPin, stop, forward, back, left, right, forwardLeft, forwardRight, backLeft, backRight, frontLightsOn, frontLightsOff, backLightsOn, backLightsOff, hornOn, hornOff,  extraOn, extraOff, speedDelay );  
-}
-
-void ES_CarControl::begin(ES_PCF8574* pcf8574, ES_Buzzer* buzzer, uint8_t drivingMode, uint8_t motor1Pin1, uint8_t motor1Pin2, uint8_t motor2Pin1, uint8_t motor2Pin2, uint8_t frontLightsPin, uint8_t backLightsPin, uint8_t stop, uint8_t forward, uint8_t back, uint8_t left, uint8_t right, uint8_t forwardLeft, uint8_t forwardRight, uint8_t backLeft, uint8_t backRight, uint8_t frontLightsOn, uint8_t frontLightsOff, uint8_t backLightsOn, uint8_t backLightsOff, uint8_t hornOn, uint8_t hornOff, uint8_t extraOn, uint8_t extraOff, uint8_t speedDelay ) {
-  _buzzer = buzzer;
-  begin(pcf8574, drivingMode, motor1Pin1, motor1Pin2, motor2Pin1, motor2Pin2, frontLightsPin, backLightsPin, stop, forward, back, left, right, forwardLeft, forwardRight, backLeft, backRight, frontLightsOn, frontLightsOff, backLightsOn, backLightsOff, hornOn, hornOff,  extraOn, extraOff, speedDelay );
-}
-
 void ES_CarControl::setSpeed(uint8_t value) {
   _speed = value;
 }
@@ -148,6 +138,7 @@ void ES_CarControl::left() {
     }else{
       _pcf8574->motorRotationA(1, _speed);
     }
+    _pcf8574->motorStop(0);
   }
 }
 
@@ -168,6 +159,7 @@ void ES_CarControl::right() {
     }else{
       _pcf8574->motorRotationB(1, _speed);
     }
+    _pcf8574->motorStop(0);
   }
 }
 

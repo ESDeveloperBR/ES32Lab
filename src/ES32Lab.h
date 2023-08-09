@@ -64,10 +64,10 @@
 
     // ---- Peripherals ----
     #define P_KEY       33
-    #define P_LED_G     17
-    #define P_LED_Y     16
-    #define P_LED_R     13
-    #define P_LED_B     12
+    #define P_LED_GREEN 17
+    #define P_LED_YELLON 16
+    #define P_LED_RED   13
+    #define P_LED_BLUE  12
     #define P_POT1      36
     #define P_POT2      39
     #define P_VOLT      34

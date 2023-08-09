@@ -13,7 +13,7 @@ Example of using the CLASS AnalogKeyboard.
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-AnalogKeyboard keyboard(P_KEYBOARD);
+AnalogKeyboard keyboard(P_KEY);
 
 // ********************************************************************************************************
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SETUP >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

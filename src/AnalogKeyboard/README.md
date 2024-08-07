@@ -3,61 +3,118 @@
 -----
 
 
-
-
-### Classe AnalogKeyboard
+# Classe AnalogKeyboard
 A classe `AnalogKeyboard` é responsável pelo funcionamento do teclado analógico de 5 teclas da placa ES32Lab. Sua estrutura é constituída da seguinte forma:
 
-#### Construtor
-_AnalogKeyboard(uint8_t pinKeyboard, uint16_t addressKey0 = 0, uint16_t addressKey1 = 870, uint16_t addressKey2 = 1657, uint16_t addressKey3 = 2457, uint16_t addressKey4 = 3322, uint8_t readingAccuracy = 21 );_
+
+## Construtor
+```cpp
+AnalogKeyboard(uint8_t pinKeyboard, uint8_t readingAccuracy = 20);
+```
 
 Durante a criação de um objeto derivado da classe `AnalogKeyboard`, é possível passar alguns valores de ajuste, como:
+- `pinKeyboard`: Pino (GPIO) ao qual será conectado o teclado analógico da placa ES32Lab ao ESP32. Exemplo: AnalogKeyboard keyboard(P_KEY);
+- `readingAccuracy`: Ajuste de tolerância de erros na leitura analógica do teclado (em %). O valor padrão é o ideal para um bom funcionamento e, no geral, não é necessário mudá-lo;
 
-* _**pinKeyboard:**_ Pino (GPIO) ao qual será conectado o teclado analógico da placa ES32Lab ao ESP32. Exemplo: _ AnalogKeyboard keyboard(P_KEYBOARD);_
-* _**addressKey0:**_ Endereço analógico para a leitura da tecla “0” do teclado analógico da placa ES32Lab. O valor padrão é o ideal para um bom funcionamento;
-* _**addressKey1:**_ Endereço analógico para a leitura da tecla “1” do teclado analógico da placa ES32Lab. O valor padrão é o ideal para um bom funcionamento;
-* _**addressKey2:**_ Endereço analógico para a leitura da tecla “2” do teclado analógico da placa ES32Lab. O valor padrão é o ideal para um bom funcionamento;
-* _**addressKey3:**_ Endereço analógico para a leitura da tecla “3” do teclado analógico da placa ES32Lab. O valor padrão é o ideal para um bom funcionamento;
-* _**addressKey4:**_ Endereço analógico para a leitura da tecla “4” do teclado analógico da placa ES32Lab. O valor padrão é o ideal para um bom funcionamento;
-* _**readingAccuracy:**_ Ajuste de tolerância de erros na leitura analógica do teclado. O valor padrão é o ideal para um bom funcionamento;
-
-#### Métodos
-* _**boolean press(uint8_t key) :**_ Retorna verdadeiro quando **a tecla for pressionada.** O número da tecla deverá ser repassado pelo parâmetro _key_;
-* _**boolean release(uint8_t key) :**_ Retorna verdadeiro quando **a tecla for solta.** O número da tecla deverá ser repassado pelo parâmetro _key_;
-* _**boolean hold(uint8_t key):**_ Retorna verdadeiro enquanto **a tecla estiver pressionada.** O número da tecla deverá ser repassado pelo parâmetro _key_;
-
-#### Exemplo prático:
-Nesse exemplo toda vez que for pressionado uma tecla, será enviado uma mensagem para o terminal serial informando qual tecla foi pressionada.
-```C++
-#include <ES32Lab.h>
-AnalogKeyboard keyboard(P_KEYBOARD);
-void setup() {
-  Serial.begin(115200);
-}
-void loop() {
-  if(keyboard.press(0)){
-    Serial.println("Key 0 - PRESS");
-  }
-  if(keyboard.press(1)){
-    Serial.println("Key 1 - PRESS");
-  }
-  if(keyboard.press(2)){
-    Serial.println("Key 2 - PRESS");
-  }
-  if(keyboard.press(3)){
-    Serial.println("Key 3 - PRESS");
-  }
-  if(keyboard.press(4)){
-    Serial.println("Key 4 - PRESS");
-  }
-}
+### Exemplo
+```cpp
+AnalogKeyboard keyboard(P_KEY, 15); // Aumentando a precisão da leitura
 ```
 
 
 
+## Métodos
+- **boolean press(uint16_t key):** Retorna `true` se a tecla foi pressionada ou `false` se a tecla não foi pressionada. O valor analógico da tecla deverá ser repassado pelo parâmetro `key`;
+
+- **boolean release(uint16_t key):** Retorna `true` se a tecla foi solta ou `false` se a tecla não foi solta. O valor analógico da tecla deverá ser repassado pelo parâmetro `key`;
+
+- **boolean hold(uint16_t key):** Retorna `true` se a tecla está sendo pressionada ou `false` se a tecla não está sendo pressionada. O valor analógico da tecla deverá ser repassado pelo parâmetro `key`;
+
+- **void debugRead():** Método para depuração que lê e imprime o valor atual da leitura analógica.
 
 
 
------
-| [Índece de classes contidas na LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#conjunto-de-classes-contidas-na-lib-es32lab) |
+
+## Teclas Pré-Definidas da AnalogKeyboard
+A classe `AnalogKeyboard` possui várias teclas pré-definidas que podem ser utilizadas para facilitar a interação com o teclado analógico da placa ES32Lab. Estas definições são representadas por constantes que mapeiam as teclas individuais e suas combinações. Abaixo estão as teclas pré-definidas:
+
+### Teclas Individuais
+Estas são as teclas básicas que podem ser usadas individualmente:
+
+- **Centro:** Representado pela constante `KEY_CENTER`.
+- **Cima:** Representado pela constante `KEY_UP`.
+- **Direita:** Representado pela constante `KEY_RIGHT`.
+- **Baixo:** Representado pela constante `KEY_DOWN`.
+- **Esquerda:** Representado pela constante `KEY_LEFT`.
+
+
+
+
+
+
+### Combinações de Teclas
+Além das teclas individuais, a `classe AnalogKeyboard` permite a utilização de combinações de teclas. Essas combinações são úteis para implementar funcionalidades mais complexas que requerem múltiplas entradas simultâneas.
+
+- **Cima + Direita:** Representado pela constante `KEY_UP_RIGHT`.
+- **Cima + Baixo:** Representado pela constante `KEY_UP_DOWN`.
+- **Cima + Esquerda:** Representado pela constante `KEY_UP_LEFT`.
+- **Baixo + Direita:** Representado pela constante `KEY_DOWN_RIGHT`.
+- **Baixo + Esquerda:** Representado pela constante `KEY_DOWN_LEFT`.
+- **Esquerda + Direita:** Representado pela constante `KEY_LEFT_RIGHT`.
+- **Cima + Baixo + Direita:** Representado pela constante `KEY_UP_DOWN_RIGHT`.
+- **Cima + Baixo + Esquerda:** Representado pela constante `KEY_UP_DOWN_LEFT`.
+- **Cima + Direita + Esquerda:** Representado pela constante `KEY_UP_RIGHT_LEFT`.
+- **Baixo + Direita + Esquerda:** Representado pela constante `KEY_DOWN_RIGHT_LEFT`.
+- **Cima + Baixo + Direita + Esquerda:** Representado pela constante `KEY_UP_DOWN_RIGHT_LEFT`.
+
+**Atenção:** A combinação de teclas do teclado analógico da ES32Lab depende da calibração correta do leitor analógico do seu ESP32 para garantir leituras precisas. Se as combinações de teclas não atenderem às suas expectativas e apresentarem erros ou inconsistências, recomendamos o uso do método `void debugRead()`. Com os resultados obtidos através desse método, podemos obter uma leitura mais precisa dos valores analógicos do seu ESP32, permitindo uma configuração personalizada entre o seu ESP32 e o teclado da ES32Lab. Na seção de exemplos, incluímos um código-fonte que exemplifica a utilização do método `void debugRead()`.
+
+
+
+
+## Exemplo prático:
+Nesse exemplo, toda vez que for pressionada uma tecla, será enviada uma mensagem para o terminal serial informando qual tecla foi pressionada.
+
+```cpp
+#include <ES32Lab.h>
+
+// Criação do objeto AnalogKeyboard, conectando ao pino específico
+AnalogKeyboard keyboard(P_KEY);
+
+void setup() {
+  Serial.begin(115200); // Inicializa a comunicação serial
+}
+
+void loop() {
+  // Verificação do botão "Cima" (Up)
+  if (keyboard.press(KEY_UP)) {
+    Serial.println("Cima Pressionada | Up Pressed");
+  }
+  if (keyboard.hold(KEY_UP)) {
+    Serial.println("Cima Segurada | Up Held");
+  }
+  if (keyboard.release(KEY_UP)) {
+    Serial.println("Cima Solta | Up Released");
+  }
+
+  // Verificação do botão "Baixo" (Down)
+  if (keyboard.press(KEY_DOWN)) {
+    Serial.println("Baixo Pressionada | Down Pressed");
+  }
+  if (keyboard.hold(KEY_DOWN)) {
+    Serial.println("Baixo Segurada | Down Held");
+  }
+  if (keyboard.release(KEY_DOWN)) {
+    Serial.println("Baixo Solta | Down Released");
+  }
+
+  delay(100); // Atraso para evitar leituras excessivas
+}
+
+```
+
+
+
+| [Índice de classes contidas na LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#conjunto-de-classes-contidas-na-lib-es32lab) |
 | :------: |
+-----

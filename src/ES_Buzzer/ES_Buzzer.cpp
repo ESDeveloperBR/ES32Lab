@@ -56,6 +56,7 @@ void ES_Buzzer::sound(int note, int duration) {
     ledcWriteTone(_channel, note);
     delay(duration);
     delay(((duration * _pitchPause) / 100));
+    ledcWriteTone(_channel, 0);
 }
 
 // <<<<<<<<<< distortion >>>>>>>>>>

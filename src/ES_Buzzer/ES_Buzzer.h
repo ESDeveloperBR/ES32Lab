@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "ES_BuzzerNote.h"
 
-#define ES_BUZZER_VERSION "0.5.1 update 07/07/2023"  // mm/dd/yyyy
+#define ES_BUZZER_VERSION "0.5.2 update 08/08/2024"  // mm/dd/yyyy
 
 class ES_Buzzer {
     private:    

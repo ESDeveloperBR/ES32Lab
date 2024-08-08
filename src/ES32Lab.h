@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.8.9 update 07/08/2024"   // dd/mm/yyyy
+    #define ES32LAB_VERSION "0.8.10 update 08/08/2024"   // dd/mm/yyyy
 
     // ---- Label impresso na ES32Lab ----
     #define P00      0
@@ -65,7 +65,7 @@
     // ---- Peripherals ----
     #define P_KEY       33
     #define P_LED_GREEN 17
-    #define P_LED_YELLON 16
+    #define P_LED_YELLOW 16
     #define P_LED_RED   13
     #define P_LED_BLUE  12
     #define P_POT1      36

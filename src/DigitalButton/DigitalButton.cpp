@@ -1,6 +1,5 @@
 #include "DigitalButton.h"
 
-
 // <<<<<<<<<<<<<<<<<<< Construtor >>>>>>>>>>>>>>>>>>>>>>>>>>>
 /*
 Creates the object to be used as a digital button and assigns the GPIO to be used.

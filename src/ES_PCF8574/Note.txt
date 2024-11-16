@@ -1,2 +1,0 @@
-- O arquivo Markdown não está finalizado, não estão dos os métodos na documentação.
-expander.digitalWrite(EX0, !expander.digitalRead(EX0)); // Não funciona

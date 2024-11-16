@@ -79,7 +79,7 @@ boolean DigitalButton::press(){
 }
 
 // <<<<<<< Retorna "true" quando o botão for solto >>>>>>>>>>>>
-/*
+/* 
 Returns "true" when the button is released.
 --- (Português BR) ---
 Retorna "true" quando o botão for solto.

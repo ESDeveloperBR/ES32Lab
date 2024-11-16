@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include "TimeInterval/TimeInterval.h"
 
-#define ES_PCF8574_VERSION "0.5.2 update 07/12/2023"  // mm/dd/yyyy
+#define ES_PCF8574_VERSION "0.7.1 update 11/16/2024"  // mm/dd/yyyy
 
 #define ES_PCF8574_TASK_PWM_SIM_STACK_DEPTH 1200  // Sets the amount of memory available for local variables and function calls within the PWM simulator. | Define a quantidade de memória disponível para as variáveis locais e chamadas de função dentro do simulador PWM.
 #define ES_PCF8574_TASK_PWM_SIM_PRIORITY 2         // Represents the task priority. Higher values indicate higher priority. | Representa a prioridade da tarefa. Valores maiores indicam maior prioridade.
@@ -39,16 +39,19 @@ class ES_PCF8574 {
     uint8_t _motorPin2[4];
     bool    _invertMotorCommands[4];
 
-  public:
-    ES_PCF8574(uint8_t address);
+    bool  _isI2CInitialized = false;
 
+  public:
+    ES_PCF8574(uint8_t address=0x00);
+
+    String scanI2C();
     boolean begin(boolean pwmSimulation = false);
     void digitalWrite(uint8_t pin, boolean value);
-    uint8_t digitalRead(uint8_t pin);
+    boolean digitalRead(uint8_t pin);
 
-    boolean btHold(uint8_t pin);
-    boolean btPress(uint8_t pin);
-    boolean btRelease(uint8_t pin);
+    boolean btHold(uint8_t pin,    boolean activateHigh = true);
+    boolean btPress(uint8_t pin,   boolean activateHigh = true);
+    boolean btRelease(uint8_t pin, boolean activateHigh = true);
 
     boolean pwmBegin();
     void pwmWrite(uint8_t pin, uint8_t dutyCycle = 50, uint8_t frequency = 1);

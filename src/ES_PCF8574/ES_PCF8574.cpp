@@ -7,8 +7,46 @@
  * @param address The address of the PCF8574 in the I2C communication protocol. Initializes an instance of the ES_PCF8574 class with the provided PCF8574 address. | Endereço do PCF8574 no protocolo de comunicação I2C. Inicializa uma instância da classe ES_PCF8574 com o endereço do PCF8574 fornecido.
  */
 ES_PCF8574::ES_PCF8574(uint8_t address) {
-    _address = address;
-    _value = 0;
+  _address = address;
+  _value = 0;
+}
+
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< scanI2CDevices >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/**
+ * Scans and returns all I2C device addresses connected to the I2C bus.
+ * |
+ * Varre e retorna todos os endereços de dispositivos I2C conectados ao barramento I2C.
+ * @return A String containing all detected I2C addresses in hexadecimal format. If no devices are found, returns an empty String (""). | Uma String contendo todos os endereços I2C detectados em formato hexadecimal. Se nenhum dispositivo for encontrado, retorna uma String vazia ("").
+ */
+String ES_PCF8574::scanI2C() {
+  if (!_isI2CInitialized) {  // Checa se I2C já foi inicializado
+    _isI2CInitialized = Wire.begin();
+  }
+  
+  byte error, address;
+  int nDevices = 0;
+  String result = "";
+
+  for (address = 1; address < 127; address++) {
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
+
+    if (error == 0) {
+      if(result!="") result += ", ";
+      result += "0x";
+      if (address < 16) result += "0";  // Adds leading zero for addresses below 0x10
+      result += String(address, HEX);
+      nDevices++;
+    } else if (error == 4) {
+      result += "Unknown error at address 0x";
+      if (address < 16) result += "0";
+      result += String(address, HEX) + "\n";
+    }
+  }
+  if (nDevices == 0) {
+    result = "";
+  }
+  return result;
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< begin | início >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -19,8 +57,9 @@ ES_PCF8574::ES_PCF8574(uint8_t address) {
  * @param pwmSimulation When true, activates the PWM simulator through the I2C expander. | Quando o valor for verdadeiro, ativa o simulador PWM através do expansor i2C.
 */
 boolean ES_PCF8574::begin(boolean pwmSimulation){
-  boolean _return = Wire.begin();
-  if(_return){
+
+  _isI2CInitialized = Wire.begin();
+  if(_isI2CInitialized){
     Wire.beginTransmission(_address);
     Wire.write(_value);
     Wire.endTransmission();
@@ -52,7 +91,7 @@ boolean ES_PCF8574::begin(boolean pwmSimulation){
       }, "loopPWMSimulation", ES_PCF8574_TASK_PWM_SIM_STACK_DEPTH, this, ES_PCF8574_TASK_PWM_SIM_PRIORITY, NULL, ES_PCF8574_TASK_PWM_SIM_CORE_ID); // Creates the LOOP responsible for running the PWM simulator. | Cria o LOOP responsável por executar o simulador PWM.
     }
   }
-  return _return;
+  return _isI2CInitialized;
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< digitalWrite >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -83,7 +122,7 @@ void ES_PCF8574::digitalWrite(uint8_t pin, boolean value) {
  * 
  * @param pin Number of the GPIO to be read. | Número da GPIO que será lida.
  */
-uint8_t ES_PCF8574::digitalRead(uint8_t pin) {
+boolean ES_PCF8574::digitalRead(uint8_t pin) {
   Wire.requestFrom(_address, (uint8_t)1);
   uint8_t data = Wire.read();
   return (data >> pin) & 1;
@@ -91,30 +130,42 @@ uint8_t ES_PCF8574::digitalRead(uint8_t pin) {
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< btHold >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
- * The 'true' condition is returned while the expansion GPIO is being used as a button input and remains pressed, meaning it stays at a logical high level.
- * |
- * A condição 'true' é retornada enquanto a GPIO da expansão estiver sendo utilizada como entrada de botão e permanecer pressionada, ou seja, mantendo-se em nível lógico alto.
- * 
- * @param pin Number of the GPIO to be read. | Número da GPIO que será lida.
-*/
-boolean ES_PCF8574::btHold(uint8_t pin){
-  if( digitalRead(pin) ) { 
-    return true;
+ * Checks if the specified GPIO on the I2C expansion PCF8574 is being used as a button input and is currently held down.
+ * Returns 'true' while the button remains pressed, maintaining a logical high or low level based on configuration.
+ * | 
+ * Verifica se a GPIO especificada na expansão I2C PCF8574 está sendo utilizada como entrada de botão e está pressionada.
+ * Retorna 'true' enquanto o botão permanecer pressionado, mantendo um nível lógico alto ou baixo conforme configurado.
+ * @param pin Number of the GPIO on the PCF8574 expansion to be read. | Número da GPIO na expansão PCF8574 que será lida.
+ * @param activateHigh Configures whether the logical high level (true) or logical low level (false) indicates the button press. | Configura se o nível lógico alto (true) ou baixo (false) indica a pressão do botão.
+ * @return 'true' if the button is being held down at the specified logical level, otherwise 'false'. | 'true' se o botão estiver sendo pressionado no nível lógico especificado, caso contrário, 'false'.
+ */
+boolean ES_PCF8574::btHold(uint8_t pin, boolean activateHigh){
+  digitalWrite(pin, !activateHigh);
+  if(activateHigh){
+    if( digitalRead(pin) ) { 
+      return true;
+    }
+  }else{
+    if(!digitalRead(pin) ) { 
+      return true;
+    }
   }
   return false;
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< btPress >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
- * The 'true' condition is returned at the exact moment when the expansion GPIO is used as a button input and there is a transition from a low to high logical level, that is, when the button is pressed.
- * |
- * A condição 'true' é retornada no exato momento em que a GPIO da expansão é utilizada como entrada de botão e ocorre a transição do nível lógico de baixo para alto, ou seja, quando o botão é pressionado.
- * @param pin Number of the GPIO to be read. | Número da GPIO que será lida.
-*/
-boolean ES_PCF8574::btPress(uint8_t pin){
-  if( !btHold(pin) & !_btPress[pin] ) { 
+ * The 'true' condition is returned at the exact moment when the expansion GPIO on the I2C PCF8574 is used as a button input, and a transition occurs from a low to high logical level, that is, when the button is pressed.
+ * | 
+ * A condição 'true' é retornada no exato momento em que a GPIO da expansão I2C PCF8574 é utilizada como entrada de botão e ocorre a transição do nível lógico de baixo para alto, ou seja, quando o botão é pressionado.
+ * @param pin Number of the GPIO on the PCF8574 expansion to be read. | Número da GPIO na expansão PCF8574 que será lida.
+ * @param activateHigh Configures whether the transition to a logical high level (true) or a logical low level (false) indicates the button press. | Configura se a transição para o nível lógico alto (true) ou baixo (false) indica a pressão do botão.
+ * @return 'true' if the button is pressed at the specified logical transition, otherwise 'false'. | 'true' se o botão for pressionado na transição lógica especificada, caso contrário, 'false'.
+ */
+boolean ES_PCF8574::btPress(uint8_t pin, boolean activateHigh){
+  if( !btHold(pin, activateHigh) && !_btPress[pin] ) { 
     _btPress[pin] = true;
-  } else if( btHold(pin) & _btPress[pin] ) {
+  } else if( btHold(pin, activateHigh) && _btPress[pin] ) {
     _btPress[pin] = false;
     return true;
   }
@@ -123,16 +174,18 @@ boolean ES_PCF8574::btPress(uint8_t pin){
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< btRelease >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
- * The 'true' condition is returned at the exact moment when the expansion GPIO is used as a button input and there is a transition from a high to low logical level, that is, when the button is release.
- * |
- * A condição 'true' é retornada no exato momento em que a GPIO da expansão é utilizada como entrada de botão e ocorre a transição do nível lógico de alto para baixo, ou seja, quando o botão é solto.
- * @param pin Number of the GPIO to be read. | Número da GPIO que será lida.
-*/
-boolean ES_PCF8574::btRelease(uint8_t pin){
-  if( !btHold(pin) & !_btRelease[pin] ) {
+ * The 'true' condition is returned at the exact moment when the expansion GPIO on the I2C PCF8574 is used as a button input, and a transition occurs from a high to low logical level, that is, when the button is released.
+ * | 
+ * A condição 'true' é retornada no exato momento em que a GPIO da expansão I2C PCF8574 é utilizada como entrada de botão e ocorre a transição do nível lógico de alto para baixo, ou seja, quando o botão é solto.
+ * @param pin Number of the GPIO on the PCF8574 expansion to be read. | Número da GPIO na expansão PCF8574 que será lida.
+ * @param activateHigh Configures whether the transition to a logical low level (true) or a logical high level (false) indicates the button release. | Configura se a transição para o nível lógico baixo (true) ou alto (false) indica a liberação do botão.
+ * @return 'true' if the button is released at the specified logical transition, otherwise 'false'. | 'true' se o botão for solto na transição lógica especificada, caso contrário, 'false'.
+ */
+boolean ES_PCF8574::btRelease(uint8_t pin, boolean activateHigh){
+  if( !btHold(pin, activateHigh) && !_btRelease[pin] ) {
     _btRelease[pin] = true;
     return true;
-  } else if(btHold(pin) & _btRelease[pin] ){
+  } else if(btHold(pin, activateHigh) && _btRelease[pin] ){
     _btRelease[pin] = false;
   }
   return false;

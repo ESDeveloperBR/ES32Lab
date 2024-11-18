@@ -57,12 +57,11 @@ String ES_PCF8574::scanI2C() {
  * @param pwmSimulation When true, activates the PWM simulator through the I2C expander. | Quando o valor for verdadeiro, ativa o simulador PWM através do expansor i2C.
 */
 boolean ES_PCF8574::begin(boolean pwmSimulation){
-
   _isI2CInitialized = Wire.begin();
   if(_isI2CInitialized){
     Wire.beginTransmission(_address);
     Wire.write(_value);
-    Wire.endTransmission();
+    _isI2CInitialized = !Wire.endTransmission();
 
     // ---- Starts the LOOP that generates the simulated PWM pulse | Inicia o LOOP que gera o pulso PWM simulado ----
     if (!_pwmSimulationStatus && pwmSimulation) {  // Controls the activation of the PWM simulator by creating a task with a LOOP execution. | Controla a ativação do simulador PWM criando uma tarefa com um LOOP de execução.

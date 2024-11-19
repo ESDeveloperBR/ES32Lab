@@ -57,7 +57,5 @@ void loop() {
   buzzer.sound(NOTE_D7, 80);
   buzzer.sound(NOTE_B6, 80);
 
-  buzzer.end(160);  // Hold the last note for 160 milliseconds. | Segura a última nota por 160 milissegundos.
-
-  delay(5000);  // Wait for 5 seconds before repeating the melody. | Espera por 5 segundos antes de repetir a melodia.
+  buzzer.end(5000);  // Wait for 5 seconds before repeating the melody. | Espera por 5 segundos antes de repetir a melodia.
 }

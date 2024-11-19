@@ -24,27 +24,6 @@ void ES_Buzzer::begin(int8_t channel) {
     ledcAttachPin(_pinBuzzer, _channel);
 }
 
-// <<<<<<<<<< pitch >>>>>>>>>>
-/**
- * Adjusts the playback speed of the generated melody, where values below 100% make the melody slower and values above 100% make it faster. 
- * | Ajusta a velocidade de reprodução da melodia gerada, onde valores abaixo de 100% tornam a melodia mais lenta e valores acima de 100% a tornam mais rápida.
- * @param percentage The percentage value to adjust the melody speed. | O valor em porcentagem para ajustar a velocidade da melodia.
- */
-void ES_Buzzer::pitch(int8_t percentage) {
-    _pitchPause = percentage;
-}
-
-// <<<<<<<<<< end >>>>>>>>>>
-/**
- * Ends the melody and holds the last musical note for a specified time in milliseconds. 
- * | Finaliza a melodia e segura a última nota musical por um determinado tempo em milissegundos.
- * @param pause The time in milliseconds to hold the last musical note. | O tempo em milissegundos para segurar a última nota musical.
- */
-void ES_Buzzer::end(int16_t pause) {
-    delay(pause);
-    ledcWriteTone(_channel, 0);
-}
-
 // <<<<<<<<<< sound >>>>>>>>>>
 /**
  * Plays a musical note with a specified duration. 
@@ -53,10 +32,30 @@ void ES_Buzzer::end(int16_t pause) {
  * @param duration The duration in milliseconds of the chosen musical note. | A duração em milissegundos da nota musical escolhida.
  */
 void ES_Buzzer::sound(int note, int duration) {
-    ledcWriteTone(_channel, note);
-    delay(duration);
-    delay(((duration * _pitchPause) / 100));
-    ledcWriteTone(_channel, 0);
+    ledcWriteTone(_channel, note); // Reproduz a nota musical
+    delay(duration+(duration * 100 / _pitchPause)); // Ajusta o tempo com base no pitch
+    ledcWriteTone(_channel, 0); // Silencia o buzzer
+}
+
+// <<<<<<<<<< end >>>>>>>>>>
+/**
+ * Ends the melody and pauses execution for a specified time in milliseconds. 
+ * | Finaliza a melodia e pausa a execução por um determinado tempo em milissegundos.
+ * @param pause The time in milliseconds to pause execution. The default value is 0. | O tempo em milissegundos para pausar a execução. O valor padrão é 0.
+ */
+void ES_Buzzer::end(int16_t pause) {
+    ledcWriteTone(_channel, 0); // Silencia o buzzer
+    delay(pause);               // Pausa a execução pelo tempo especificado
+}
+
+// <<<<<<<<<< pitch >>>>>>>>>>
+/**
+ * Adjusts the playback speed of the generated melody, where values below 100% make the melody slower and values above 100% make it faster. 
+ * | Ajusta a velocidade de reprodução da melodia gerada, onde valores abaixo de 100% tornam a melodia mais lenta e valores acima de 100% a tornam mais rápida.
+ * @param percentage The percentage value to adjust the melody speed. | O valor em porcentagem para ajustar a velocidade da melodia.
+ */
+void ES_Buzzer::pitch(float percentage) {
+    _pitchPause = percentage;
 }
 
 // <<<<<<<<<< distortion >>>>>>>>>>

@@ -14,7 +14,7 @@
 #include <ES32Lab.h>
 
 ES_Buzzer buzzer(P_BUZZER);   // Cria uma instância da classe 'ES_Buzzer' utilizando o pino 'P_BUZZER'. | Create an instance of the 'ES_Buzzer' class using the 'P_BUZZER' pin.
-int percentagePitch = 10;
+int percentagePitch = 25;
 // <<<<<<<<<< setup >>>>>>>>>>
 void setup(){
   buzzer.begin(); // Initialize the settings of the 'buzzer' instance. | Inicializa as configurações da instância 'buzzer'.
@@ -43,6 +43,7 @@ void loop() {
   buzzer.sound(NOTE_E6, 80);
   buzzer.sound(0, 160);
 
-  delay(5000);  // Wait for 5 seconds before repeating the melody. | Espera por 5 segundos antes de repetir a melodia.
+  buzzer.end(1000);  // Wait for 5 seconds before repeating the melody. | Espera por 5 segundos antes de repetir a melodia.
   percentagePitch = percentagePitch + 25; // Increase the percentage value of the pitch speed to notice the difference in the melody's pitch adjustment more prominently. | Aumente o valor percentual da velocidade de pitch para notar a diferença no ajuste do pitch da melodia de forma mais evidente.
+
 }

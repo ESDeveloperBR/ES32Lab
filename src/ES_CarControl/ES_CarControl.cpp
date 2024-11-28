@@ -1,390 +1,671 @@
 #include "ES_CarControl.h"
 
-ES_CarControl::ES_CarControl() {
-  _buzzer = NULL;
-  _pcf8574 = NULL;
-}
-
-ES_CarControl::ES_CarControl(ES_Buzzer* buzzer) {
-  _buzzer = buzzer;
-  _pcf8574 = NULL;
-}
-
+/**
+ * Initializes the car control system with an optional PCF8574 I2C expander. The buzzer is disabled by default.
+ * | Inicializa o sistema de controle do carro com um expansor I2C PCF8574 opcional. O buzzer está desativado por padrão.
+ * @param pcf8574 A pointer to an `ES_PCF8574` object for I2C GPIO expansion. Pass `nullptr` if not used. | Um ponteiro para um objeto `ES_PCF8574` para expansão de GPIO via I2C. Passe `nullptr` se não for usado.
+ */
 ES_CarControl::ES_CarControl(ES_PCF8574* pcf8574) {
-  _buzzer = NULL;
-  _pcf8574 = pcf8574;
+    _buzzer = nullptr;
+    _pcf8574 = pcf8574;
 }
 
+/**
+ * Initializes the car control system with optional PCF8574 I2C expander and Buzzer components.
+ * | Inicializa o sistema de controle do carro com componentes opcionais de expansor I2C PCF8574 e Buzzer.
+ * @param pcf8574 A pointer to an `ES_PCF8574` object for I2C GPIO expansion. Pass `nullptr` if not used. | Um ponteiro para um objeto `ES_PCF8574` para expansão de GPIO via I2C. Passe `nullptr` se não for usado.
+ * @param buzzer A pointer to an `ES_Buzzer` object for sound output. Pass `nullptr` if not used. | Um ponteiro para um objeto `ES_Buzzer` para saída de som. Passe `nullptr` se não for usado.
+ */
 ES_CarControl::ES_CarControl(ES_PCF8574* pcf8574, ES_Buzzer* buzzer) {
-  _buzzer = buzzer;
-  _pcf8574 = pcf8574;
+    _buzzer = buzzer;
+    _pcf8574 = pcf8574;
 }
 
 /**
+ * Initializes the car control system with specified configurations for motors, lights, commands, and speed settings.
+ * | Inicializa o sistema de controle do carro com configurações especificadas para motores, luzes, comandos e ajustes de velocidade.
  * 
- * O método begin tem como objetivo iniciar, de forma fácil e objetiva, um mecanismo de controle de motores usando duas pontes H para a locomoção de um veículo. É extremamente importante a escolha do parâmetro drivingMode, que indicará qual tipo de direção será utilizado pelo veículo. Caso nenhuma opção seja indicada, será utilizada como padrão a opção 0: Direção Diferencial. Esse tipo de direção segue o mesmo princípio de locomoção de um trator de esteira, onde cada esteira é acionada por um motor separado, permitindo que elas girem em velocidades diferentes. Para mudar de direção, o trator ajusta a velocidade de rotação de uma esteira em relação à outra. Por exemplo, se o trator deseja girar para a esquerda, ele reduz a velocidade da esteira direita ou aumenta a velocidade da esteira esquerda, criando uma diferença de rotação que faz o trator virar para a esquerda.
- * @param drivingMode Escolha do tipo de direção, entre ela estão: 0: Direção Diferencial; 1: Direção Dianteira
- * @param speedDelay Valor em percentual sobre velocidade nominal do motor. Tem como finalidade gerar um atrazo de um dos motores para curva em movimento cuave.
-*/
-void ES_CarControl::begin(uint8_t drivingMode, uint8_t motor1Pin1, uint8_t motor1Pin2, uint8_t motor2Pin1, uint8_t motor2Pin2, uint8_t frontLightsPin, uint8_t backLightsPin, uint8_t stop, uint8_t forward, uint8_t back, uint8_t left, uint8_t right, uint8_t forwardLeft, uint8_t forwardRight, uint8_t backLeft, uint8_t backRight, uint8_t frontLightsOn, uint8_t frontLightsOff, uint8_t backLightsOn, uint8_t backLightsOff, uint8_t hornOn, uint8_t hornOff, uint8_t extraOn, uint8_t extraOff, uint8_t speedDelay ) {
-  _drivingMode = drivingMode;
-  _motor1Pin1 = motor1Pin1;
-  _motor1Pin2 = motor1Pin2;
-  _motor2Pin1 = motor2Pin1;
-  _motor2Pin2 = motor2Pin2;
-  _frontLightsPin = frontLightsPin;
-  _backLightsPin = backLightsPin;
+ * This method sets up the driving mode, pin configurations, and command mappings. It also initializes optional components like the buzzer and I2C expander if provided.
+ * | Este método configura o modo de direção, pinos e mapeamento de comandos. Também inicializa componentes opcionais como o buzzer e o expansor I2C, se fornecidos.
+ * 
+ * @param drivingMode Driving mode (e.g., 0 for differential, 1 for frontal). | Modo de direção (ex.: 0 para diferencial, 1 para dianteiro).
+ * @param motor1Pin1 GPIO for motor 1, pin 1. | GPIO para o motor 1, pino 1.
+ * @param motor1Pin2 GPIO for motor 1, pin 2. | GPIO para o motor 1, pino 2.
+ * @param motor2Pin1 GPIO for motor 2, pin 1. | GPIO para o motor 2, pino 1.
+ * @param motor2Pin2 GPIO for motor 2, pin 2. | GPIO para o motor 2, pino 2.
+ * @param frontLightsPin GPIO for front lights. | GPIO para luzes dianteiras.
+ * @param backLightsPin GPIO for back lights. | GPIO para luzes traseiras.
+ * @param stop Command for stopping the vehicle. | Comando para parar o veículo.
+ * @param forward Command for forward movement. | Comando para movimento para frente.
+ * @param back Command for backward movement. | Comando para movimento para trás.
+ * @param left Command for left movement. | Comando para movimento à esquerda.
+ * @param right Command for right movement. | Comando para movimento à direita.
+ * @param forwardLeft Command for forward-left movement. | Comando para movimento para frente e à esquerda.
+ * @param forwardRight Command for forward-right movement. | Comando para movimento para frente e à direita.
+ * @param backLeft Command for backward-left movement. | Comando para movimento para trás e à esquerda.
+ * @param backRight Command for backward-right movement. | Comando para movimento para trás e à direita.
+ * @param frontLightsOn Command to turn on the front lights. | Comando para ligar as luzes dianteiras.
+ * @param frontLightsOff Command to turn off the front lights. | Comando para desligar as luzes dianteiras.
+ * @param backLightsOn Command to turn on the back lights. | Comando para ligar as luzes traseiras.
+ * @param backLightsOff Command to turn off the back lights. | Comando para desligar as luzes traseiras.
+ * @param hornOn Command to activate the horn. | Comando para ativar a buzina.
+ * @param hornOff Command to deactivate the horn. | Comando para desativar a buzina.
+ * @param extraOn Command to activate an extra feature. | Comando para ativar uma funcionalidade extra.
+ * @param extraOff Command to deactivate an extra feature. | Comando para desativar uma funcionalidade extra.
+ * @param speedDelay Delay for smoother speed transitions. | Atraso para transições de velocidade mais suaves.
+ * @param speed0 Command for speed level 0. | Comando para velocidade nível 0.
+ * @param speed1 Command for speed level 1. | Comando para velocidade nível 1.
+ * @param speed2 Command for speed level 2. | Comando para velocidade nível 2.
+ * @param speed3 Command for speed level 3. | Comando para velocidade nível 3.
+ * @param speed4 Command for speed level 4. | Comando para velocidade nível 4.
+ * @param speed5 Command for speed level 5. | Comando para velocidade nível 5.
+ * @param speed6 Command for speed level 6. | Comando para velocidade nível 6.
+ * @param speed7 Command for speed level 7. | Comando para velocidade nível 7.
+ * @param speed8 Command for speed level 8. | Comando para velocidade nível 8.
+ * @param speed9 Command for speed level 9. | Comando para velocidade nível 9.
+ * @param speed10 Command for speed level 10. | Comando para velocidade nível 10.
+ * @return `true` if initialization is successful, `false` if there is an error (e.g., motor initialization failure). | `true` se a inicialização for bem-sucedida, `false` se houver um erro (ex.: falha na inicialização dos motores).
+ */
+bool ES_CarControl::begin(uint8_t drivingMode, uint8_t motor1Pin1, uint8_t motor1Pin2, uint8_t motor2Pin1, uint8_t motor2Pin2, 
+                          uint8_t frontLightsPin, uint8_t backLightsPin, uint8_t stop, uint8_t forward, uint8_t back, 
+                          uint8_t left, uint8_t right, uint8_t forwardLeft, uint8_t forwardRight, uint8_t backLeft, 
+                          uint8_t backRight, uint8_t frontLightsOn, uint8_t frontLightsOff, uint8_t backLightsOn, 
+                          uint8_t backLightsOff, uint8_t hornOn, uint8_t hornOff, uint8_t extraOn, uint8_t extraOff, 
+                          uint8_t speedDelay, uint8_t speed0, uint8_t speed1, uint8_t speed2, uint8_t speed3, 
+                          uint8_t speed4, uint8_t speed5, uint8_t speed6, uint8_t speed7, uint8_t speed8, 
+                          uint8_t speed9, uint8_t speed10) {
 
-  _stop = stop;
-  _forward = forward;
-  _back = back;
-  _left = left;
-  _right = right;
-  _forwardLeft = forwardLeft;
-  _forwardRight = forwardRight;
-  _backLeft = backLeft;
-  _backRight = backRight;
-  _frontLightsOn = frontLightsOn;
-  _frontLightsOff = frontLightsOff;
-  _backLightsOn = backLightsOn;
-  _backLightsOff = backLightsOff;
-  _hornOn = hornOn;
-  _hornOff = hornOff;
-  _extraOn = extraOn;
-  _extraOff = extraOff;
-  _speedDelay = speedDelay;
+    _drivingMode = drivingMode;
+    _motor1Pin1 = motor1Pin1;
+    _motor1Pin2 = motor1Pin2;
+    _motor2Pin1 = motor2Pin1;
+    _motor2Pin2 = motor2Pin2;
+    _frontLightsPin = frontLightsPin;
+    _backLightsPin = backLightsPin;
 
-  if(_buzzer != NULL){  // Verifica se o objeto da classe 'ES_Buzzer' foi repassado para o objeto instanciado da classe 'ES_CarControl'.
-    _buzzer->begin();
-  }else{
-    Serial.println("Buzzer disable.");
-  }
+    _stop = stop;
+    _forward = forward;
+    _back = back;
+    _left = left;
+    _right = right;
+    _forwardLeft = forwardLeft;
+    _forwardRight = forwardRight;
+    _backLeft = backLeft;
+    _backRight = backRight;
+    _frontLightsOn = frontLightsOn;
+    _frontLightsOff = frontLightsOff;
+    _backLightsOn = backLightsOn;
+    _backLightsOff = backLightsOff;
+    _hornOn = hornOn;
+    _hornOff = hornOff;
+    _extraOn = extraOn;
+    _extraOff = extraOff;
+    _speedDelay = speedDelay;
 
-  if(_pcf8574 != NULL){ // Verifica se o objeto da classe 'ES_PCF8574' foi repassado para o objeto instanciado da classe 'ES_CarControl'.
-    _pcf8574->motorBegin(0, _motor1Pin1, _motor1Pin2);
-    _pcf8574->motorBegin(1, _motor2Pin1, _motor2Pin2);
-  }else{
-    Serial.println("Expansor i2C disable.");
-    delay(3000);
-  }
+    _speed0 = speed0;
+    _speed1 = speed1;
+    _speed2 = speed2;
+    _speed3 = speed3;
+    _speed4 = speed4;
+    _speed5 = speed5;
+    _speed6 = speed6;
+    _speed7 = speed7;
+    _speed8 = speed8;
+    _speed9 = speed9;
+    _speed10 = speed10;
+
+    if (_buzzer != nullptr) {
+        _buzzer->begin();
+    } else {
+        Serial.println("Buzzer disable.");
+    }
+
+    if (_pcf8574 != nullptr) {
+        bool motor1Init = _pcf8574->motorBegin(0, _motor1Pin1, _motor1Pin2);
+        bool motor2Init = _pcf8574->motorBegin(1, _motor2Pin1, _motor2Pin2);
+
+        if (!motor1Init || !motor2Init) {
+            Serial.println("Error initializing motors.");
+            return false;
+        }
+
+    } else {
+        Serial.println("Expansor I2C disable.");
+    }
+
+    return true;
 }
 
+
+
+
+
+/**
+ * Processes a single-character command and executes the corresponding action, such as movement, light control, or speed adjustment. This method interprets a command and maps it to predefined actions, such as starting/stopping motors, turning lights on/off, activating the horn, or adjusting speed levels.
+ * | Processa um comando de caractere único e executa a ação correspondente, como movimento, controle de luzes ou ajuste de velocidade. Este método interpreta um comando e o mapeia para ações predefinidas, como ligar/desligar motores, ligar/desligar luzes, ativar a buzina ou ajustar os níveis de velocidade.
+ * @param command A single character representing the desired action. | Um caractere único representando a ação desejada.
+ */
+void ES_CarControl::controlCommand(char command) {
+    if (command == _stop) stop();
+    else if (command == _forward) forward();
+    else if (command == _forwardLeft) forwardLeft();
+    else if (command == _forwardRight) forwardRight();
+
+    else if (command == _back) backward();
+    else if (command == _backLeft) backLeft();
+    else if (command == _backRight) backRight();
+
+    else if (command == _left) left();
+    else if (command == _right) right();
+
+    else if (command == _frontLightsOn) frontLights(true);
+    else if (command == _frontLightsOff) frontLights(false);
+    else if (command == _backLightsOn) backLights(true);
+    else if (command == _backLightsOff) backLights(false);
+    else if (command == _hornOn) horn(true);
+    else if (command == _hornOff) horn(false);
+    else if (command == _extraOn) extra(true);
+    else if (command == _extraOff) extra(false);
+
+    else if (command == _speed0) _currentSpeed = 0;
+    else if (command == _speed1) _currentSpeed = 10;
+    else if (command == _speed2) _currentSpeed = 20;
+    else if (command == _speed3) _currentSpeed = 30;
+    else if (command == _speed4) _currentSpeed = 40;
+    else if (command == _speed5) _currentSpeed = 50;
+    else if (command == _speed6) _currentSpeed = 60;
+    else if (command == _speed7) _currentSpeed = 70;
+    else if (command == _speed8) _currentSpeed = 80;
+    else if (command == _speed9) _currentSpeed = 90;
+    else if (command == _speed10) _currentSpeed = 100;
+    else stop();
+}
+
+
+/**
+ * Reads a command from a serial stream and executes the corresponding action. This method is ideal for use with Bluetooth modules, allowing direct interaction with a Bluetooth object passed as a parameter.
+ * | Lê um comando de um fluxo serial e executa a ação correspondente. Este método é ideal para uso com módulos Bluetooth, permitindo interação direta com um objeto Bluetooth passado como parâmetro.
+ * @param serial A reference to a serial stream (e.g., `Serial`, `Serial1`, `Serial2`) from which commands will be read. | Uma referência para um fluxo serial (ex.: `Serial`, `Serial1`, `Serial2`) de onde os comandos serão lidos.
+ */
+void ES_CarControl::controlCommand(Stream& serial) {
+    if (serial.available()) {
+        controlCommand(serial.read());
+    }
+}
+
+/**
+ * Sets the current speed of the vehicle for future movement commands. This value determines how fast the motors will operate.
+ * | Define a velocidade atual do veículo para futuros comandos de movimento. Este valor determina a rapidez com que os motores irão operar.
+ * @param value The speed value to set, typically ranging from 0 to 100. | O valor da velocidade a ser definido, geralmente variando de 0 a 100.
+ */
 void ES_CarControl::setSpeed(uint8_t value) {
-  _speed = value;
+    _currentSpeed = value;
 }
 
+/**
+ * Retrieves the current speed setting of the vehicle.
+ * | Retorna a configuração atual de velocidade do veículo.
+ * @return The current speed value, typically ranging from 0 to 100. | O valor atual da velocidade, geralmente variando de 0 a 100.
+ */
 uint8_t ES_CarControl::getSpeed() {
-  return _speed;
+    return _currentSpeed;
 }
 
+/**
+ * Sets the delay factor for the speed of the motors responsible for steering, enabling smoother maneuvers while the vehicle is in motion.
+ * | Define o fator de atraso para velocidades dos motores responsáveis pela direção do carro, tornando uma direção mais suave enquanto o veículo estiver em movimento.
+ * @param value The delay value to set, typically used to adjust steering smoothness. | O valor do atraso a ser definido, geralmente usado para ajustar a suavidade da direção.
+ */
 void ES_CarControl::setSpeedDelay(uint8_t value) {
-  _speedDelay = value;
+    _speedDelay = value;
 }
 
+/**
+ * Retrieves the delay factor used for the speed of the motors responsible for steering, enabling smoother maneuvers while the vehicle is in motion.
+ * | Retorna o fator de atraso usado para as velocidades dos motores responsáveis pela direção, permitindo manobras mais suaves enquanto o veículo estiver em movimento.
+ * @return The current delay value for steering adjustments. | O valor atual do atraso para ajustes de direção.
+ */
 uint8_t ES_CarControl::getSpeedDelay() {
-  return _speedDelay;
+    return _speedDelay;
 }
 
+/**
+ * Stops both motors of the car, bringing the vehicle to a halt. This method sends stop commands to the motors through the connected I2C expander (PCF8574), if available.
+ * | Para ambos os motores do carro, interrompendo o movimento do veículo. Este método envia comandos de parada para os motores através do expansor I2C conectado (PCF8574), se disponível.
+ */
 void ES_CarControl::stop() {
-  if(_drivingMode == 0 ){
-    // --- Direção diferencial ---
-    _pcf8574->motorStop(0);
-    _pcf8574->motorStop(1);
-  }else if(_drivingMode == 1){  
-    // --- Direção dianteira ---
-    _pcf8574->motorStop(0);
-    _pcf8574->motorStop(1);
-  }
+    if (_pcf8574) {
+        _pcf8574->motorStop(0);
+        _pcf8574->motorStop(1);
+    }
 }
 
+/**
+ * Moves the vehicle forward using the current speed setting. This method uses the overloaded `forward(uint8_t speed)` function.
+ * | Move o veículo para frente usando a configuração de velocidade atual.
+ */
 void ES_CarControl::forward() {
-  if(_drivingMode == 0 ){
-    // --- Direção diferencial ---
-    _pcf8574->motorRotationA(0, _speed);
-    _pcf8574->motorRotationA(1, _speed);
-  }else if(_drivingMode == 1){
-    // --- Direção dianteira ---
-    _pcf8574->motorRotationA(0, _speed);
-    _pcf8574->motorStop(1);
-  }
+    forward(_currentSpeed);
 }
 
+/**
+ * Moves the vehicle forward at a specified speed. If a custom forward function is provided, it will be executed; otherwise, the motors are controlled via the PCF8574 expander.
+ * | Move o veículo para frente em uma velocidade especificada. Se uma função personalizada de avanço for fornecida, ela será executada; caso contrário, os motores são controlados pelo expansor PCF8574.
+ * @param speed The speed at which the vehicle moves forward, typically ranging from 0 to 100. | A velocidade com que o veículo avança, geralmente variando de 0 a 100.
+ */
+void ES_CarControl::forward(uint8_t speed) {
+    _currentSpeed = speed;
+    if (_customForwardFunction) {
+        _customForwardFunction(_currentSpeed);
+    } else if (_pcf8574) {
+        if(_drivingMode == 0 ){
+            // --- Direção diferencial ---
+            _pcf8574->motorRotationA(0, _currentSpeed);
+            _pcf8574->motorRotationA(1, _currentSpeed);
+        }else if(_drivingMode == 1){
+            // --- Direção dianteira ---
+            _pcf8574->motorRotationA(0, _currentSpeed);
+            _pcf8574->motorStop(1);
+        }
+    }
+}
+
+/**
+ * Moves the vehicle backward using the current speed setting. This method uses the overloaded `backward(uint8_t speed)` function.
+ * | Move o veículo para trás usando a configuração de velocidade atual.
+ */
 void ES_CarControl::backward() {
-  if(_drivingMode == 0 ){
-    // --- Direção diferencial ---
-    _pcf8574->motorRotationB(0, _speed);
-    _pcf8574->motorRotationB(1, _speed);
-  }else if(_drivingMode == 1){
-    // --- Direção dianteira ---
-    _pcf8574->motorRotationB(0, _speed);
-    _pcf8574->motorStop(1);
-  }
+    backward(_currentSpeed);
 }
 
+/**
+ * Moves the vehicle backward at a specified speed. If a custom backward function is provided, it will be executed; otherwise, the motors are controlled via the PCF8574 expander.
+ * | Move o veículo para trás em uma velocidade especificada. Se uma função personalizada de retrocesso for fornecida, ela será executada; caso contrário, os motores são controlados pelo expansor PCF8574.
+ * @param speed The speed at which the vehicle moves backward, typically ranging from 0 to 100. | A velocidade com que o veículo retrocede, geralmente variando de 0 a 100.
+ */
+void ES_CarControl::backward(uint8_t speed) {
+    _currentSpeed = speed;
+    if (_customBackwardFunction) {
+        _customBackwardFunction(_currentSpeed);
+    } else if (_pcf8574) {
+        if(_drivingMode == 0 ){
+            // --- Direção diferencial ---
+            _pcf8574->motorRotationB(0, _currentSpeed);
+            _pcf8574->motorRotationB(1, _currentSpeed);
+        }else if(_drivingMode == 1){
+            // --- Direção dianteira ---
+            _pcf8574->motorRotationB(0, _currentSpeed);
+            _pcf8574->motorStop(1);
+        }
+    }
+}
+
+/**
+ * Turns the vehicle to the left using the current speed setting.
+ * | Vira o veículo para a esquerda usando a configuração de velocidade atual.
+ */
 void ES_CarControl::left() {
-  if(_drivingMode == 0 ){
-    // --- Direção diferencial ---
-    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-      _pcf8574->motorRotationA(0, _speed);
-      _pcf8574->motorRotationB(1, _speed);
-    }else{
-      _pcf8574->motorRotationB(0, _speed);
-      _pcf8574->motorRotationA(1, _speed);
-    }
-  }else if(_drivingMode == 1){
-    // --- Direção dianteira ---
-    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-      _pcf8574->motorRotationB(1, _speed);
-    }else{
-      _pcf8574->motorRotationA(1, _speed);
-    }
-    _pcf8574->motorStop(0);
-  }
+    left(_currentSpeed);
 }
 
+/**
+ * Turns the vehicle to the left at a specified speed. If a custom left function is provided, it will be executed; otherwise, the motors are controlled via the PCF8574 expander.
+ * | Vira o veículo para a esquerda em uma velocidade especificada. Se uma função personalizada de virar à esquerda for fornecida, ela será executada; caso contrário, os motores são controlados pelo expansor PCF8574.
+ * @param speed The speed at which the vehicle turns left, typically ranging from 0 to 100. | A velocidade com que o veículo vira para a esquerda, geralmente variando de 0 a 100.
+ */
+void ES_CarControl::left(uint8_t speed) {
+    _currentSpeed = speed;
+    if (_customLeftFunction) {
+        _customLeftFunction(_currentSpeed);
+    } else if (_pcf8574) {
+        if(_drivingMode == 0 ){
+            // --- Direção diferencial ---
+            _pcf8574->motorRotationA(0, _currentSpeed);
+            _pcf8574->motorRotationB(1, _currentSpeed);
+
+        }else if(_drivingMode == 1){
+            // --- Direção dianteira ---
+            _pcf8574->motorRotationA(1, _currentSpeed);
+            _pcf8574->motorStop(0);
+        }
+    }
+}
+
+/**
+ * Turns the vehicle to the right using the current speed setting.
+ * | Vira o veículo para a direita usando a configuração de velocidade atual.
+ */
 void ES_CarControl::right() {
-  if(_drivingMode == 0 ){
-    // --- Direção diferencial ---
-    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-      _pcf8574->motorRotationB(0, _speed);
-      _pcf8574->motorRotationA(1, _speed);
-    }else{
-      _pcf8574->motorRotationA(0, _speed);
-      _pcf8574->motorRotationB(1, _speed);
-    }
-  }else if(_drivingMode == 1){
-    // --- Direção dianteira ---
-    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-      _pcf8574->motorRotationA(1, _speed);
-    }else{
-      _pcf8574->motorRotationB(1, _speed);
-    }
-    _pcf8574->motorStop(0);
-  }
+    right(_currentSpeed);
 }
 
+/**
+ * Turns the vehicle to the right at a specified speed. If a custom right function is provided, it will be executed; otherwise, the motors are controlled via the PCF8574 expander.
+ * | Vira o veículo para a direita em uma velocidade especificada. Se uma função personalizada de virar à direita for fornecida, ela será executada; caso contrário, os motores são controlados pelo expansor PCF8574.
+ * @param speed The speed at which the vehicle turns right, typically ranging from 0 to 100. | A velocidade com que o veículo vira para a direita, geralmente variando de 0 a 100.
+ */
+void ES_CarControl::right(uint8_t speed) {
+    _currentSpeed = speed;
+    if (_customRightFunction) {
+        _customRightFunction(_currentSpeed);
+    } else if (_pcf8574) {
+        if(_drivingMode == 0 ){
+            // --- Direção diferencial ---
+            _pcf8574->motorRotationB(0, _currentSpeed);
+            _pcf8574->motorRotationA(1, _currentSpeed);
+
+        }else if(_drivingMode == 1){
+            // --- Direção dianteira ---
+            _pcf8574->motorRotationB(1, _currentSpeed);
+            _pcf8574->motorStop(0);
+        }
+    }
+}
+
+/**
+ * Moves the vehicle forward and turns left using the current speed setting.
+ * | Move o veículo para frente e vira à esquerda usando a configuração de velocidade atual.
+ */
 void ES_CarControl::forwardLeft() {
-  if(_drivingMode == 0 ){
-    // --- Direção diferencial ---
-    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-      _pcf8574->motorRotationA(0, _speed);
-      _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
-    }else{
-      _pcf8574->motorRotationA(0, _speed * (_speedDelay / 100.0));
-      _pcf8574->motorRotationA(1, _speed);
-    }
-  }else if(_drivingMode == 1){
-    // --- Direção Dianteira ---
-    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-      _pcf8574->motorRotationA(0, _speed);
-      _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
-    }else{
-      _pcf8574->motorRotationA(0, _speed);
-      _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
-    }
-  }
+    forwardLeft(_currentSpeed);
 }
 
+/**
+ * Moves the vehicle forward and turns left at a specified speed. If a custom forward-left function is provided, it will be executed; otherwise, the motors are controlled via the PCF8574 expander.
+ * | Move o veículo para frente e vira à esquerda em uma velocidade especificada. Se uma função personalizada de avanço à esquerda for fornecida, ela será executada; caso contrário, os motores são controlados pelo expansor PCF8574.
+ * @param speed The speed at which the vehicle moves forward and turns left, typically ranging from 0 to 100. | A velocidade com que o veículo avança e vira à esquerda, geralmente variando de 0 a 100.
+ */
+void ES_CarControl::forwardLeft(uint8_t speed) {
+    _currentSpeed = speed;
+    if (_customForwardLeftFunction) {
+        _customForwardLeftFunction(_currentSpeed);
+    } else if (_pcf8574) {
+        if(_drivingMode == 0 ){
+            // --- Direção diferencial ---
+            _pcf8574->motorRotationA(0, _currentSpeed);
+            _pcf8574->motorRotationA(1, _currentSpeed * (_speedDelay / 100.0));
+        }else if(_drivingMode == 1){
+            // --- Direção Dianteira ---
+            _pcf8574->motorRotationA(0, _currentSpeed);
+            _pcf8574->motorRotationA(1, _currentSpeed * (_speedDelay / 100.0));
+        }
+    }
+}
+
+/**
+ * Moves the vehicle forward and turns right using the current speed setting.
+ * | Move o veículo para frente e vira à direita usando a configuração de velocidade atual.
+ */
 void ES_CarControl::forwardRight() {
-  if(_drivingMode == 0 ){     
-    // --- Direção diferencial ---
-    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-      _pcf8574->motorRotationA(0, _speed * (_speedDelay / 100.0));
-      _pcf8574->motorRotationA(1, _speed);
-    }else{
-      _pcf8574->motorRotationA(0, _speed);
-      _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
-    }
-  }else if(_drivingMode == 1){
-    // --- Direção Dianteira ---
-    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-      _pcf8574->motorRotationA(0, _speed);
-      _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
-    }else{
-      _pcf8574->motorRotationA(0, _speed);
-      _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
-    }
-  }
+    forwardRight(_currentSpeed);
 }
 
+/**
+ * Moves the vehicle forward and turns right at a specified speed. If a custom forward-right function is provided, it will be executed; otherwise, the motors are controlled via the PCF8574 expander.
+ * | Move o veículo para frente e vira à direita em uma velocidade especificada. Se uma função personalizada de avanço à direita for fornecida, ela será executada; caso contrário, os motores são controlados pelo expansor PCF8574.
+ * @param speed The speed at which the vehicle moves forward and turns right, typically ranging from 0 to 100. | A velocidade com que o veículo avança e vira à direita, geralmente variando de 0 a 100.
+ */
+void ES_CarControl::forwardRight(uint8_t speed) {
+    _currentSpeed = speed;
+    if (_customForwardRightFunction) {
+        _customForwardRightFunction(_currentSpeed);
+    } else if (_pcf8574) {
+        if(_drivingMode == 0 ){
+            // --- Direção diferencial ---
+            _pcf8574->motorRotationA(0, _currentSpeed * (_speedDelay / 100.0));
+            _pcf8574->motorRotationA(1, _currentSpeed);
+        }else if(_drivingMode == 1){
+            // --- Direção Dianteira ---
+            _pcf8574->motorRotationA(0, _currentSpeed);
+            _pcf8574->motorRotationB(1, _currentSpeed * (_speedDelay / 100.0));
+        }
+    }
+}
+
+/**
+ * Moves the vehicle backward and turns left using the current speed setting.
+ * | Move o veículo para trás e vira à esquerda usando a configuração de velocidade atual.
+ */
 void ES_CarControl::backLeft() {
-  if(_drivingMode == 0 ){
-    // --- Direção diferencial ---
-    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-      _pcf8574->motorRotationB(0, _speed);
-      _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
-    }else{
-      _pcf8574->motorRotationB(0, _speed * (_speedDelay / 100.0));
-      _pcf8574->motorRotationB(1, _speed);
-    }
-  }else if(_drivingMode == 1){
-    // --- Direção dianteira ---
-    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-      _pcf8574->motorRotationB(0, _speed);
-      _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
-    }else{
-      _pcf8574->motorRotationB(0, _speed);
-      _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
-    }    
-  }
+    backLeft(_currentSpeed);
 }
 
+/**
+ * Moves the vehicle backward and turns left at a specified speed. If a custom back-left function is provided, it will be executed; otherwise, the motors are controlled via the PCF8574 expander.
+ * | Move o veículo para trás e vira à esquerda em uma velocidade especificada. Se uma função personalizada de retrocesso à esquerda for fornecida, ela será executada; caso contrário, os motores são controlados pelo expansor PCF8574.
+ * @param speed The speed at which the vehicle moves backward and turns left, typically ranging from 0 to 100. | A velocidade com que o veículo retrocede e vira à esquerda, geralmente variando de 0 a 100.
+ */
+void ES_CarControl::backLeft(uint8_t speed) {
+    _currentSpeed = speed;
+    if (_customBackLeftFunction) {
+        _customBackLeftFunction(_currentSpeed);
+    } else if (_pcf8574) {
+        if(_drivingMode == 0 ){
+            // --- Direção diferencial ---
+            _pcf8574->motorRotationB(0, _currentSpeed);
+            _pcf8574->motorRotationB(1, _currentSpeed * (_speedDelay / 100.0));
+
+        }else if(_drivingMode == 1){
+            // --- Direção Dianteira ---
+            _pcf8574->motorRotationB(0, _currentSpeed);
+            _pcf8574->motorRotationA(1, _currentSpeed * (_speedDelay / 100.0));
+        }
+    }
+}
+
+/**
+ * Moves the vehicle backward and turns right using the current speed setting.
+ * | Move o veículo para trás e vira à direita usando a configuração de velocidade atual.
+ */
 void ES_CarControl::backRight() {
-  if(_drivingMode == 0 ){     // <-- Direção diferencial
-    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-      _pcf8574->motorRotationB(0, _speed * (_speedDelay / 100.0));
-      _pcf8574->motorRotationB(1, _speed);
-    }else{
-      _pcf8574->motorRotationB(0, _speed);
-      _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
-    }
-  }else if(_drivingMode == 1){  // <-- Direção dianteira
-    // --- Direção Dianteira ---
-    if(_pcf8574->invertMotorStatus(1)){ // Se o motor estiver com a rotação espelhada, faça:
-      _pcf8574->motorRotationB(0, _speed);
-      _pcf8574->motorRotationA(1, _speed * (_speedDelay / 100.0));
-    }else{
-      _pcf8574->motorRotationB(0, _speed);
-      _pcf8574->motorRotationB(1, _speed * (_speedDelay / 100.0));
-    }
-  }
+    backRight(_currentSpeed);
 }
 
+/**
+ * Moves the vehicle backward and turns right at a specified speed. If a custom back-right function is provided, it will be executed; otherwise, the motors are controlled via the PCF8574 expander.
+ * | Move o veículo para trás e vira à direita em uma velocidade especificada. Se uma função personalizada de retrocesso à direita for fornecida, ela será executada; caso contrário, os motores são controlados pelo expansor PCF8574.
+ * @param speed The speed at which the vehicle moves backward and turns right, typically ranging from 0 to 100. | A velocidade com que o veículo retrocede e vira à direita, geralmente variando de 0 a 100.
+ */
+void ES_CarControl::backRight(uint8_t speed) {
+    _currentSpeed = speed;
+    if (_customBackRightFunction) {
+        _customBackRightFunction(_currentSpeed);
+    } else if (_pcf8574) {
+
+        if(_drivingMode == 0 ){
+            // --- Direção diferencial ---
+            _pcf8574->motorRotationB(0, _currentSpeed * (_speedDelay / 100.0));
+            _pcf8574->motorRotationB(1, _currentSpeed);
+
+        }else if(_drivingMode == 1){
+            // --- Direção Dianteira ---
+            _pcf8574->motorRotationB(0, _currentSpeed);
+            _pcf8574->motorRotationB(1, _currentSpeed * (_speedDelay / 100.0));
+        }
+    }
+}
+
+
+/**
+ * Controls the vehicle's horn status, either turning it on or off. If a custom horn function is provided, it will be executed; otherwise, the buzzer is used.
+ * | Controla o estado da buzina do veículo, ligando-a ou desligando-a. Se uma função personalizada de buzina for fornecida, ela será executada; caso contrário, o buzzer é utilizado.
+ * @param status A boolean value indicating whether to turn the horn on (`true`) or off (`false`). | Um valor booleano indicando se a buzina deve ser ligada (`true`) ou desligada (`false`).
+ */
+void ES_CarControl::horn(boolean status) {
+    if (_customHornFunction) {
+        _customHornFunction(status);
+    } else if (_buzzer != nullptr) {
+        if (status) {
+            _buzzer->sound(NOTE_C4, 500);
+        } else {
+            _buzzer->end(0);
+        }
+    }
+}
+
+/**
+ * Controls the front lights of the vehicle, either turning them on or off. If a custom front lights function is provided, it will be executed; otherwise, the PCF8574 expander is used.
+ * | Controla as luzes dianteiras do veículo, ligando-as ou desligando-as. Se uma função personalizada para as luzes dianteiras for fornecida, ela será executada; caso contrário, o expansor PCF8574 é utilizado.
+ * @param status A boolean value indicating whether to turn the front lights on (`true`) or off (`false`). | Um valor booleano indicando se as luzes dianteiras devem ser ligadas (`true`) ou desligadas (`false`).
+ */
 void ES_CarControl::frontLights(boolean status) {
-  _pcf8574->digitalWrite(_frontLightsPin, status);
+    if (_customFrontLightsFunction) {
+        _customFrontLightsFunction(status);
+    } else if (_pcf8574) {
+        _pcf8574->digitalWrite(_frontLightsPin, status);
+    }
 }
 
+/**
+ * Controls the back lights of the vehicle, either turning them on or off. If a custom back lights function is provided, it will be executed; otherwise, the PCF8574 expander is used.
+ * | Controla as luzes traseiras do veículo, ligando-as ou desligando-as. Se uma função personalizada para as luzes traseiras for fornecida, ela será executada; caso contrário, o expansor PCF8574 é utilizado.
+ * @param status A boolean value indicating whether to turn the back lights on (`true`) or off (`false`). | Um valor booleano indicando se as luzes traseiras devem ser ligadas (`true`) ou desligadas (`false`).
+ */
 void ES_CarControl::backLights(boolean status) {
-  _pcf8574->digitalWrite(_backLightsPin, status);
+    if (_customBackLightsFunction) {
+        _customBackLightsFunction(status);
+    } else if (_pcf8574) {
+        _pcf8574->digitalWrite(_backLightsPin, status);
+    }
 }
 
-void ES_CarControl::horn() {
-  if(_buzzer != NULL){
-    _buzzer->sound(NOTE_C4, 500);
-    _buzzer->end(0);
-  }
-}
-
+/**
+ * Controls an additional feature of the vehicle, either activating or deactivating it. If a custom extra function is provided, it will be executed; otherwise, the PCF8574 expander is used.
+ * | Controla uma funcionalidade adicional do veículo, ativando-a ou desativando-a. Se uma função personalizada para essa funcionalidade extra for fornecida, ela será executada; caso contrário, o expansor PCF8574 é utilizado.
+ * @param status A boolean value indicating whether to activate (`true`) or deactivate (`false`) the additional feature. | Um valor booleano indicando se a funcionalidade adicional deve ser ativada (`true`) ou desativada (`false`).
+ */
 void ES_CarControl::extra(boolean status) {
-  if(status){
-    _pcf8574->pwmWrite(_frontLightsPin, 50, 1);  // Aciona o pulso PWM 
-    _pcf8574->pwmWrite(_backLightsPin, 50, 1);
-  }else{
-    _pcf8574->pwmWrite(_frontLightsPin, 50, 0);  // Desativa o pulso PWM 
-    _pcf8574->pwmWrite(_backLightsPin, 50, 0);
-  }
-}
-
-void ES_CarControl::controlCommand(char command){
-  if(command == _stop){
-    stop();
-  }else if(command == _forward){  // Aciona todos os motores para FRENTE.
-    if(invertTractionStatus()){  // Se o tracionamento estiver invertido
-      backward();
-    }else{
-      forward();
+    if (_customExtraFunction) {
+        _customExtraFunction(status);
+    } else if (_pcf8574) {
+        _pcf8574->pwmWrite(_frontLightsPin, 50, status);
+        _pcf8574->pwmWrite(_backLightsPin, 50, status);
     }
-  }else if(command == _back){ // Aciona todos os motores para TRÁS.
-    if(invertTractionStatus()){  // Se o tracionamento estiver invertido
-      forward();
-    }else{
-      backward();
-    }    
-  }else if(command == _left){ // Vira para a ESQUERDA.
-    if(invertDirectionStatus()){  // Se a direção estiver invertida
-      right();
-    }else{
-      left();
-    }
-  }else if(command == _right){  // Vira para a DIREITA.
-    if(invertDirectionStatus()){  // Se a direção estiver invertida
-      left();
-    }else{
-      right();
-    }
-  }else if(command == _forwardLeft){  // Vai para FRETE virando levemente para a ESQUERDA.
-    forwardLeft();
-  }else if(command == _forwardRight){ // Vai para FRETE virando levemente para a DIREITA.
-    forwardRight();
-  }else if(command == _backLeft){   // Vai para TRÁS virando levemente para a ESQUERDA.
-    backLeft();
-  }else if(command == _backRight){  // Vai para TRÁS virando levemente para a DIREITA.
-    backRight();
-  }else if(command == _frontLightsOn){  // Liga a luz dianteira.
-    frontLights(true);
-  }else if(command == _frontLightsOff){ // Apaga a luz dianteira.
-    frontLights(false);
-  }else if(command == _backLightsOn){   // Liga a luz traseira.
-    backLights(true);
-  }else if(command == _backLightsOff){  // Apaga a luz traseira.
-    backLights(false);
-  }else if(command == _hornOn){   // Aciona a buzina.
-    horn();
-  }else if(command == _hornOff){  // Desativa a buzina.
-    horn();
-  }else if(command == _extraOn){  // Aciona o pisca alerta
-    extra(true);
-  }else if(command == _extraOff){ // Desliga o pisca alerta
-    extra(false);
-  }else if(command >= '0' && command <= '9'){
-    _speed = command - '0';
-    _speed = _speed * 10;
-  }else{
-    stop();
-  }
-
-}
-
-void ES_CarControl::controlCommand(Stream& serial){
-  if (serial.available()) { //  Verifica se existem informações
-    controlCommand(serial.read());
-  }
 }
 
 /**
- * Inverts the direction of the 'motorRotationA' and 'motorRotationB' methods. Ideal for when the motor wires are not connected in the order in which the program was written.
- * |
- * Inverte a direção dos métodos 'motorRotationA' e 'motorRotationB'. Ideal para quando os fios do motor não foram ligados na ordem na qual o programa foi escrito.
- * @param motorID Identification for motor control and association. | Identificação para o controle e associação do motor.
-*/
-void ES_CarControl::invertMotorCommands(uint8_t motorID){
-  _pcf8574->invertMotorCommands(motorID);
+ * Sets a custom callback function to control the horn. The provided function will override the default horn behavior.
+ * | Define uma função de callback personalizada para controlar a buzina. A função fornecida substituirá o comportamento padrão da buzina.
+ * @param callback A pointer to a function that takes a boolean parameter (`true` to turn the horn on, `false` to turn it off). | Um ponteiro para uma função que recebe um parâmetro booleano (`true` para ligar a buzina, `false` para desligá-la).
+ */
+void ES_CarControl::setHornFunction(void (*callback)(bool)) {
+  _customHornFunction = callback;
 }
 
 /**
- * Returns a boolean value indicating whether the motor has been configured to invert its rotation commands.
- * | 
- * Retorna um valor booleano indicando se o motor foi configurado para inverter seus comandos de rotação.
- * @param motorID Identification for motor control and association. | Identificação para o controle e associação do motor.
-*/
-boolean ES_CarControl::invertMotorStatus(uint8_t motorID){
-  return _pcf8574->invertMotorStatus(motorID);
+ * Sets a custom callback function to control the front lights. The provided function will override the default front lights behavior.
+ * | Define uma função de callback personalizada para controlar as luzes dianteiras. A função fornecida substituirá o comportamento padrão das luzes dianteiras.
+ * @param callback A pointer to a function that takes a boolean parameter (`true` to turn the front lights on, `false` to turn them off). | Um ponteiro para uma função que recebe um parâmetro booleano (`true` para ligar as luzes dianteiras, `false` para desligá-las).
+ */
+void ES_CarControl::setFrontLightsFunction(void (*callback)(bool)) {
+  _customFrontLightsFunction = callback;
 }
 
 /**
- * Inverte o controle de direção do veiculo, logo ao executar o comando de virar para a esquerda o mesmo virará para a direita.
-*/
-void ES_CarControl::invertDirection(){
-  _invertDirection = !_invertDirection;
+ * Sets a custom callback function to control the back lights. The provided function will override the default back lights behavior.
+ * | Define uma função de callback personalizada para controlar as luzes traseiras. A função fornecida substituirá o comportamento padrão das luzes traseiras.
+ * @param callback A pointer to a function that takes a boolean parameter (`true` to turn the back lights on, `false` to turn them off). | Um ponteiro para uma função que recebe um parâmetro booleano (`true` para ligar as luzes traseiras, `false` para desligá-las).
+ */
+void ES_CarControl::setBackLightsFunction(void (*callback)(bool)) {
+  _customBackLightsFunction = callback;
 }
 
 /**
- * Retorna o status de inverção da direção, se estiver invertido retorna 'true', caso contrario retorna 'false'.
-*/
-boolean ES_CarControl::invertDirectionStatus(){
-  return _invertDirection;
+ * Sets a custom callback function to control an additional feature. The provided function will override the default behavior for this feature.
+ * | Define uma função de callback personalizada para controlar uma funcionalidade adicional. A função fornecida substituirá o comportamento padrão dessa funcionalidade.
+ * @param callback A pointer to a function that takes a boolean parameter (`true` to activate the feature, `false` to deactivate it). | Um ponteiro para uma função que recebe um parâmetro booleano (`true` para ativar a funcionalidade, `false` para desativá-la).
+ */
+void ES_CarControl::setExtraFunction(void (*callback)(bool)) {
+  _customExtraFunction = callback;
 }
 
 /**
- * Inverte o controle de tracionamento do veiculo, logo ao executar o comando de tracionar para frente o mesmo ira para trás. 
-*/
-void ES_CarControl::invertTraction(){
-  _invertTraction = !_invertTraction;
+ * Sets a custom callback function to control the forward movement. The provided function will override the default forward movement behavior.
+ * | Define uma função de callback personalizada para controlar o movimento para frente. A função fornecida substituirá o comportamento padrão do movimento para frente.
+ * @param callback A pointer to a function that takes a uint8_t parameter representing the speed (0 to 100). | Um ponteiro para uma função que recebe um parâmetro uint8_t representando a velocidade (0 a 100).
+ */
+void ES_CarControl::setForwardFunction(void (*callback)(uint8_t)) {
+    _customForwardFunction = callback;
 }
 
 /**
- * Retorna o status de inverção da tação, se estiver invertido retorna 'true', caso contrario retorna 'false'.
-*/
-boolean ES_CarControl::invertTractionStatus(){
-  return _invertTraction;
+ * Sets a custom callback function to control the forward-left movement. The provided function will override the default forward-left movement behavior.
+ * | Define uma função de callback personalizada para controlar o movimento para frente e à esquerda. A função fornecida substituirá o comportamento padrão do movimento para frente e à esquerda.
+ * @param callback A pointer to a function that takes a uint8_t parameter representing the speed (0 to 100). | Um ponteiro para uma função que recebe um parâmetro uint8_t representando a velocidade (0 a 100).
+ */
+void ES_CarControl::setForwardLeftFunction(void (*callback)(uint8_t)) {
+    _customForwardLeftFunction = callback;
+}
+
+/**
+ * Sets a custom callback function to control the forward-right movement. The provided function will override the default forward-right movement behavior.
+ * | Define uma função de callback personalizada para controlar o movimento para frente e à direita. A função fornecida substituirá o comportamento padrão do movimento para frente e à direita.
+ * @param callback A pointer to a function that takes a uint8_t parameter representing the speed (0 to 100). | Um ponteiro para uma função que recebe um parâmetro uint8_t representando a velocidade (0 a 100).
+ */
+void ES_CarControl::setForwardRightFunction(void (*callback)(uint8_t)) {
+    _customForwardRightFunction = callback;
+}
+
+/**
+ * Sets a custom callback function to control the backward movement. The provided function will override the default backward movement behavior.
+ * | Define uma função de callback personalizada para controlar o movimento para trás. A função fornecida substituirá o comportamento padrão do movimento para trás.
+ * @param callback A pointer to a function that takes a uint8_t parameter representing the speed (0 to 100). | Um ponteiro para uma função que recebe um parâmetro uint8_t representando a velocidade (0 a 100).
+ */
+void ES_CarControl::setBackwardFunction(void (*callback)(uint8_t)) {
+    _customBackwardFunction = callback;
+}
+
+/**
+ * Sets a custom callback function to control the left movement. The provided function will override the default left movement behavior.
+ * | Define uma função de callback personalizada para controlar o movimento à esquerda. A função fornecida substituirá o comportamento padrão do movimento à esquerda.
+ * @param callback A pointer to a function that takes a uint8_t parameter representing the speed (0 to 100). | Um ponteiro para uma função que recebe um parâmetro uint8_t representando a velocidade (0 a 100).
+ */
+void ES_CarControl::setLeftFunction(void (*callback)(uint8_t)) {
+    _customLeftFunction = callback;
+}
+
+/**
+ * Sets a custom callback function to control the right movement. The provided function will override the default right movement behavior.
+ * | Define uma função de callback personalizada para controlar o movimento à direita. A função fornecida substituirá o comportamento padrão do movimento à direita.
+ * @param callback A pointer to a function that takes a uint8_t parameter representing the speed (0 to 100). | Um ponteiro para uma função que recebe um parâmetro uint8_t representando a velocidade (0 a 100).
+ */
+void ES_CarControl::setRightFunction(void (*callback)(uint8_t)) {
+    _customRightFunction = callback;
+}
+
+/**
+ * Sets a custom callback function to control the backward-left movement. The provided function will override the default backward-left movement behavior.
+ * | Define uma função de callback personalizada para controlar o movimento para trás e à esquerda. A função fornecida substituirá o comportamento padrão do movimento para trás e à esquerda.
+ * @param callback A pointer to a function that takes a uint8_t parameter representing the speed (0 to 100). | Um ponteiro para uma função que recebe um parâmetro uint8_t representando a velocidade (0 a 100).
+ */
+void ES_CarControl::setBackLeftFunction(void (*callback)(uint8_t)) {
+    _customBackLeftFunction = callback;
+}
+
+/**
+ * Sets a custom callback function to control the backward-right movement. The provided function will override the default backward-right movement behavior.
+ * | Define uma função de callback personalizada para controlar o movimento para trás e à direita. A função fornecida substituirá o comportamento padrão do movimento para trás e à direita.
+ * @param callback A pointer to a function that takes a uint8_t parameter representing the speed (0 to 100). | Um ponteiro para uma função que recebe um parâmetro uint8_t representando a velocidade (0 a 100).
+ */
+void ES_CarControl::setBackRightFunction(void (*callback)(uint8_t)) {
+    _customBackRightFunction = callback;
+}
+
+/**
+ * Inverts the commands for the specified motor, reversing its direction.
+ * | Inverte os comandos para o motor especificado, revertendo sua direção.
+ * @param motorID The ID of the motor to invert (e.g., 0 for motor 1, 1 for motor 2). | O ID do motor a ser invertido (ex.: 0 para motor 1, 1 para motor 2).
+ */
+void ES_CarControl::invertMotorCommands(uint8_t motorID) {
+    if (_pcf8574) _pcf8574->invertMotorCommands(motorID);
+}
+
+/**
+ * Checks if the specified motor's commands are inverted.
+ * | Verifica se os comandos do motor especificado estão invertidos.
+ * @param motorID The ID of the motor to check (e.g., 0 for motor 1, 1 for motor 2). | O ID do motor a ser verificado (ex.: 0 para motor 1, 1 para motor 2).
+ * @return `true` if the motor's commands are inverted, `false` otherwise. | `true` se os comandos do motor estiverem invertidos, `false` caso contrário.
+ */
+boolean ES_CarControl::invertMotorStatus(uint8_t motorID) {
+    return _pcf8574 ? _pcf8574->invertMotorStatus(motorID) : false;
 }

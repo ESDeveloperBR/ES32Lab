@@ -1,5 +1,0 @@
-* Criar cabeçalho dos métodos da classe;
-* Criar a documentação markdon;
-* Investigar se o 'invertTraction' esta funcionando. 
-* Quando acelerado em 100% muda a rotação quando no formato de direção frontal
-

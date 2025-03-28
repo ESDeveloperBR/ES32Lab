@@ -13,58 +13,91 @@ Seja para criar efeitos sonoros dinâmicos ou reproduzir melodias detalhadas, a 
 
 ---
 
+
+## Índice
+
+1. [Construtor](#construtor)
+2. [Configuração no `setup()`](#configuração-no-setup)
+3. [Métodos da Classe](#métodos-da-classe)
+   - [`sound()`](#sound)
+   - [`end()`](#end)
+   - [`setVolume()`](#setvolume)
+   - [`getVolume()`](#getvolume)
+   - [`setSpeed()`](#setspeed)
+   - [`getSpeed()`](#getspeed)
+   - [`setPitch()`](#setpitch)
+   - [`getPitch()`](#getpitch)
+   - [`setPitchAndSpeed()`](#setpitchandspeed)
+4. [Exemplo: Reproduzindo a Trilha Sonora de Super Mario World](#exemplo-reproduzindo-a-trilha-sonora-de-super-mario-world)
+
+---
+
+
 ## Construtor
 
 ### `ES_Buzzer(int8_t pinBuzzer)`
 
 O construtor `ES_Buzzer` é utilizado para inicializar uma nova instância da classe, configurando o pino PWM responsável por controlar o circuito do buzzer. Ele é essencial para estabelecer a conexão entre o buzzer e a placa ESP32, garantindo que o hardware esteja corretamente configurado para reprodução sonora.
 
-Na ES32Lab, existe uma constante pré-definida chamada **`P_BUZZER`**, que mapeia o pino correto do buzzer integrado ao hardware da placa. Essa constante elimina a necessidade de memorizar os pinos GPIO utilizados e simplifica a configuração, tornando o código mais legível e menos suscetível a erros.
+Na ES32Lab, existe uma constante pré-definida chamada **`P_BUZZER`**, que mapeia o pino correto do buzzer integrado ao hardware da placa. Essa constante, cujo valor é **GPIO25**, elimina a necessidade de memorizar os pinos GPIO utilizados e simplifica a configuração, tornando o código mais legível e menos suscetível a erros.
 
 #### Parâmetro
 - **`pinBuzzer`**: Define o pino GPIO do ESP32 que será utilizado para controlar o circuito do buzzer. Para projetos com a ES32Lab, recomenda-se o uso da constante **`P_BUZZER`**.
 
-**Atenção:** Para que o buzzer funcione corretamente, é necessário verificar se o jumper está conectando o circuito do buzzer à GPIO correspondente da ES32Lab.  
+### `ES_Buzzer()`
+
+Além da forma tradicional de inicializar o construtor com o pino GPIO do buzzer, a classe `ES_Buzzer` também oferece a possibilidade de criar uma instância sem passar nenhum parâmetro. Nesse caso, o pino padrão utilizado será o **GPIO25**, que corresponde ao pino do buzzer integrado na ES32Lab.
+
+Essa abordagem é útil para simplificar ainda mais o código, especialmente em projetos que utilizam a configuração padrão da ES32Lab, onde o pino do buzzer já está pré-definido.
+
+**Atenção:** Para que o buzzer funcione corretamente, é necessário verificar se o jumper está conectando o circuito do buzzer à GPIO correspondente da ES32Lab.
 
 **[Clique aqui para assistir a um vídeo explicativo sobre como configurar o jumper do buzzer na ES32Lab](https://www.youtube.com/watch?v=xpoNbSA8pPM&t=383s).**  
 
 Este vídeo demonstra como identificar e ajustar os jumpers necessários para garantir que o buzzer esteja operando corretamente na ES32Lab.
 
-### Exemplo de Uso
+### Exemplos de Uso
 
-#### `ES_Buzzer buzzer(P_BUZZER);`
+1. Inicializando o buzzer com o pino especificado:
+  ```cpp
+  ES_Buzzer buzzer(P_BUZZER);
+  ```
+
+2. Inicializando o buzzer sem especificar o pino (utilizando o padrão GPIO25):
+  ```cpp
+  ES_Buzzer buzzer;
+  ```
 
 ---
-
 ## Configuração no `setup()`
 
-O método `begin` é fundamental para inicializar a instância da classe `ES_Buzzer` e configurar o canal PWM que será usado pelo buzzer. Essa configuração deve ser realizada dentro da função `setup()` para garantir que o hardware esteja pronto para reproduzir sons durante a execução do programa.
+O método `begin()` é essencial para inicializar a instância da classe `ES_Buzzer` e configurar o canal PWM que será utilizado pelo buzzer. Essa configuração deve ocorrer dentro da função `setup()` para garantir que o hardware esteja preparado para reproduzir sons ao longo do programa.
 
-O método permite especificar qual canal PWM será utilizado. Por padrão, o canal **15** é atribuído, tornando sua configuração mais simples e direta para a maioria dos casos.
+O canal padrão utilizado é o **canal 7**, que corresponde ao último canal disponível do ESP32 para PWM, reduzindo as chances de conflito com outras aplicações.
 
 ### begin()
 
 Inicializa o buzzer, atribuindo o canal PWM e preparando-o para reprodução sonora.
 
 #### Sintaxe:
-`void begin(int8_t channel = 15)`
+```cpp
+void begin(int8_t channel = 7)
+```
 
 #### Parâmetro:
-- **`channel`**: Define o canal PWM que será utilizado pelo buzzer. O valor padrão é **15**, e ele deve ser mantido em situações normais.
-
+- channel: Define o canal PWM que será utilizado pelo buzzer. O valor padrão é 7, e ele deve ser mantido em situações normais.
 
 ### Exemplo de Uso
+Configuração padrão recomendada no `setup()`:
+```cpp
+buzzer.begin();
+```
 
-No uso padrão, a configuração do buzzer no método `setup()` é simples e direta:
-
-#### `buzzer.begin();`
-
-
-Em casos específicos e pontuais, o canal PWM pode ser alterado para atender a requisitos particulares do projeto. Por exemplo:
-
-#### `buzzer.begin(10); // Configura o buzzer no canal PWM 10`
-
-**Nota:** Alterar o canal PWM só deve ser feito quando necessário e com cuidado, garantindo que o canal escolhido esteja disponível e não seja compartilhado com outros dispositivos no sistema.
+Em casos pontuais, é possível alterar o canal PWM, se necessário:
+```cpp
+buzzer.begin(6); // Configura o buzzer no canal PWM 6
+```
+**Nota:** Alterar o canal só deve ser feito quando realmente necessário, sempre garantindo que o canal escolhido esteja disponível e não seja utilizado por outro periférico.
 
 ---
 
@@ -74,13 +107,14 @@ A classe `ES_Buzzer` oferece uma série de métodos que facilitam o controle do 
 
 Abaixo estão descritos os métodos disponíveis, com suas respectivas funcionalidades e exemplos práticos de uso.
 
-
 ### sound()
 
 O método `sound()` é utilizado para reproduzir uma nota musical específica por uma duração definida, ideal para criar melodias ou efeitos sonoros simples e diretos.
 
 #### Sintaxe:
-`void sound(int note, int duration)`
+```cpp
+void sound(int note, int duration);
+```
 
 #### Parâmetros:
 - **`note`**: Frequência da nota musical em Hertz (Hz). 
@@ -90,66 +124,212 @@ O método `sound()` é utilizado para reproduzir uma nota musical específica po
 #### Exemplo:
 Reproduz a nota **A4** por **500ms**.
 
-`buzzer.sound(NOTE_A4, 500);`
+```cpp
+buzzer.sound(NOTE_A4, 500);
+```
 
 **Ressalva:** Sempre utilize as constantes pré-definidas das notas musicais, como `NOTE_C4`, `NOTE_E4` ou `NOTE_G4`, para obter resultados mais precisos e consistentes. Estas constantes já estão otimizadas para representar as frequências reais das notas musicais.
 
 
 ### end()
 
-O método `end()` é utilizado para finalizar a melodia e opcionalmente pausar a execução por um intervalo de tempo especificado. Ele é útil para criar intervalos entre melodias ou notas consecutivas, permitindo maior controle na sequência sonora.
+O método `end()` é utilizado para finalizar a melodia e, opcionalmente, pausar a execução por um intervalo de tempo especificado. Ele é útil para criar intervalos entre melodias ou notas consecutivas, permitindo maior controle na sequência sonora.
 
 #### Sintaxe:
-`void end(int16_t pause = 0)`
+```cpp
+void end(int16_t pause = 0);
+```
 
 #### Parâmetro:
 - **`pause`** (opcional): Define o tempo, em milissegundos, para pausar a execução após o encerramento da melodia. O valor padrão é **0**, o que significa que não haverá pausa.
 
-#### Exemplo:
-Para finalizar a melodia instantaneamente:  
-`buzzer.end(); // Finaliza a melodia sem pausa adicional`
+#### Exemplo de Uso
 
-Para criar uma pausa de 500ms antes de iniciar uma nova melodia:  
-`buzzer.end(500); // Pausa a execução por 500ms`
+Finalizar a melodia sem pausa adicional:
+```cpp
+buzzer.end();
+```
+
+Finalizar a melodia e criar uma pausa de 500ms antes de iniciar uma nova:
+```cpp
+buzzer.end(500);
+```
+
+**Nota:** Este método é ideal para controlar o fluxo de execução entre diferentes melodias ou efeitos sonoros, garantindo uma transição suave entre eles.
 
 
-### pitch()
-
-O método `pitch()` ajusta a velocidade de reprodução da melodia, permitindo alterações dinâmicas na duração relativa das notas. Esse ajuste é realizado em relação à velocidade padrão (100%), sendo possível acelerar ou desacelerar a execução conforme necessário.
+### setVolume()
+O método `setVolume()` ajusta o volume do som reproduzido pelo buzzer, controlando a intensidade do sinal PWM enviado ao circuito. Ele é útil para criar efeitos sonoros com diferentes níveis de volume, permitindo maior personalização na reprodução de sons. O valor padrão do volume é de **50%**, sendo possível ajustá-lo para mais ou para menos conforme a necessidade, garantindo flexibilidade para atender a diferentes requisitos de áudio nos projetos.
 
 #### Sintaxe:
-`void pitch(float percentage)`
+```cpp
+void setVolume(int percentage);
+```
 
 #### Parâmetro:
-- **`percentage`**: Valor percentual que define a velocidade relativa da melodia:
-  - Valores **acima de 100%** tornam a melodia mais rápida. Por exemplo, `120` aumenta a velocidade em 20%.
-  - Valores **abaixo de 100%** tornam a melodia mais lenta. Por exemplo, `80` reduz a velocidade em 20%.
-  - O valor padrão de velocidade é **100%**, indicando a execução normal da melodia.
+- **`percentage`**: Percentual de volume desejado. O valor deve estar entre **0** (mudo) e **100** (volume máximo). Valores fora desse intervalo serão automaticamente ajustados para os limites permitidos.
 
-#### Exemplo:
-Aumentar a velocidade da melodia em 20%:
-`buzzer.pitch(120);`
+#### Exemplo de Uso
+
+Definir o volume para 50%:
+```cpp
+buzzer.setVolume(50);
+```
+
+Definir o volume para o máximo:
+```cpp
+buzzer.setVolume(100);
+```
+
+**Nota:** O ajuste de volume é realizado por meio da modulação do ciclo de trabalho do PWM, o que pode influenciar a percepção sonora dependendo do tipo de buzzer utilizado.
 
 
-### distortion()
+### getVolume()
 
-O método `distortion()` é utilizado para criar um efeito de distorção sonora entre duas notas musicais. Ele gera uma sequência de tons, variando gradualmente entre as frequências das notas inicial (`noteFrom`) e final (`noteTo`). Esse efeito é ideal para simular transições sonoras ou criar variações dinâmicas em melodias.
+O método `getVolume()` retorna o volume atual do buzzer em formato percentual, com base no ciclo de trabalho (duty cycle) do PWM. Ele é útil para verificar o nível de volume configurado no momento, permitindo ajustes dinâmicos ou monitoramento do estado do buzzer.
 
 #### Sintaxe:
-`void distortion(int noteFrom, int noteTo)`
+```cpp
+int getVolume();
+```
 
-#### Parâmetros:
-- **`noteFrom`**: Nota inicial da distorção, representada pela frequência em Hertz. 
-- **`noteTo`**: Nota final da distorção, também representada pela frequência em Hertz.
+#### Retorno:
+- **`int`**: O volume atual em percentual, variando de **0** (mudo) a **100** (volume máximo).
 
-#### Exemplo:
-Criar uma distorção do C4 ao C5:
-`buzzer.distortion(NOTE_C4, NOTE_C5);`
+#### Exemplo de Uso
 
-#### Observação:
-A direção da distorção é definida pela ordem dos parâmetros:
-- Se `noteFrom` for maior que `noteTo`, a distorção será descendente (do agudo para o grave).
-- Se `noteFrom` for menor que `noteTo`, a distorção será ascendente (do grave para o agudo).
+Obter o volume atual e exibi-lo no monitor serial:
+```cpp
+Serial.print("Volume atual: ");
+Serial.println(buzzer.getVolume());
+```
+
+**Nota:** O valor retornado representa diretamente o ciclo de trabalho (duty cycle) configurado no PWM. A percepção do volume pode variar dependendo das características do buzzer utilizado.
+
+
+### setSpeed()
+
+Define a velocidade de execução das notas em formato percentual, permitindo acelerar ou desacelerar a reprodução da melodia. Essa função afeta diretamente o tempo de duração de cada nota musical, sem alterar sua frequência (tom).
+
+#### Sintaxe:
+```cpp
+void setSpeed(int percentage);
+```
+
+#### Parâmetro:
+- **`percentage`**: Percentual da velocidade de execução. O valor **100** representa a velocidade normal. Valores acima de 100 tornam a música mais rápida, enquanto valores abaixo de 100 tornam mais lenta. O valor é automaticamente limitado entre **1** e **255**.
+
+### Exemplo de Uso
+
+Aumentar a velocidade da melodia em 50%:
+```cpp
+buzzer.setSpeed(150);
+```
+
+Reduzir a velocidade da melodia para metade:
+```cpp
+buzzer.setSpeed(50);
+```
+
+
+### getSpeed()
+
+O método `getSpeed()` retorna a velocidade atual de reprodução das notas, definida anteriormente com o método `setSpeed()`. Esse valor é utilizado para calcular o tempo de duração de cada nota musical executada, permitindo ajustes dinâmicos na velocidade de reprodução.
+
+#### Sintaxe:
+```cpp
+int getSpeed();
+```
+
+#### Retorno:
+- **`int`**: O valor percentual atual da velocidade de reprodução. O valor padrão é **100**, indicando velocidade normal.
+
+#### Exemplo de Uso
+
+Obter a velocidade atual e exibi-la no monitor serial:
+```cpp
+Serial.print("Velocidade atual: ");
+Serial.println(buzzer.getSpeed());
+```
+
+**Nota:** Valores acima de 100 indicam uma reprodução mais rápida, enquanto valores abaixo de 100 tornam a reprodução mais lenta.
+
+
+### setPitch()
+
+O método `setPitch()` define o ajuste de pitch (tom) da música em formato percentual, alterando apenas a frequência das notas musicais, sem afetar a velocidade (duração) de reprodução.
+
+#### Sintaxe:
+```cpp
+void setPitch(int percentage);
+```
+
+#### Parâmetro:
+- **`percentage`**: Percentual de ajuste de tom. O valor padrão é **100** (pitch original). Valores abaixo de 100 tornam o som mais grave, e valores acima de 100 tornam o som mais agudo. O valor é automaticamente limitado entre **50** e **200** para manter a estabilidade do PWM.
+
+#### Exemplo de Uso
+
+Aumentar o pitch (tom) em 20%:
+```cpp
+buzzer.setPitch(120);
+```
+
+Reduzir o pitch (tom) em 30%:
+```cpp
+buzzer.setPitch(70);
+```
+
+**Nota:** Alterar o pitch pode ser útil para criar variações sonoras ou efeitos personalizados em melodias.
+
+
+### getPitch()
+
+O método `getPitch()` retorna o valor atual do ajuste de pitch (tom) em formato percentual. Esse valor é definido previamente com o método `setPitch()` e influencia a frequência das notas reproduzidas, tornando-as mais agudas ou graves.
+
+#### Sintaxe:
+```cpp
+int getPitch();
+```
+
+#### Retorno:
+- **`int`**: O valor percentual atual do pitch. O valor padrão é **100**, indicando que as frequências das notas estão em seu tom original.
+
+#### Exemplo de Uso
+
+Obter o pitch atual e exibi-lo no monitor serial:
+```cpp
+Serial.print("Pitch atual: ");
+Serial.println(buzzer.getPitch());
+```
+
+**Nota:** Valores acima de 100 tornam o som mais agudo, enquanto valores abaixo de 100 tornam o som mais grave. Esse ajuste é útil para criar variações sonoras ou efeitos personalizados em melodias.
+
+
+### setPitchAndSpeed()
+
+O método `setPitchAndSpeed()` ajusta simultaneamente o pitch (tom) e a velocidade de reprodução das notas em formato percentual. Essa funcionalidade é útil para criar efeitos sonoros dinâmicos, permitindo que o tom e a velocidade sejam alterados de forma sincronizada.
+
+#### Sintaxe:
+```cpp
+void setPitchAndSpeed(int percentage);
+```
+
+#### Parâmetro:
+- **`percentage`**: Percentual aplicado tanto ao pitch quanto à velocidade. O valor padrão é **100**, indicando pitch e velocidade originais. Valores acima de 100 aumentam o tom e aceleram a reprodução, enquanto valores abaixo de 100 tornam o tom mais grave e a reprodução mais lenta.
+
+#### Exemplo de Uso
+
+Aumentar o pitch e a velocidade em 20%:
+```cpp
+buzzer.setPitchAndSpeed(120);
+```
+
+Reduzir o pitch e a velocidade em 30%:
+```cpp
+buzzer.setPitchAndSpeed(70);
+```
+
+**Nota:** Este método é ideal para criar efeitos sonoros sincronizados, onde o tom e a velocidade precisam ser ajustados proporcionalmente.
 
 ---
 ## Exemplo: Reproduzindo a Trilha Sonora de Super Mario World
@@ -167,47 +347,21 @@ ES_Buzzer buzzer(P_BUZZER);
 
 void setup() {
   buzzer.begin();
+  buzzer.setVolume(50);
 }
 
 void loop() {
-  buzzer.sound(NOTE_E7, 80);
-  buzzer.sound(NOTE_E7, 80);
-  buzzer.sound(0, 80);      
-  buzzer.sound(NOTE_E7, 80);
-  buzzer.sound(0, 80);
-  buzzer.sound(NOTE_C7, 80);
-  buzzer.sound(NOTE_E7, 80);
-  buzzer.sound(0, 80);
-  buzzer.sound(NOTE_G7, 80);
-  buzzer.sound(0, 240);     
-  buzzer.sound(NOTE_G6, 80);
-  buzzer.sound(0, 240);
-  buzzer.sound(NOTE_C7, 80);
-  buzzer.sound(0, 160);
-  buzzer.sound(NOTE_G6, 80);
-  buzzer.sound(0, 160);
-  buzzer.sound(NOTE_E6, 80);
-  buzzer.sound(0, 160);
-  buzzer.sound(NOTE_A6, 80);
-  buzzer.sound(0, 80);
-  buzzer.sound(NOTE_B6, 80);
-  buzzer.sound(0, 80);
-  buzzer.sound(NOTE_AS6, 80);
-  buzzer.sound(NOTE_A6, 80);
-  buzzer.sound(0, 80);
-  buzzer.sound(NOTE_G6, 100);
-  buzzer.sound(NOTE_E7, 100);
-  buzzer.sound(NOTE_G7, 100);
-  buzzer.sound(NOTE_A7, 80);
-  buzzer.sound(0, 80);
-  buzzer.sound(NOTE_F7, 80);
-  buzzer.sound(NOTE_G7, 80);
-  buzzer.sound(0, 80);
-  buzzer.sound(NOTE_E7, 80);
-  buzzer.sound(0, 80);
-  buzzer.sound(NOTE_C7, 80);
-  buzzer.sound(NOTE_D7, 80);
-  buzzer.sound(NOTE_B6, 80);
+  buzzer.sound(NOTE_E7, 136);
+  buzzer.sound(NOTE_E7, 136);
+  buzzer.sound(0, 136);
+  buzzer.sound(NOTE_E7, 136);
+  buzzer.sound(0, 136);
+  buzzer.sound(NOTE_C7, 136);
+  buzzer.sound(NOTE_E7, 136);
+  buzzer.sound(0, 136);
+  buzzer.sound(NOTE_G7, 136);
+  buzzer.sound(0, 408);
+  buzzer.sound(NOTE_G6, 136);
 
   buzzer.end(5000);
 }

@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.9.1 update 27/03/2025"   // dd/mm/yyyy
+    #define ES32LAB_VERSION "0.9.2 update 27/03/2025"   // dd/mm/yyyy
 
     // ---- Label impresso na ES32Lab ----
     #define P00      0
@@ -72,21 +72,6 @@
     #define P_BUZZER    25
     #define P_DAC1      25  // Se a DAC for utilizada como áudio, será o canal L
     #define P_DAC2      26  // Se a DAC for utilizada como áudio, será o canal R
-
-    //    #define P_MOSI          23
-    //    #define P_MISSO         19
-    //    #define P_SCK           18
-    // #define P_SD_CS         5
-
-    //Pinos de conexão do ESP32-I2S e o módulo I2S/DAC CJMCU 1334
-//    #define P_I2S_DOUT      25  // Azul
-//    #define P_I2S_LRC       26  // Verde
-//    #define P_I2S_BCLK      27  // Laranja
-
-//    #define P_TX0           1
-//    #define P_RX0           3
-//    #define P_TX2           17
-//    #define P_RX2           16
 
     // ---- Constanstes de configuração da camera OV2640 ----
     #define PWDN_GPIO_NUM     -1

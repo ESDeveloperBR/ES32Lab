@@ -5,7 +5,7 @@
 #include "ES_BuzzerNote.h"
 #include <driver/ledc.h>
 
-#define ES_BUZZER_VERSION "0.7.5 update 03/27/2025"  // mm/dd/yyyy
+#define ES_BUZZER_VERSION "0.7.6 update 03/27/2025"  // mm/dd/yyyy
 
 class ES_Buzzer {
     private:   

@@ -83,7 +83,7 @@ void ES_Buzzer::setVolume(int percentage) {
     _duty = constrain(percentage, 0, 100);
 }
 
-// <<<<<<<<<< getVolume >>>>>>>>>>
+// <<<<<<<<<< getVolume >>>>>>>>>
 /**
  * Returns the current volume percentage based on PWM duty cycle.
  * | Retorna o volume atual em percentual baseado no duty cycle do PWM.

@@ -1,17 +1,33 @@
 /**
  * @file i2C_pwm.ino
- * @author ES Developer
- * @brief This example code demonstrates how to activate the PWM pulse simulator on the ES32Lab's I2C expander. In this case, the white LED on the ES32Lab
- * blinks twice per second intermittently, while the orange LED on the ES32Lab blinks four times per second intermittently.
- * | Esse código exemplo mostra como ativar o simulador de pulso PWM no expansor I2C da ES32Lab. Nesse caso, o LED branco da ES32Lab pisca duas vezes 
- * por segundo de forma intermitente, enquanto o LED laranja da ES32Lab pisca quatro vezes por segundo de forma intermitente.
- * @warning Make sure you have the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) and its dependency TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) installed. 
- * | Certifique-se de ter a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) e sua dependência TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) instaladas.
+ * @brief This example demonstrates how to use the ES32Lab I2C PCF8574 expander to simulate PWM pulses. 
+ * The white LED blinks twice per second intermittently, while the orange LED blinks four times per second.
+ * | Este exemplo demonstra como usar o expansor I2C PCF8574 da ES32Lab para simular pulsos PWM. O LED 
+ * branco pisca duas vezes por segundo de forma intermitente, enquanto o LED laranja pisca quatro vezes 
+ * por segundo.
+ * @warning Ensure that the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) and its dependency 
+ * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) are installed.
+ * | Certifique-se de que a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) e sua dependência 
+ * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) estejam instaladas.
+ * @attention If the I2C address is incorrect, the program will not work. Use the command 
+ * `expander.scanI2C()` to find the correct address. For more details, refer to the example available at: 
+ * https://github.com/ESDeveloperBR/ES32Lab/blob/main/examples/i2C_Expander/i2C_scanI2C/i2C_scanI2C.ino
+ * | Atenção: Se o endereço I2C estiver incorreto, o programa não funcionará. Use o comando 
+ * `expander.scanI2C()` para encontrar o endereço correto. Para mais detalhes, consulte o exemplo disponível 
+ * em: https://github.com/ESDeveloperBR/ES32Lab/blob/main/examples/i2C_Expander/i2C_scanI2C/i2C_scanI2C.ino
+ * @note To activate the white and orange LEDs, ensure the jumpers are correctly configured. 
+ * Watch the video tutorial at: https://www.youtube.com/watch?v=xpoNbSA8pPM&t=383s
+ * | Nota: Para ativar os LEDs branco e laranja, certifique-se de que os jumpers estão configurados 
+ * corretamente. Assista ao tutorial em vídeo em: https://www.youtube.com/watch?v=xpoNbSA8pPM&t=383s
+ * @see Official board: https://www.esdeveloper.com.br
+ * | Placa oficial disponível em: https://www.esdeveloper.com.br
+ * @see ES_PCF8574 documentation: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
+ * | Documentação da classe ES_PCF8574: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
  */
 
 #include <Arduino.h>
 #include <ES32Lab.h>  // Library used to facilitate the use of the ES32Lab board | LIB utilizada para facilitar a utilização da placa ES32Lab
-ES_PCF8574 expander(0x38);  // Instantiates the 'expander' object with the given address | Instancia o objeto 'expander' com o endereço fornecido.
+ES_PCF8574 expander(0x20);  // Instantiates the 'expander' object with the default address `0x20`. | Instancia o objeto 'expander' com o endereço padrão `0x20`.
 
 // <<<<<<<<<<<<<<<<<< SETUP >>>>>>>>>>>>>>>>>>>>>>
 void setup() {

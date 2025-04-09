@@ -1,22 +1,35 @@
 /**
  * @file i2C_motorControlSimple.ino
- * @author ES Developer
- * @brief  This code uses the PCF8574 I2C expander to control a motor through an H-bridge circuit on the ES32Lab. 
- * The purpose of this example program is to demonstrate in a didactic way how to use the motor control class from the ES32Lab library through the I2C expander. 
- * In this example, the motor is gradually accelerated until it reaches 100% speed. When the speed reaches 100%, the 'speed' variable is set to 0 and the cycle starts again.
- * | 
- * Este código utiliza o expansor I2C PCF8574 para controlar um motor através de um circuito H-bridge no ES32Lab. 
- * O objetivo deste programa de exemplo é demonstrar de forma didática como utilizar a classe de controle de motor da biblioteca ES32Lab por meio do expansor I2C. 
- * Neste exemplo, o motor é gradualmente acelerado até atingir 100% de velocidade. Quando a velocidade atinge 100%, a variável 'speed' é definida como 0 e o ciclo recomeça.
- * @warning Make sure you have the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) and its dependency TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) installed.
- * | 
- * Certifique-se de ter a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) e sua dependência TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) instaladas.
+ * @brief This example demonstrates how to use the ES32Lab I2C PCF8574 expander to control a motor 
+ * through an H-bridge circuit. The motor is gradually accelerated until it reaches 100% speed. 
+ * When the speed reaches 100%, the 'speed' variable is reset to 0, and the cycle starts again.
+ * | Este exemplo demonstra como usar o expansor I2C PCF8574 da ES32Lab para controlar um motor através 
+ * de um circuito H-bridge. O motor é gradualmente acelerado até atingir 100% de velocidade. Quando a 
+ * velocidade atinge 100%, a variável 'speed' é redefinida para 0, e o ciclo recomeça.
+ * @warning Ensure that the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) and its dependency 
+ * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) are installed.
+ * | Certifique-se de que a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) e sua dependência 
+ * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) estejam instaladas.
+ * @attention If the I2C address is incorrect, the program will not work. Use the command 
+ * `expander.scanI2C()` to find the correct address. For more details, refer to the example available at: 
+ * https://github.com/ESDeveloperBR/ES32Lab/blob/main/examples/i2C_Expander/i2C_scanI2C/i2C_scanI2C.ino
+ * | Atenção: Se o endereço I2C estiver incorreto, o programa não funcionará. Use o comando 
+ * `expander.scanI2C()` para encontrar o endereço correto. Para mais detalhes, consulte o exemplo disponível 
+ * em: https://github.com/ESDeveloperBR/ES32Lab/blob/main/examples/i2C_Expander/i2C_scanI2C/i2C_scanI2C.ino
+ * @note To correctly configure the jumpers for the H-bridge connection, watch the video tutorial at: 
+ * https://www.youtube.com/watch?v=xpoNbSA8pPM&t=383s
+ * | Nota: Para configurar corretamente os jumpers para a conexão da ponte-H, assista ao tutorial em vídeo em: 
+ * https://www.youtube.com/watch?v=xpoNbSA8pPM&t=383s
+ * @see Official board: https://www.esdeveloper.com.br
+ * | Placa oficial disponível em: https://www.esdeveloper.com.br
+ * @see ES_PCF8574 documentation: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
+ * | Documentação da classe ES_PCF8574: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
  */
 
 #include <Arduino.h>
 #include <ES32Lab.h>  // Library used to facilitate the use of the ES32Lab board | Biblioteca utilizada para facilitar o uso da placa ES32Lab
 
-ES_PCF8574 expander(0x38);  // Instantiates the 'expander' object with the given address | Instancia o objeto 'expander' com o endereço fornecido
+ES_PCF8574 expander(0x20);  // Instantiates the 'expander' object with the default address `0x20`. | Instancia o objeto 'expander' com o endereço padrão `0x20`.
 
 int speed = 0; // Initializes the variable responsible for motor speed control | Inicializa a variável responsável pelo controle de velocidade do motor
 

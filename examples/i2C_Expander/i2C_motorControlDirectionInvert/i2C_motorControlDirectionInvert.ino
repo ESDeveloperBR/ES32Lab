@@ -1,23 +1,37 @@
 /**
  * @file i2C_motorControlDirectionInvert.ino
- * @brief This code uses the I2C PCF8574 expander to control a motor through an H-bridge circuit on the ES32Lab.
- * The purpose of this example program is to demonstrate, in a didactic way, how to use the motor control class from the ES32Lab library via the I2C expander.
- * In this example, the motor rotates in one direction for a specific period of time, and then executes a command in which the commands are mirrored. Therefore, if the motor was rotating in direction A, it will now rotate in direction B. This command is ideal when the motor wires were not connected in the order in which the program was written.
- * Attention: Do not use an external power source with the H-bridge, as it can overload the USB port of your computer.
- * |
- * Este código utiliza o expansor I2C PCF8574 para controlar um motor através de um circuito H-bridge no ES32Lab.
- * O objetivo deste programa de exemplo é demonstrar de forma didática como utilizar a classe de controle de motor da biblioteca ES32Lab por meio do expansor I2C.
- * Neste exemplo, o motor gira em uma direção por um período de tempo específico e, em seguida, executa um comando de inversão de direção, onde os comandos são espelhados. Isso significa que se o motor estava girando na direção A, ele agora irá girar na direção B. Esse comando é útil quando os fios do motor não foram conectados na ordem em que o programa foi escrito.
- * Atenção: Não utilize a ponte H com uma fonte externa, isso pode sobrecarregar a porta USB do seu computador.
- *   
- * @warning Make sure you have the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) and its dependency TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) installed. | Certifique-se de ter a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) e sua dependência TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) instaladas.
- * |
- * Certifique-se de ter a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) e sua dependência TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) instaladas. | Make sure you have the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) and its dependency TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) installed.
+ * @brief This example demonstrates how to use the ES32Lab I2C PCF8574 expander to control a motor 
+ * through an H-bridge circuit. The motor rotates in one direction for a specific period, then executes 
+ * a command to invert the direction of rotation. This is useful when the motor wires are not connected 
+ * in the expected order.
+ * | Este exemplo demonstra como usar o expansor I2C PCF8574 da ES32Lab para controlar um motor através 
+ * de um circuito H-bridge. O motor gira em uma direção por um período específico e, em seguida, executa 
+ * um comando para inverter a direção de rotação. Isso é útil quando os fios do motor não estão conectados 
+ * na ordem esperada.
+ * @warning Ensure that the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) and its dependency 
+ * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) are installed.
+ * | Certifique-se de que a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) e sua dependência 
+ * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) estejam instaladas.
+ * @attention If the I2C address is incorrect, the program will not work. Use the command 
+ * `expander.scanI2C()` to find the correct address. For more details, refer to the example available at: 
+ * https://github.com/ESDeveloperBR/ES32Lab/blob/main/examples/i2C_Expander/i2C_scanI2C/i2C_scanI2C.ino
+ * | Atenção: Se o endereço I2C estiver incorreto, o programa não funcionará. Use o comando 
+ * `expander.scanI2C()` para encontrar o endereço correto. Para mais detalhes, consulte o exemplo disponível 
+ * em: https://github.com/ESDeveloperBR/ES32Lab/blob/main/examples/i2C_Expander/i2C_scanI2C/i2C_scanI2C.ino
+ * @note To correctly configure the jumpers for the H-bridge connection, watch the video tutorial at: 
+ * https://www.youtube.com/watch?v=xpoNbSA8pPM&t=383s
+ * | Nota: Para configurar corretamente os jumpers para a conexão da ponte-H, assista ao tutorial em vídeo em: 
+ * https://www.youtube.com/watch?v=xpoNbSA8pPM&t=383s
+ * @see Official board: https://www.esdeveloper.com.br
+ * | Placa oficial disponível em: https://www.esdeveloper.com.br
+ * @see ES_PCF8574 documentation: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
+ * | Documentação da classe ES_PCF8574: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
  */
+
 #include <Arduino.h>
 #include <ES32Lab.h>  // Library used to facilitate the use of the ES32Lab board | Biblioteca utilizada para facilitar o uso da placa ES32Lab
 
-ES_PCF8574 expander(0x38);  // Instantiates the 'expander' object with the given address | Instancia o objeto 'expander' com o endereço fornecido
+ES_PCF8574 expander(0x20);  // Instantiates the 'expander' object with the default address `0x20`. | Instancia o objeto 'expander' com o endereço padrão `0x20`.
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Setup >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 void setup() {
@@ -28,6 +42,6 @@ void setup() {
 void loop() {
   expander.motorRotationA(1, 50);  // Activates rotation in direction A for motor 1, at a speed of 50% of maximum speed | Ativa a rotação no sentido A para o motor 1, na velocidade estabelecida em 50% da velocidade máxima
   delay(2000);  // Pauses the loop for 2 seconds | Pausa o LOOP por 2 segundos
-
   expander.invertMotorCommands(1);  // Inverts the direction of the 'motorRotationA' and 'motorRotationB' methods. Ideal for when the motor wires are not connected in the order in which the program was written. | Inverte a direção dos métodos 'motorRotationA' e 'motorRotationB'. Ideal para quando os fios do motor não foram ligados na ordem na qual o programa foi escrito.
+
 }

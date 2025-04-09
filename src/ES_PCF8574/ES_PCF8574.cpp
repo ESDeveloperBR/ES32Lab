@@ -8,7 +8,6 @@
  */
 ES_PCF8574::ES_PCF8574(uint8_t address) {
   _address = address;
-  _value = 0;
 }
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< scanI2CDevices >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

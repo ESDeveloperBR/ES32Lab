@@ -32,4 +32,5 @@ void loop() {
   if(expander.btRelease(EX0)){  // When the button connected to the expansion GPIO is released, execute: | Quando o botão conectado à GPIO de expansão for solto, execute:
     Serial.println("Button 0 released");  // Display on the serial monitor. | Exibe no monitor serial.
   }
+  
 }

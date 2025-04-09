@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include "TimeInterval/TimeInterval.h"
 
-#define ES_PCF8574_VERSION "0.7.2 update 11/18/2024"  // mm/dd/yyyy
+#define ES_PCF8574_VERSION "0.7.3 update 04/05/2024"  // mm/dd/yyyy
 
 #define ES_PCF8574_TASK_PWM_SIM_STACK_DEPTH 1200  // Sets the amount of memory available for local variables and function calls within the PWM simulator. | Define a quantidade de memória disponível para as variáveis locais e chamadas de função dentro do simulador PWM.
 #define ES_PCF8574_TASK_PWM_SIM_PRIORITY 2         // Represents the task priority. Higher values indicate higher priority. | Representa a prioridade da tarefa. Valores maiores indicam maior prioridade.
@@ -23,16 +23,16 @@
 class ES_PCF8574 {
 
   private:
-    uint8_t _address;
-    uint8_t _value;
-    boolean _btPress[8] = {false, false, false, false, false, false, false, false}; // Button pressed starts with "false"
-    boolean _btRelease[8] = {true, true, true, true, true, true, true, true}; // The button is released "True"  
-    boolean _pwmSimulation(uint8_t pin); // Gera o siclo do pulso PWM.
-    boolean _pwmSimulationStatus; // Indica se o simulador de PWM está ativo.
+    uint8_t _address; // I2C address of the PCF8574 expander. | Endereço I2C do expansor PCF8574.
+    uint8_t _value = 255; // Default value for the GPIOs of the I2C expander. | Valor padrão para os GPIOs do expansor i2C.
+    boolean _btPress[8] = {false, false, false, false, false, false, false, false}; // Button pressed starts with "false" | Botão pressionado começa com "false"
+    boolean _btRelease[8] = {true, true, true, true, true, true, true, true}; // The button is released "True" | O botão é liberado "True"
+    boolean _pwmSimulation(uint8_t pin); // Manages a simulated PWM pulse on the I2C expander. ATTENTION: The I2C expander does not generate high-frequency PWM. | Gerencia um pulso PWM simulado no expansor i2C. ATENÇÃO: O expansor i2C não gera PWM de alta frequencia.
+    boolean _pwmSimulationStatus; // Controls the activation of the PWM simulator by creating a task with a LOOP execution. | Controla a ativação do simulador PWM criando uma tarefa com um LOOP de execução.
 
-    float   _pwmDutyCycle[8] = {0, 0, 0, 0, 0, 0, 0, 0};  // Matriz onde cada endereço representa uma GPIO da expansão i2C, onde será armazenado o comprimento do Duty Cycle.
-    float   _pwmFrequency[8] = {0, 0, 0, 0, 0, 0, 0, 0};  // Matriz onde cada endereço representa uma GPIO da expansão i2C, onde será armazenado a frequência PWM independente de cada GPIO.
-    TimeInterval _pwmDutyTime[8]; // Matriz do tipo 'TimeInterval' responsável com controlar o tempo de ciclo de cada GPIO a ser utilizada para gerar pulso PWM.
+    float   _pwmDutyCycle[8] = {0, 0, 0, 0, 0, 0, 0, 0};  // Matrix where each address represents a GPIO of the I2C expansion, where the length of the Duty Cycle will be stored. | Matriz onde cada endereço representa uma GPIO da expansão i2C, onde será armazenado o tamanho do Duty Cycle.
+    float   _pwmFrequency[8] = {0, 0, 0, 0, 0, 0, 0, 0};  // Matrix where each address represents a GPIO of the I2C expansion, where the PWM frequency will be stored independently for each GPIO. | Matriz onde cada endereço representa uma GPIO da expansão i2C, onde será armazenada a frequência PWM de forma independente para cada GPIO.
+    TimeInterval _pwmDutyTime[8]; // Matrix of type 'TimeInterval' responsible for controlling the cycle time of each GPIO to be used to generate PWM pulse. | Matriz do tipo 'TimeInterval' responsável por controlar o tempo de ciclo de cada GPIO a ser utilizada para gerar o pulso PWM.
 
     uint8_t _motorFrequency[4] = {20, 20, 20, 20};
     uint8_t _motorPin1[4];

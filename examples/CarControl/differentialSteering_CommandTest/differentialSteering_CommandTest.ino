@@ -8,8 +8,19 @@
  * onde cada esteira é acionada por um motor separado, permitindo que elas girem em velocidades diferentes. Para mudar de direção, o trator ajusta a velocidade de
  * rotação de uma esteira em relação à outra. Por exemplo, se o trator deseja girar para a esquerda, ele reduz a velocidade da esteira direita ou aumenta a
  * velocidade da esteira esquerda, criando uma diferença de rotação que faz o trator virar para a esquerda.
- * @warning For more information on the documentation of the 'ES_CarControl' class contained in the ES32Lab library, please refer to the link (https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme).
- * | Para mais informações sobre a documentação da classe ‘ES_CarControl’ contida na biblioteca ES32Lab, acesse o link (https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme).
+ * 
+ * @warning Ensure that the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) and its dependency 
+ * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) are installed.
+ * | Certifique-se de que a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) e sua dependência 
+ * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) estejam instaladas.
+ * 
+ * @note For more information on the 'ES_CarControl' class documentation, refer to: 
+ * https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme
+ * | Nota: Para mais informações sobre a documentação da classe 'ES_CarControl', consulte: 
+ * https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme
+ * 
+ * @see Official board: https://www.esdeveloper.com.br
+ * | Placa oficial disponível em: https://www.esdeveloper.com.br
  */
 
 #include <Arduino.h>

@@ -4,16 +4,28 @@
  * allowing them to rotate at different speeds. To change direction, the tank adjusts the rotation speed of one track relative to the other. For example, if 
  * the tank wants to turn left, it reduces the speed of the right track or increases the speed of the left track, creating a rotational difference that makes the tank 
  * turn left. For motor control, Bluetooth communication will be used, and the suggested app for this experiment is "Bluetooth RC Controller." 
- * https://play.google.com/store/apps/details?id=braulio.calle.bluetoothRCcontroller
+ * https://bluetooth-rc-car.softonic.com.br/android
  * | Esse exemplo tem como objetivo utilizar, de forma fácil e objetiva, um mecanismo de controle de motores usando duas pontes H para a locomoção
  * de um veículo através do método diferencial. Esse método segue o mesmo princípio de locomoção de um trator de esteira,
  * onde cada esteira é acionada por um motor separado, permitindo que elas girem em velocidades diferentes. Para mudar de direção, o trator ajusta a velocidade de
  * rotação de uma esteira em relação à outra. Por exemplo, se o trator deseja girar para a esquerda, ele reduz a velocidade da esteira direita ou aumenta a
  * velocidade da esteira esquerda, criando uma diferença de rotação que faz o trator virar para a esquerda. Para o controle dos motores, será utilizada a comunicação Bluetooth, 
- * e o aplicativo sugerido para esse experimento é o "Bluetooth RC Controller". https://play.google.com/store/apps/details?id=braulio.calle.bluetoothRCcontroller
- * @warning For more information on the documentation of the 'ES_CarControl' class contained in the ES32Lab library, please refer to the link (https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme).
- * | Para mais informações sobre a documentação da classe ‘ES_CarControl’ contida na biblioteca ES32Lab, acesse o link (https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme).
+ * e o aplicativo sugerido para esse experimento é o "Bluetooth RC Controller". https://bluetooth-rc-car.softonic.com.br/android
+ *
+ * @warning Ensure that the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) and its dependency 
+ * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) are installed.
+ * | Certifique-se de que a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) e sua dependência 
+ * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) estejam instaladas.
+ * 
+ * @note For more information on the 'ES_CarControl' class documentation, refer to: 
+ * https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme
+ * | Nota: Para mais informações sobre a documentação da classe 'ES_CarControl', consulte: 
+ * https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme
+ * 
+ * @see Official board: https://www.esdeveloper.com.br
+ * | Placa oficial disponível em: https://www.esdeveloper.com.br
  */
+
 #include <Arduino.h>
 #include <BluetoothSerial.h>  // Library for Bluetooth utilization. | Biblioteca para a utilização do Bluetooth.
 #include <ES32Lab.h>  // Library used to facilitate the use of the ES32Lab board | Biblioteca usada para facilitar o uso da placa ES32Lab

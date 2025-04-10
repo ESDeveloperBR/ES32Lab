@@ -4,15 +4,27 @@
  * This way, the vehicle adjusts the front wheel direction as needed. This steering method is identical to what's used in typical street vehicles.
  * For controlling the motors, we'll employ the ES32Lab's H-bridge, along with Bluetooth communication between the smartphone and ES32Lab.
  * The recommended app for this experiment is the "Bluetooth RC Controller."
- * https://play.google.com/store/apps/details?id=braulio.calle.bluetoothRCcontroller
+ * https://bluetooth-rc-car.softonic.com.br/android
  * | Neste exemplo prático, utilizamos a classe "ES_CarControl" para criar um código de programação conciso e eficaz destinado ao controle de um veículo de direção “FRONTAL”.
  * Dessa forma, o veículo ajusta a direção das rodas dianteiras de acordo com o deslocamento necessário. Esse método de direção é idêntico ao utilizado em veículos comuns de rua.
  * Para o controle dos motores, empregaremos a ponte H da ES32Lab, juntamente com a comunicação Bluetooth entre o smartphone e a ES32Lab.
  * O aplicativo recomendado para esse experimento é o "Bluetooth RC Controller".
- * https://play.google.com/store/apps/details?id=braulio.calle.bluetoothRCcontroller
- * @warning For more information on the documentation of the 'ES_CarControl' class contained in the ES32Lab library, please refer to the link (https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme).
- * | Para mais informações sobre a documentação da classe ‘ES_CarControl’ contida na biblioteca ES32Lab, acesse o link (https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme).
+ * https://bluetooth-rc-car.softonic.com.br/android
+ * 
+ * @warning Ensure that the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) and its dependency 
+ * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) are installed.
+ * | Certifique-se de que a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) e sua dependência 
+ * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) estejam instaladas.
+ * 
+ * @note For more information on the 'ES_CarControl' class documentation, refer to: 
+ * https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme
+ * | Nota: Para mais informações sobre a documentação da classe 'ES_CarControl', consulte: 
+ * https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_CarControl#readme
+ * 
+ * @see Official board: https://www.esdeveloper.com.br
+ * | Placa oficial disponível em: https://www.esdeveloper.com.br
  */
+
 #include <Arduino.h>
 #include <BluetoothSerial.h>  // Library for Bluetooth utilization. | Biblioteca para a utilização do Bluetooth.
 #include <ES32Lab.h>  // Library used to facilitate the use of the ES32Lab board | Biblioteca usada para facilitar o uso da placa ES32Lab

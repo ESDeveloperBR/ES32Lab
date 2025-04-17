@@ -119,7 +119,6 @@ int ES_Buzzer::getSpeed(){
  * | Define o fator percentual de ajuste de pitch (100 = tom original).
  * @param percentage The pitch percentage. | O percentual do pitch a ser aplicado nas notas.
  */
-//void ES_Buzzer::setPitch(float percentage) {
 void ES_Buzzer::setPitch(int percentage) {
     _pitch = constrain(percentage, 1, 255);
     //Serial.printf("Pitch: %d\n", _pitch);
@@ -131,7 +130,6 @@ void ES_Buzzer::setPitch(int percentage) {
  * | Retorna o valor atual do ajuste de pitch em percentual.
  * @return The current pitch percentage. | O valor percentual atual do pitch.
  */
-//float ES_Buzzer::getPitch() {
 int ES_Buzzer::getPitch() {
     return _pitch;
 }

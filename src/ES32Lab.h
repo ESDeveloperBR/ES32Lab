@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.9.3 update 09/04/2025"   // dd/mm/yyyy
+    #define ES32LAB_VERSION "0.10.1 update 16/04/2025"   // dd/mm/yyyy
 
     // ---- Label impresso na ES32Lab ----
     #define P00      0
@@ -73,23 +73,6 @@
     #define P_DAC1      25  // Se a DAC for utilizada como áudio, será o canal L
     #define P_DAC2      26  // Se a DAC for utilizada como áudio, será o canal R
 
-    // ---- Constanstes de configuração da camera OV2640 ----
-    #define PWDN_GPIO_NUM     -1
-    #define RESET_GPIO_NUM    -1
-    #define XCLK_GPIO_NUM     -1
-    #define SIOD_GPIO_NUM     21
-    #define SIOC_GPIO_NUM     22
-    #define Y9_GPIO_NUM       35
-    #define Y8_GPIO_NUM       34
-    #define Y7_GPIO_NUM       39
-    #define Y6_GPIO_NUM       36
-    #define Y5_GPIO_NUM       16
-    #define Y4_GPIO_NUM       14
-    #define Y3_GPIO_NUM       12
-    #define Y2_GPIO_NUM        4
-    #define VSYNC_GPIO_NUM    13
-    #define HREF_GPIO_NUM     32
-    #define PCLK_GPIO_NUM     17
 
     // ---- Classe da LIB ES32Lab ----
     #include "AnalogKeyboard/AnalogKeyboardb.h"
@@ -100,6 +83,7 @@
     #include "TFT_Plus/TFT_Plus.h"
     #include "ES_PCF8574/ES_PCF8574.h"
     #include "ES_CarControl/ES_CarControl.h"
+    #include "ES_Camera/ES_Camera.h"
 
     class ES32Lab {
         private:    

@@ -139,6 +139,8 @@ A biblioteca da ES32Lab conta com diversas classes para programação orientada 
   
 - [ES_Buzzer](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_Buzzer#readme)
 
+- [ES_Camera](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_Camera)
+
 - [ES_PCF8574](https://github.com/ESDeveloperBR/ES32Lab/blob/main/src/ES_PCF8574#readme)
 
 - [FileManager](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/FileManager#readme)

@@ -8,16 +8,16 @@
 
 #include <TFT_eSPI.h>     // Graphics and font library for ST7735 driver chip
 #include "JPEGDecoder/src/JPEGDecoder.h"
-#include "FileManager/FileManager.h"
+#include "ES_FileManager/ES_FileManager.h"
 
-#define TFT_PLUS_VERSION "0.8.2 update 06/05/2022"  // mm/dd/yyyy
+#define TFT_PLUS_VERSION "0.8.3 update 21/04/2022"  // mm/dd/yyyy
 
 // Classe TFT_Plus 
 class TFT_Plus{
     private:
         #define minimum(a,b)     (((a) < (b)) ? (a) : (b))
         boolean _trabalharComArquivos = false;
-        FileManager _arquivo;
+        ES_FileManager _arquivo;
         boolean _compareStr(String str1, String str2);
         String  _fileNameRenderJPEG;
     

@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.10.1 update 16/04/2025"   // dd/mm/yyyy
+    #define ES32LAB_VERSION "0.12.0 update 08/05/2025"   // dd/mm/yyyy
 
     // ---- Label impresso na ES32Lab ----
     #define P00      0
@@ -77,7 +77,8 @@
     // ---- Classe da LIB ES32Lab ----
     #include "AnalogKeyboard/AnalogKeyboardb.h"
     #include "ES_Buzzer/ES_Buzzer.h"
-    #include "FileManager/FileManager.h"
+    //#include "ES_FileManager/ES_FileManager.h"
+    #include "ES_File/ES_File.h"
     #include "TimeInterval/TimeInterval.h"
     #include "DigitalButton/DigitalButton.h"
     #include "TFT_Plus/TFT_Plus.h"

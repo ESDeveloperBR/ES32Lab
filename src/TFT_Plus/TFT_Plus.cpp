@@ -276,20 +276,22 @@ void TFT_Plus::loadFontArray(const uint8_t array[]){
 
 // Carrega um arquivo salvo em um SD ou SPPIF do tipo fonte (.vlw)
 void TFT_Plus::loadFontFile(String fontName, boolean sdCard){
+    /*
     fontName.toLowerCase();
 
-    /* Se o nome do arquivo comecar com '/' entÃƒÂ£o remova a '/' */
+    // Se o nome do arquivo comecar com '/' entÃƒÂ£o remova a '/'
     if(fontName[0] == '/') fontName = fontName.substring(1, fontName.length());
 
-    /* Se o nome do arquivo tiver extensÃƒÂ£o, remova */
+    // Se o nome do arquivo tiver extensÃƒÂ£o, remova
     if(fontName.substring(fontName.length() - 4, fontName.length()) == ".vlw"){ 
         fontName = fontName.substring(0, fontName.length() - 4);
     }
 
-    /* Escolhe se o arquivo esta em SD ou SPIFFS */
+    // Escolhe se o arquivo esta em SD ou SPIFFS
     _arquivo.begin(sdCard);
     if(sdCard) tft.loadFont(fontName, SD);
     else tft.loadFont(fontName, SPIFFS);
+    */
 }
 /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Desvincula arquivo de font >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 // Desvincula arquivo de font. Ex.: this.unloadFont();
@@ -525,14 +527,15 @@ String TFT_Plus::getFileNameRenderJPEG(void){
 // - xpos: Referencia X no plano cartesiano do display
 // - ypos: Referencia Y no plano cartesiano do display
 boolean TFT_Plus::renderJPEG(String fileName, boolean sdCard, int xpos, int ypos) {
-    /* Se o nome do arquivo nÃƒÂ£o tiver extensÃƒÂ£o ".jpg", encerre.  */
+    /*
+    // Se o nome do arquivo nÃƒÂ£o tiver extensÃƒÂ£o ".jpg", encerre.
     if(!_compareStr(fileName.substring(fileName.length() - 4, fileName.length()), ".jpg") ){ 
         return false;
     }
 
-    _arquivo.begin(fileName, sdCard);
+    _arquivo.begin(fileName.c_str(), sdCard);
 
-    if(!_arquivo.existe()) return false;
+    if(!_arquivo.exists()) return false;
 
     JpegDec.decodeFsFile(_arquivo.getFile());
 
@@ -598,6 +601,7 @@ boolean TFT_Plus::renderJPEG(String fileName, boolean sdCard, int xpos, int ypos
     }
     tft.setSwapBytes(swapBytes);
     _fileNameRenderJPEG = fileName;
+    */
     return true;
 }
 
@@ -608,14 +612,19 @@ boolean TFT_Plus::renderJPEG(String fileName, boolean sdCard, int xpos, int ypos
 // - xpos: Referencia X no plano cartesiano do display
 // - ypos: Referencia Y no plano cartesiano do display
 boolean TFT_Plus::renderFirstFileJPEG(String directory, boolean sdCard, int xpos, int ypos){
-    String fileName = _arquivo.listaPrimeiroArquivoNome(directory, sdCard);
+    /*
+    String fileName = _arquivo.listFirstFileName(directory.c_str(), sdCard);
     // Se o nome do arquivo nÃƒÂ£o tiver extensÃƒÂ£o ".jpg"
     while(!_compareStr(fileName.substring(fileName.length() - 4, fileName.length()), ".jpg") ){ 
-        fileName = _arquivo.listaProximoArquivoNome(fileName);
-        if( !_arquivo.existe(fileName) ) return false;
+        fileName = _arquivo.listNextFileName(fileName.c_str());
+        if( !_arquivo.exists(fileName.c_str()) ) return false;
     }
-    if(_arquivo.existe(fileName, sdCard)) _arquivo.begin(fileName, sdCard);
-    return renderJPEG(_arquivo.getNomeArquivo(), sdCard, xpos, ypos);
+    if(_arquivo.exists(fileName.c_str(), sdCard)) _arquivo.begin(fileName.c_str(), sdCard);
+    return renderJPEG(_arquivo.getFileName(), sdCard, xpos, ypos);
+    */
+   return false; // Temporário
+
+
 }
 
 /* <<<<<<<<<<<< Exibe uma imagem JPG no display baseado no ultimo arquivo do diretÃƒÂ³rio >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
@@ -625,14 +634,18 @@ boolean TFT_Plus::renderFirstFileJPEG(String directory, boolean sdCard, int xpos
 // - xpos: Referencia X no plano cartesiano do display
 // - ypos: Referencia Y no plano cartesiano do display
 boolean TFT_Plus::renderLastFileJPEG(String directory, boolean sdCard, int xpos, int ypos){
-    String fileName = _arquivo.listaUltimoArquivoNome(directory, sdCard);
+    /*
+    String fileName = _arquivo.listLastFileName(directory.c_str(), sdCard);
     // Se o nome do arquivo nÃƒÂ£o tiver extensÃƒÂ£o ".jpg"
     while(!_compareStr(fileName.substring(fileName.length() - 4, fileName.length()), ".jpg") ){ 
-        fileName = _arquivo.listaAnteriorArquivoNome(fileName);
-        if( !_arquivo.existe(fileName) ) return false;
+        fileName = _arquivo.listPreviousFileName(fileName.c_str());
+        if( !_arquivo.exists(fileName.c_str()) ) return false;
     }
-    if(_arquivo.existe(fileName, sdCard)) _arquivo.begin(fileName, sdCard);
-    return renderJPEG(_arquivo.getNomeArquivo(), sdCard, xpos, ypos);
+    if(_arquivo.exists(fileName.c_str(), sdCard)) _arquivo.begin(fileName.c_str(), sdCard);
+    return renderJPEG(_arquivo.getFileName(), sdCard, xpos, ypos);
+    */
+   return false; // Temporário
+
 }
 
 /* <<<<<<<<<<<< Exibe uma imagem JPG no display baseado no proximo arquivo do diretÃƒÂ³rio selecionado >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
@@ -645,16 +658,20 @@ boolean TFT_Plus::renderLastFileJPEG(String directory, boolean sdCard, int xpos,
 //   - renderFirstFileJPEG(String directory, boolean sdCard, int xpos, int ypos)
 //   - renderLastFileJPEG(String directory, boolean sdCard, int xpos = 0, int ypos = 0 )
 boolean TFT_Plus::renderNextFileJPEG(int xpos, int ypos){
-    String fileName = _arquivo.listaProximoArquivoNome();
+    /*
+    String fileName = _arquivo.listNextFileName();
     // Se o nome do arquivo nÃƒÂ£o tiver extensÃƒÂ£o ".jpg"
     while(!_compareStr(fileName.substring(fileName.length() - 4, fileName.length()), ".jpg") ){ 
-        fileName = _arquivo.listaProximoArquivoNome(fileName);
-        if( !_arquivo.existe(fileName) ) return false;
+        fileName = _arquivo.listNextFileName(fileName.c_str());
+        if( !_arquivo.exists(fileName.c_str()) ) return false;
     }
 
-    if(_arquivo.existe(fileName)) _arquivo.setNomeArquivo(fileName);
+    if(_arquivo.exists(fileName.c_str())) _arquivo.setFileName(fileName.c_str());
 
-    return renderJPEG(_arquivo.getNomeArquivo(), _arquivo.getSdCard(), xpos, ypos);
+    return renderJPEG(_arquivo.getFileName(), _arquivo.getSdCard(), xpos, ypos);
+    */
+   return false; // Temporário
+
 }
 
 /* <<<<<<<<<<<< Exibe uma imagem JPG no display baseado arquivo ANTERIOR do diretÃƒÂ³rio selecionado >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
@@ -667,16 +684,19 @@ boolean TFT_Plus::renderNextFileJPEG(int xpos, int ypos){
 //   - renderFirstFileJPEG(String directory, boolean sdCard, int xpos, int ypos)
 //   - renderLastFileJPEG(String directory, boolean sdCard, int xpos = 0, int ypos = 0 )
 boolean TFT_Plus::renderBackFileJPEG(int xpos, int ypos){
-    String fileName = _arquivo.listaAnteriorArquivoNome();
+    /*
+    String fileName = _arquivo.listPreviousFileName();
     // Se o nome do arquivo nÃƒÂ£o tiver extensÃƒÂ£o ".jpg"
     while(!_compareStr(fileName.substring(fileName.length() - 4, fileName.length()), ".jpg") ){ 
-        fileName = _arquivo.listaAnteriorArquivoNome(fileName);
-        if( !_arquivo.existe(fileName) ) return false;
+        fileName = _arquivo.listPreviousFileName(fileName.c_str());
+        if( !_arquivo.exists(fileName.c_str()) ) return false;
     }
 
-    if(_arquivo.existe(fileName)) _arquivo.setNomeArquivo(fileName);
+    if(_arquivo.exists(fileName.c_str())) _arquivo.setFileName(fileName.c_str());
 
-    return renderJPEG(_arquivo.getNomeArquivo(), _arquivo.getSdCard(), xpos, ypos);
+    return renderJPEG(_arquivo.getFileName(), _arquivo.getSdCard(), xpos, ypos);
+    */
+    return false; // Temporário
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

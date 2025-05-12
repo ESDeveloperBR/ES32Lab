@@ -8,7 +8,7 @@
 #include <LittleFS.h>
 #include <vector>
 
-#define ES_FILE_VERSION "3.2.22 update 05/08/2025"   // mm/dd/yyyy
+#define ES_FILE_VERSION "3.3.3 update 05/12/2025"   // mm/dd/yyyy
 
 class ES_File {
 private:
@@ -220,6 +220,25 @@ public:
     /**
      * Writes a line of text to a file with a newline character.
      * | Escreve uma linha de texto em um arquivo com um caractere de nova linha.
+     * @param fileName Name of the file. | Nome do arquivo.
+     * @param content Content to write. | Conteúdo a ser escrito.
+     * @param createNew Whether to create a new file or append. | Se deve criar um novo arquivo ou anexar.
+     * @return True if successful, false otherwise. | Verdadeiro se bem-sucedido, falso caso contrário.
+     */    
+    bool println(const String& fileName, int content, bool createNew = false);
+    /**
+     * Writes a line of text to a file with a newline character.
+     * | Escreve uma linha de texto em um arquivo com um caractere de nova linha.
+     * @param fileName Name of the file. | Nome do arquivo.
+     * @param content Content to write. | Conteúdo a ser escrito.
+     * @param createNew Whether to create a new file or append. | Se deve criar um novo arquivo ou anexar.
+     * @param decimalPlaces Number of decimal places to write. | Número de casas decimais a serem escritas.
+     * @return True if successful, false otherwise. | Verdadeiro se bem-sucedido, falso caso contrário.
+     */    
+    bool println(const String& fileName, double content, bool createNew = false, uint8_t decimalPlaces = 2);
+    /**
+     * Writes a line of text to a file with a newline character.
+     * | Escreve uma linha de texto em um arquivo com um caractere de nova linha.
      * @param fs File system to use. | Sistema de arquivos a ser usado.
      * @param fileName Name of the file. | Nome do arquivo.
      * @param content Content to write. | Conteúdo a ser escrito.
@@ -238,6 +257,25 @@ public:
      * @return True if successful, false otherwise. | Verdadeiro se bem-sucedido, falso caso contrário.
      */
     bool print(const String& fileName, const String& content, bool createNew = false);
+    /**
+     * Writes text to a file without a newline character.
+     * | Escreve texto em um arquivo sem um caractere de nova linha.
+     * @param fileName Name of the file. | Nome do arquivo.
+     * @param content Content to write. | Conteúdo a ser escrito.
+     * @param createNew Whether to create a new file or append. | Se deve criar um novo arquivo ou anexar.
+     * @return True if successful, false otherwise. | Verdadeiro se bem-sucedido, falso caso contrário.
+     */
+    bool print(const String& fileName, int content, bool createNew = false);
+    /**
+     * Writes text to a file without a newline character.
+     * | Escreve texto em um arquivo sem um caractere de nova linha.
+     * @param fileName Name of the file. | Nome do arquivo.
+     * @param content Content to write. | Conteúdo a ser escrito.
+     * @param createNew Whether to create a new file or append. | Se deve criar um novo arquivo ou anexar.
+     * @param decimalPlaces Number of decimal places to write. | Número de casas decimais a serem escritas.
+     * @return True if successful, false otherwise. | Verdadeiro se bem-sucedido, falso caso contrário.
+     */    
+    bool print(const String& fileName, double content, bool createNew = false, uint8_t decimalPlaces = 2);
     /**
      * Writes text to a file without a newline character.
      * | Escreve texto em um arquivo sem um caractere de nova linha.
@@ -267,6 +305,26 @@ public:
      * | O conteúdo do arquivo como uma String, ou uma String vazia em caso de erro.
      */
     String readFile(fs::FS& fs, const String& fileName);
+
+
+    /**
+     * Reads a specific line from a file.
+     * | Lê uma linha específica de um arquivo.
+     * @param fileName Name of the file to read. | Nome do arquivo a ser lido.
+     * @param lineNumber Line number to read (starting from 1). | Número da linha a ser lida (começando de 1).
+     * @return The content of the specified line, or an empty String if the line does not exist. 
+     * | O conteúdo da linha especificada, ou uma String vazia se a linha não existir.
+     */
+    String readLine(const String& fileName, size_t lineNumber);
+
+
+    /**
+     * Counts the number of lines in a file.
+     * | Conta o número de linhas em um arquivo.
+     * @param fileName Name of the file to count lines. | Nome do arquivo para contar as linhas.
+     * @return The total number of lines in the file. | O número total de linhas no arquivo.
+     */
+    size_t countLines(const String& fileName);
 
 
     /**
@@ -438,6 +496,7 @@ public:
      * | Obtém o nome do arquivo ANTERIOR em um diretório.
      * @param directory Directory to search in. | Diretório a ser pesquisado.
      * @return Name of the PREVIOUS file. | Nome do arquivo ANTERIOR.
+     * @note The method returns an empty string if the directory is empty or does not exist. | O método retorna uma string vazia se o diretório estiver vazio ou não existir.
      */
     String getPreviousFileName(const String& directory = "");
     /**
@@ -446,6 +505,7 @@ public:
      * @param fs File system to use. | Sistema de arquivos a ser usado.
      * @param directory Directory to search in. | Diretório a ser pesquisado.
      * @return Name of the PREVIOUS file. | Nome do arquivo ANTERIOR.
+     * @note The method returns an empty string if the directory is empty or does not exist. | O método retorna uma string vazia se o diretório estiver vazio ou não existir.
      */
     String getPreviousFileName(fs::FS& fs, const String& directory = "");
 
@@ -455,6 +515,7 @@ public:
      * | Obtém o nome do PRÓXIMO arquivo em um diretório.
      * @param directory Directory to search in. | Diretório a ser pesquisado.
      * @return Name of the NEXT file. | Nome do arquivo PRÓXIMO.
+     * @note The method returns an empty string if the directory is empty or does not exist. | O método retorna uma string vazia se o diretório estiver vazio ou não existir.
      */
     String getNextFileName(const String& directory = "");
     /**
@@ -463,6 +524,7 @@ public:
      * @param fs File system to use. | Sistema de arquivos a ser usado.
      * @param directory Directory to search in. | Diretório a ser pesquisado.
      * @return Name of the NEXT file. | Nome do arquivo PRÓXIMO.
+     * @note The method returns an empty string if the directory is empty or does not exist. | O método retorna uma string vazia se o diretório estiver vazio ou não existir.
      */
     String getNextFileName(fs::FS& fs, const String& directory = "");
 
@@ -558,6 +620,15 @@ public:
     File getPreviousFile(fs::FS& fs, bool edit = false);
 
 
+    /**
+     * Copies a file from one file system to another.
+     * | Copia um arquivo de um sistema de arquivos para outro.
+     * @param sourceFileName Source file name. | Nome do arquivo de origem.
+     * @param destFileName Destination file name. | Nome do arquivo de destino.
+     * @return True if successful, false otherwise. | Verdadeiro se bem-sucedido, falso caso contrário.
+     * @note This method does not support copying files between SPIFFS and LittleFS. | Este método não suporta copiar arquivos entre SPIFFS e LittleFS.
+     */
+    bool copy(const String& sourceFileName, const String& destFileName);
     /**
      * Copies a file from one file system to another.
      * | Copia um arquivo de um sistema de arquivos para outro.

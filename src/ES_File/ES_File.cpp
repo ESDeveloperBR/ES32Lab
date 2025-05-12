@@ -71,7 +71,6 @@ bool ES_File::_initFileSystem(fs::FS* fs) {
         return false;
     }
 
-    _fileSystem = fs;  // Atualiza o ponteiro do FS atual | Update the current FS pointer
     return returnValue;
 }
 
@@ -364,7 +363,6 @@ String ES_File::_locateFile(fs::FS* fs, const String& fileOrDirPath, char option
     } else {
         // Verifica se o caminho existe e obtém o diretório apropriado | Check if path exists and get proper directory
         if (!fs->exists(path.c_str())) {
-            ESP_LOGE("ES_File", "Path does not exist: %s", path.c_str());
             return "";
         }
         File target = fs->open(path.c_str());
@@ -608,7 +606,13 @@ bool ES_File::_removeDirectory(fs::FS& fs, const String& directory) {
 
 // <<< Initializes the file system. | Inicializa o sistema de arquivo. >>>
 bool ES_File::begin(fs::FS& fs) {
-    return _initFileSystem(&fs);
+    if(_initFileSystem(&fs)) {
+        _fileSystem = &fs;
+        return true;
+    }else{
+        ESP_LOGE("ES_File", "Failed to initialize file system");
+        return false;
+    }
 }
 
 
@@ -677,6 +681,14 @@ bool ES_File::println(const String& fileName, const String& content, bool create
     return println(*_fileSystem, fileName, content, createNew);
 }
 
+bool ES_File::println(const String& fileName, int content, bool createNew) {
+    return println(*_fileSystem, fileName, String(content), createNew);
+}
+
+bool ES_File::println(const String& fileName, double content, bool createNew, uint8_t decimalPlaces) {
+    return println(*_fileSystem, fileName, String(content, (unsigned int)decimalPlaces), createNew);
+}
+
 bool ES_File::println(fs::FS& fs, const String& fileName, const String& content, bool createNew) {
     return _writeContent(&fs, fileName, content, true, createNew);
 }
@@ -685,6 +697,14 @@ bool ES_File::println(fs::FS& fs, const String& fileName, const String& content,
 // <<< Prints text to a file without a newline character. | Imprime texto em um arquivo sem um caractere de nova linha. >>>
 bool ES_File::print(const String& fileName, const String& content, bool createNew) {
     return print(*_fileSystem, fileName, content, createNew);
+}
+
+bool ES_File::print(const String& fileName, int content, bool createNew) {
+    return print(*_fileSystem, fileName, String(content), createNew);
+}
+
+bool ES_File::print(const String& fileName, double content, bool createNew, uint8_t decimalPlaces) {
+    return print(*_fileSystem, fileName, String(content, (unsigned int)decimalPlaces), createNew);
 }
 
 bool ES_File::print(fs::FS& fs, const String& fileName, const String& content, bool createNew) {
@@ -719,6 +739,57 @@ String ES_File::readFile(fs::FS& fs, const String& fileName) {
     file.close();
     _fileName = pathStr;
     return content;
+}
+
+
+// <<< Reads a specific line from a file. | Lê uma linha específica de um arquivo. >>>
+String ES_File::readLine(const String& fileName, size_t lineNumber) {
+    if (!_fileSystem) {
+        return "";
+    }
+
+    File file = _fileSystem->open(fileName, FILE_READ);
+    if (!file) {    // File not found | Arquivo não encontrado
+        return ""; 
+    }
+
+    size_t currentLine = 0;
+    String lineContent = "";
+
+    while (file.available()) {  // Read the file line by line | Lê o arquivo linha por linha
+        lineContent = file.readStringUntil('\n');
+        currentLine++;
+
+        if (currentLine == lineNumber) {    // If the current line matches the requested line number | Se a linha atual corresponder ao número da linha solicitada
+            file.close();
+            return lineContent;
+        }
+    }
+
+    file.close();
+    return "";
+}
+
+
+// <<< Counts the number of lines in a file. | Conta o número de linhas em um arquivo. >>>
+size_t ES_File::countLines(const String& fileName) {
+    if (!_fileSystem) {
+        return 0; 
+    }
+
+    File file = _fileSystem->open(fileName, FILE_READ);
+    if (!file) {
+        return 0;
+    }
+
+    size_t lineCount = 0;
+
+    while (file.available()) {  // Read the file line by line | Lê o arquivo linha por linha
+        file.readStringUntil('\n');
+        lineCount++;
+    }
+    file.close();
+    return lineCount;
 }
 
 
@@ -966,9 +1037,11 @@ String ES_File::getPreviousFileName(fs::FS& fs, const String& directory) {
                 }
                 return _locateFile(&fs, normalizedDirectory, 'P');
             } else {    // If _fileName and normalizedDirectory are in the same directory. | Se _fileName e normalizedDirectory estão no mesmo diretório.
+                /*
                 if (_extractDirectoryFromPath(_fileName).equals(_extractDirectoryFromPath(normalizedDirectory))) {  // If _fileName and normalizedDirectory are in the same directory.
                     return _locateFile(&fs, _fileName, 'P');
                 }
+                */
                 return _locateFile(&fs, normalizedDirectory, 'P');
             }
         }
@@ -992,9 +1065,68 @@ String ES_File::getPreviousFileName(fs::FS& fs, const String& directory) {
 String ES_File::getNextFileName(const String& directory) {
     return getNextFileName(*_fileSystem, directory);
 }
-
+/*
 String ES_File::getNextFileName(fs::FS& fs, const String& directory) {
     String normalizedDirectory = _normalizePath(fs, directory);
+    Serial.println("directory..........: " + directory);
+    Serial.println("normalizedDirectory: " + normalizedDirectory);
+
+
+    if (!directory.isEmpty() && fs.exists(normalizedDirectory)) {   // If the directory is not empty and exists. | Se o diretório não estiver vazio e existir.
+        Serial.println("111");
+
+        if (!_fileName.isEmpty()) { // If _fileName is not empty. | Se _fileName não estiver vazio.
+            Serial.println("222");
+
+            if (directoryExists(fs, normalizedDirectory)) { // If the directory exists. | Se o diretório existir.
+                Serial.println("333");
+
+                if (_extractDirectoryFromPath(_fileName).equals(normalizedDirectory)) { // If _fileName belongs to the same directory. | Se _fileName pertence ao mesmo diretório.
+                    Serial.println("444");
+                    Serial.println("_locateFile(&fs, "+ _fileName + ", 'N');");
+                    return _locateFile(&fs, _fileName, 'N'); 
+                }
+                return _locateFile(&fs, normalizedDirectory, 'N');
+            } else {    // If _fileName and normalizedDirectory are in the same directory. | Se _fileName e normalizedDirectory estão no mesmo diretório.
+                Serial.println("333 - ELSE");
+
+                if (_extractDirectoryFromPath(_fileName).equals(_extractDirectoryFromPath(normalizedDirectory))) {  // If _fileName and normalizedDirectory are in the same directory.
+                    Serial.println("555");
+                    Serial.println("_locateFile(&fs, " + _fileName +", 'N');");
+                    return _locateFile(&fs, _fileName, 'N');
+                }
+                Serial.println("_locateFile(&fs, " + normalizedDirectory + ", 'N');");
+                return _locateFile(&fs, normalizedDirectory, 'N');
+            }
+        }
+        Serial.println("_locateFile(&fs," + normalizedDirectory +", 'N');");
+        return _locateFile(&fs, normalizedDirectory, 'N');
+    }
+
+    if (!_fileName.isEmpty()) { // If _fileName is not empty. | Se _fileName não estiver vazio.
+        Serial.println("666");
+        if (!directory.isEmpty() && directoryExists(fs, normalizedDirectory)) { // If the directory is not empty and exists. | Se o diretório não estiver vazio e existir.
+            Serial.println("777");
+            Serial.println("_locateFile(&fs, " + normalizedDirectory +", 'N');");
+            return _locateFile(&fs, normalizedDirectory, 'N');
+        }
+        if (!directory.isEmpty() && !_extractDirectoryFromPath(_fileName).equals(_extractDirectoryFromPath(normalizedDirectory))) { // If _fileName and normalizedDirectory are not in the same directory. | Se _fileName e normalizedDirectory não estão no mesmo diretório.
+            Serial.println("888");
+            Serial.println("_locateFile(&fs, " + _extractDirectoryFromPath(normalizedDirectory) +", 'N');");
+            return _locateFile(&fs, _extractDirectoryFromPath(normalizedDirectory), 'N');
+        }
+        Serial.println("_locateFile(&fs, " + _fileName +", 'N');");
+        return _locateFile(&fs, _fileName, 'N');
+    }
+    Serial.println("999");
+    Serial.println("_locateFile(&fs, " + _extractDirectoryFromPath(normalizedDirectory) +", 'N');");
+    return _locateFile(&fs, _extractDirectoryFromPath(normalizedDirectory), 'N');
+}
+
+*/
+String ES_File::getNextFileName(fs::FS& fs, const String& directory) {
+    String normalizedDirectory = _normalizePath(fs, directory);
+
     if (!directory.isEmpty() && fs.exists(normalizedDirectory)) {   // If the directory is not empty and exists. | Se o diretório não estiver vazio e existir.
         if (!_fileName.isEmpty()) { // If _fileName is not empty. | Se _fileName não estiver vazio.
             if (directoryExists(fs, normalizedDirectory)) { // If the directory exists. | Se o diretório existir.
@@ -1003,9 +1135,11 @@ String ES_File::getNextFileName(fs::FS& fs, const String& directory) {
                 }
                 return _locateFile(&fs, normalizedDirectory, 'N');
             } else {    // If _fileName and normalizedDirectory are in the same directory. | Se _fileName e normalizedDirectory estão no mesmo diretório.
+                /*
                 if (_extractDirectoryFromPath(_fileName).equals(_extractDirectoryFromPath(normalizedDirectory))) {  // If _fileName and normalizedDirectory are in the same directory.
                     return _locateFile(&fs, _fileName, 'N');
                 }
+                */
                 return _locateFile(&fs, normalizedDirectory, 'N');
             }
         }
@@ -1089,10 +1223,12 @@ File ES_File::getPreviousFile(fs::FS& fs, bool edit) {
 
 
 // <<< Copies a file from one file system to another. | Copia um arquivo de um sistema de arquivos para outro. >>>
+bool ES_File::copy(const String& sourceFileName, const String& destFileName) {
+    return copy(*_fileSystem, sourceFileName, *_fileSystem, destFileName);
+}
 bool ES_File::copy(const String& sourceFileName, fs::FS& destFS, const String& destFileName) {
     return copy(*_fileSystem, sourceFileName, destFS, destFileName);
 }
-
 bool ES_File::copy(fs::FS& sourceFS, const String& sourceFileName, fs::FS& destFS, const String& destFileName) {
     if (!_initFileSystem(&sourceFS)) {
         ESP_LOGE("ES_File", "Failed to initialize source file system");

@@ -106,7 +106,7 @@ void setup() {
 - **`bool print(const String& fileName, const String& content, bool createNew = false)`**  
   Escreve texto em um arquivo sem uma quebra de linha.
 
-- **`String readFile(const String& fileName)`**  
+- **`String read(const String& fileName)`**  
   Lê o conteúdo de um arquivo.
 
 - **`bool exists(const String& fileName)`**  
@@ -202,7 +202,7 @@ void setup() {
     Serial.printf("Tamanho do arquivo: %d bytes\n", fileSize);
 
     // Lê o conteúdo do arquivo
-    String content = fileManager.readFile(fileName);
+    String content = fileManager.read(fileName);
     Serial.println("Conteúdo do arquivo:");
     Serial.println(content);
 }

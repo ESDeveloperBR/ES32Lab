@@ -3,18 +3,17 @@
   WhatsApp +55 69 98463 9009
   Data de criação.: 05/29/2020 (Derivada da LIB TFT_Pus v.0.2.0)
 */
-#ifndef TFT_PLUS_h
-#define TFT_PLUS_h
+#ifndef ES_DISPLAY_h
+#define ES_DISPLAY_h
 
 #include <TFT_eSPI.h>     // Graphics and font library for ST7735 driver chip
 #include "JPEGDecoder/src/JPEGDecoder.h"
-//#include "ES_FileManager/ES_FileManager.h"
 #include "ES_File/ES_File.h" // Biblioteca de gerenciamento de arquivos
 
-#define TFT_PLUS_VERSION "0.9.0 update 19/05/2024"  // mm/dd/yyyy
+#define ES_DISPLAY_VERSION "0.10.0 update 20/05/2024"  // mm/dd/yyyy
 
-// Classe TFT_Plus 
-class TFT_Plus{
+// Classe ES_Display 
+class ES_Display{
     private:
         #define minimum(a,b)     (((a) < (b)) ? (a) : (b))
         boolean _trabalharComArquivos = false;
@@ -26,7 +25,7 @@ class TFT_Plus{
 
         TFT_eSPI tft; // = TFT_eSPI(128, 460);  // Invoke library, pins defined in User_Setup.h
 
-        TFT_Plus(void);                           /* Construtor */
+        ES_Display(void);                           /* Construtor */
         void    init(uint8_t tc = TAB_COLOUR), begin(uint8_t tc = TAB_COLOUR);   /* Inicializa a lib */
 
         // These are virtual so the TFT_eSprite class can override them with sprite specific functions

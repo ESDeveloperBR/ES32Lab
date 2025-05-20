@@ -1,10 +1,10 @@
-#include "TFT_Plus.h"
+#include "ES_Display.h"
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //********************************************** Implementação dos métodos da classe *********************************************************************
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Compara se as string são iguais >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /*  Compare two strings */
-boolean TFT_Plus::_compareStr(String str1, String str2){
+boolean ES_Display::_compareStr(String str1, String str2){
     str1.toUpperCase();
     str2.toUpperCase();
     if(str1 == str2) return true;
@@ -13,18 +13,18 @@ boolean TFT_Plus::_compareStr(String str1, String str2){
 
 // <<<<<<<<< Construtor da Classe >>>>>>>>>>>>>>>>>>>>
 /* Class Constructor */
-TFT_Plus::TFT_Plus(void){
+ES_Display::ES_Display(void){
     /*
     Serial.println("Construtor");
     */
 }
-// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Inicializa a lib TFT_Plus >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-/* Initialize the TFT_Plus lib */
-void TFT_Plus::init(uint8_t tc){  
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Inicializa a lib ES_Display >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+/* Initialize the ES_Display lib */
+void ES_Display::init(uint8_t tc){  
     tft.init(tc);
 }
-/* Initialize the TFT_Plus lib */
-void TFT_Plus::begin(uint8_t tc){  
+/* Initialize the ES_Display lib */
+void ES_Display::begin(uint8_t tc){  
     tft.begin(tc);
 }
 
@@ -34,7 +34,7 @@ void TFT_Plus::begin(uint8_t tc){
 -y: Initial Y coordinate;
 -color: Pixel color;
 */
-void TFT_Plus::drawPixel(int32_t x, int32_t y, uint32_t color){
+void ES_Display::drawPixel(int32_t x, int32_t y, uint32_t color){
     tft.drawPixel(x, y, color);
 }
 
@@ -45,7 +45,7 @@ void TFT_Plus::drawPixel(int32_t x, int32_t y, uint32_t color){
 -y1: Final Y coordinate;
 -color: drawLine color;
 */
-void TFT_Plus::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color){
+void ES_Display::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t color){
     tft.drawLine(x0, y0, x1, y1, color);
 }
 
@@ -55,7 +55,7 @@ void TFT_Plus::drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, uint32_t
 -h: Height;
 -color: drawLine color;
 */
-void TFT_Plus::drawFastVLine(int32_t x, int32_t y, int32_t h, uint32_t color){
+void ES_Display::drawFastVLine(int32_t x, int32_t y, int32_t h, uint32_t color){
     tft.drawFastVLine(x, y, h, color);
 }
 
@@ -65,7 +65,7 @@ void TFT_Plus::drawFastVLine(int32_t x, int32_t y, int32_t h, uint32_t color){
 -w: Width;
 -color: drawFastHLine color;
 */
-void TFT_Plus::drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color){
+void ES_Display::drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color){
     tft.drawFastHLine(x, y, w, color);
 }
 
@@ -76,7 +76,7 @@ void TFT_Plus::drawFastHLine(int32_t x, int32_t y, int32_t w, uint32_t color){
 -h: Height;
 -color: Rectangle color;
 */
-void TFT_Plus::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color){
+void ES_Display::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color){
     tft.fillRect(x, y, w, h, color);
 }
 
@@ -87,7 +87,7 @@ void TFT_Plus::fillRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t col
 -h: Height;
 -color: Rectangle color;
 */
-void TFT_Plus::drawRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color){
+void ES_Display::drawRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t color){
     tft.drawRect(x, y, w, h, color);
 }
 
@@ -99,7 +99,7 @@ void TFT_Plus::drawRect(int32_t x, int32_t y, int32_t w, int32_t h, uint32_t col
 -r: Radius
 -color: Rectangle color;
 */
-void TFT_Plus::drawRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, uint32_t color){
+void ES_Display::drawRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, uint32_t color){
     tft.drawRoundRect(x, y, w, h, r, color);
 }
 
@@ -111,7 +111,7 @@ void TFT_Plus::drawRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t
 -r: Radius
 -color: Rectangle color;
 */
-void TFT_Plus::fillRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, uint32_t color){
+void ES_Display::fillRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t r, uint32_t color){
     tft.fillRoundRect(x, y, w, h, r, color);
 }
 
@@ -123,7 +123,7 @@ void TFT_Plus::fillRoundRect(int32_t x, int32_t y, int32_t w, int32_t h, int32_t
 -color1: Color 1 gradient;
 -color2: Color 2 gradient;
 */
-void TFT_Plus::fillRectVGradient(int16_t x, int16_t y, int16_t w, int16_t h, uint32_t color1, uint32_t color2){
+void ES_Display::fillRectVGradient(int16_t x, int16_t y, int16_t w, int16_t h, uint32_t color1, uint32_t color2){
     tft.fillRectVGradient(x, y, w, h, color1, color2);
 }
 
@@ -135,7 +135,7 @@ void TFT_Plus::fillRectVGradient(int16_t x, int16_t y, int16_t w, int16_t h, uin
 -color1: Color 1 gradient;
 -color2: Color 2 gradient;
 */
-void TFT_Plus::fillRectHGradient(int16_t x, int16_t y, int16_t w, int16_t h, uint32_t color1, uint32_t color2){
+void ES_Display::fillRectHGradient(int16_t x, int16_t y, int16_t w, int16_t h, uint32_t color1, uint32_t color2){
     tft.fillRectHGradient(x, y, w, h, color1, color2);
 }
 
@@ -145,7 +145,7 @@ void TFT_Plus::fillRectHGradient(int16_t x, int16_t y, int16_t w, int16_t h, uin
 -r: Radius
 -color: Circle color;
 */
-void TFT_Plus::drawCircle(int32_t x, int32_t y, int32_t r, uint32_t color){
+void ES_Display::drawCircle(int32_t x, int32_t y, int32_t r, uint32_t color){
     tft.drawCircle(x, y, r, color);
 }
 
@@ -156,7 +156,7 @@ void TFT_Plus::drawCircle(int32_t x, int32_t y, int32_t r, uint32_t color){
 -cornername: 1, 2, 4 and 8
 -color: Circle color;
 */
-void TFT_Plus::drawCircleHelper( int32_t x, int32_t y, int32_t r, uint8_t cornername, uint32_t color){
+void ES_Display::drawCircleHelper( int32_t x, int32_t y, int32_t r, uint8_t cornername, uint32_t color){
     tft.drawCircleHelper(x, y, r, cornername, color);
 }
 
@@ -166,7 +166,7 @@ void TFT_Plus::drawCircleHelper( int32_t x, int32_t y, int32_t r, uint8_t corner
 -r: Radius
 -color: Circle color;
 */
-void TFT_Plus::fillCircle(int32_t x, int32_t y, int32_t r, uint32_t color){
+void ES_Display::fillCircle(int32_t x, int32_t y, int32_t r, uint32_t color){
     tft.fillCircle(x, y, r, color);
 
 }
@@ -179,7 +179,7 @@ void TFT_Plus::fillCircle(int32_t x, int32_t y, int32_t r, uint32_t color){
 - delta:
 - color: Circle color;
 */
-void TFT_Plus::fillCircleHelper(int32_t x, int32_t y, int32_t r, uint8_t cornername, int32_t delta, uint32_t color){
+void ES_Display::fillCircleHelper(int32_t x, int32_t y, int32_t r, uint8_t cornername, int32_t delta, uint32_t color){
     tft.fillCircleHelper(x, y, r, cornername, delta, color);
 }
 
@@ -190,7 +190,7 @@ void TFT_Plus::fillCircleHelper(int32_t x, int32_t y, int32_t r, uint8_t cornern
 - ry: Radius Y
 - color: Ellipse color;
 */
-void TFT_Plus::drawEllipse(int16_t x, int16_t y, int32_t rx, int32_t ry, uint16_t color){
+void ES_Display::drawEllipse(int16_t x, int16_t y, int32_t rx, int32_t ry, uint16_t color){
     tft.drawEllipse(x, y, rx, ry, color);
 }
 
@@ -201,7 +201,7 @@ void TFT_Plus::drawEllipse(int16_t x, int16_t y, int32_t rx, int32_t ry, uint16_
 - ry: Radius Y
 - color: Ellipse color;
 */
-void TFT_Plus::fillEllipse(int16_t x, int16_t y, int32_t rx, int32_t ry, uint16_t color){
+void ES_Display::fillEllipse(int16_t x, int16_t y, int32_t rx, int32_t ry, uint16_t color){
     tft.fillEllipse(x, y, rx, ry, color);
 }
 
@@ -214,7 +214,7 @@ void TFT_Plus::fillEllipse(int16_t x, int16_t y, int32_t rx, int32_t ry, uint16_
 - y4: Coordinate Y point 3;
 - color: Triangle color;
 */
-void TFT_Plus::drawTriangle(int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t x3, int32_t y3, uint32_t color){
+void ES_Display::drawTriangle(int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t x3, int32_t y3, uint32_t color){
     tft.drawTriangle(x1, y1, x2, y2, x3, y3, color);
 }
 
@@ -227,35 +227,35 @@ void TFT_Plus::drawTriangle(int32_t x1, int32_t y1, int32_t x2, int32_t y2, int3
 - y4: Coordinate Y point 3;
 - color: Triangle color;
 */
-void TFT_Plus::fillTriangle(int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t x3, int32_t y3, uint32_t color){
+void ES_Display::fillTriangle(int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t x3, int32_t y3, uint32_t color){
     tft.fillTriangle(x1, y1, x2, y2, x3, y3, color);
 }
 
 /*Return height*/
-int16_t TFT_Plus::height(void){
+int16_t ES_Display::height(void){
     return tft.height();
 }
 
 /*Return width*/
-int16_t TFT_Plus::width(void){
+int16_t ES_Display::width(void){
     return tft.width();
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Rotação da tela >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /*Set screen rotation
 -r: Rotation 1, 2, 3 or 4*/
-void TFT_Plus::setRotation(uint8_t r){  
+void ES_Display::setRotation(uint8_t r){  
     tft.setRotation(r);
 }
 
 /*Get screen rotation */
-uint8_t TFT_Plus::getRotation(void){
+uint8_t ES_Display::getRotation(void){
     return tft.getRotation();
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Cor da tela de fundo >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /* Fill Screen */
-void TFT_Plus::fillScreen(uint32_t color){  
+void ES_Display::fillScreen(uint32_t color){  
     tft.fillScreen(color);
 }
 
@@ -267,7 +267,7 @@ Ex.:
 #include <Fonts/NotoSansBold36.h>
 this.loadFont(NotoSansBold36);
 */
-void TFT_Plus::loadFontArray(const uint8_t array[]){
+void ES_Display::loadFontArray(const uint8_t array[]){
     tft.loadFont(array);
 }
 
@@ -275,7 +275,7 @@ void TFT_Plus::loadFontArray(const uint8_t array[]){
 
 
 // Carrega um arquivo salvo em um SD ou SPPIF do tipo fonte (.vlw)
-void TFT_Plus::loadFontFile(fs::FS& fs, const String& fontName){
+void ES_Display::loadFontFile(fs::FS& fs, const String& fontName){
     String fontNameNormalized = fontName;
     fontNameNormalized.toLowerCase();
 
@@ -293,12 +293,12 @@ void TFT_Plus::loadFontFile(fs::FS& fs, const String& fontName){
 }
 /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Desvincula arquivo de font >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 // Desvincula arquivo de font. Ex.: this.unloadFont();
-void TFT_Plus::unloadFont(void){
+void ES_Display::unloadFont(void){
     tft.unloadFont();
 }
 /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Coordenada do cursor no display >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 // Coordenada do cursor no display
-void TFT_Plus::setCursor(int16_t x, int16_t y){  
+void ES_Display::setCursor(int16_t x, int16_t y){  
     tft.setCursor(x, y);
 }
 // ******************************************************************************************
@@ -313,7 +313,7 @@ void TFT_Plus::setCursor(int16_t x, int16_t y){
 -bg: Char background;
 -size: Font size;
 */
-void TFT_Plus::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32_t bg, uint8_t size){
+void ES_Display::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32_t bg, uint8_t size){
     tft.drawChar(x, y, c, color, bg, size);
 }
 
@@ -323,7 +323,7 @@ void TFT_Plus::drawChar(int32_t x, int32_t y, uint16_t c, uint32_t color, uint32
 -y: Initial Y coordinate;
 -size: Font size;
 */
-int16_t TFT_Plus::drawNumber(long intNumber, int32_t x, int32_t y, uint8_t font){
+int16_t ES_Display::drawNumber(long intNumber, int32_t x, int32_t y, uint8_t font){
     return tft.drawNumber(intNumber, x, y, font);
 }
 
@@ -332,7 +332,7 @@ int16_t TFT_Plus::drawNumber(long intNumber, int32_t x, int32_t y, uint8_t font)
 -x: Initial X coordinate;
 -y: Initial Y coordinate;
 */
-int16_t TFT_Plus::drawNumber(long intNumber, int32_t x, int32_t y){
+int16_t ES_Display::drawNumber(long intNumber, int32_t x, int32_t y){
     return tft.drawNumber(intNumber, x, y);
 }
 
@@ -343,7 +343,7 @@ int16_t TFT_Plus::drawNumber(long intNumber, int32_t x, int32_t y){
 -y: Initial Y coordinate;
 -size: Font size;
 */
-int16_t TFT_Plus::drawFloat(float floatNumber, uint8_t decimal, int32_t x, int32_t y, uint8_t font){
+int16_t ES_Display::drawFloat(float floatNumber, uint8_t decimal, int32_t x, int32_t y, uint8_t font){
     return tft.drawFloat(floatNumber, decimal, x, y, font);
 }
 
@@ -353,7 +353,7 @@ int16_t TFT_Plus::drawFloat(float floatNumber, uint8_t decimal, int32_t x, int32
 -x: Initial X coordinate;
 -y: Initial Y coordinate;
 */
-int16_t TFT_Plus::drawFloat(float floatNumber, uint8_t decimal, int32_t x, int32_t y){
+int16_t ES_Display::drawFloat(float floatNumber, uint8_t decimal, int32_t x, int32_t y){
     return tft.drawFloat(floatNumber, decimal, x, y);
 }
 
@@ -363,7 +363,7 @@ int16_t TFT_Plus::drawFloat(float floatNumber, uint8_t decimal, int32_t x, int32
 -y: Initial Y coordinate;
 -size: Font size;
 */
-int16_t TFT_Plus::drawString(const char *string, int32_t x, int32_t y, uint8_t font){
+int16_t ES_Display::drawString(const char *string, int32_t x, int32_t y, uint8_t font){
     return tft.drawString(string,  x,  y,  font);
 }
 
@@ -372,7 +372,7 @@ int16_t TFT_Plus::drawString(const char *string, int32_t x, int32_t y, uint8_t f
 -x: Initial X coordinate;
 -y: Initial Y coordinate;
 */
-int16_t TFT_Plus::drawString(const char *string, int32_t x, int32_t y){
+int16_t ES_Display::drawString(const char *string, int32_t x, int32_t y){
     return tft.drawString(string,  x,  y);
 }
 
@@ -382,7 +382,7 @@ int16_t TFT_Plus::drawString(const char *string, int32_t x, int32_t y){
 -y: Initial Y coordinate;
 -size: Font size;
 */
-int16_t TFT_Plus::drawString(const String& string, int32_t x, int32_t y, uint8_t font){
+int16_t ES_Display::drawString(const String& string, int32_t x, int32_t y, uint8_t font){
     return tft.drawString(string, x, y, font);
 }
 
@@ -391,7 +391,7 @@ int16_t TFT_Plus::drawString(const String& string, int32_t x, int32_t y, uint8_t
 -x: Initial X coordinate;
 -y: Initial Y coordinate;
 */
-int16_t TFT_Plus::drawString(const String& string, int32_t x, int32_t y){
+int16_t ES_Display::drawString(const String& string, int32_t x, int32_t y){
     return tft.drawString(string, x, y);
 }
 
@@ -401,7 +401,7 @@ int16_t TFT_Plus::drawString(const String& string, int32_t x, int32_t y){
 - y: Initial Y coordinate;
 - font: Font Size
 */
-int16_t TFT_Plus::drawCentreString(const char *string, int32_t x, int32_t y, uint8_t font){
+int16_t ES_Display::drawCentreString(const char *string, int32_t x, int32_t y, uint8_t font){
     return tft.drawCentreString(string, x, y, font);
 }
 
@@ -411,7 +411,7 @@ int16_t TFT_Plus::drawCentreString(const char *string, int32_t x, int32_t y, uin
 - y: Initial Y coordinate;
 - font: Font Size
 */
-int16_t TFT_Plus::drawCentreString(const String& string, int32_t x, int32_t y, uint8_t font){
+int16_t ES_Display::drawCentreString(const String& string, int32_t x, int32_t y, uint8_t font){
     return tft.drawCentreString(string, x, y, font);
 }
 
@@ -420,7 +420,7 @@ int16_t TFT_Plus::drawCentreString(const String& string, int32_t x, int32_t y, u
 - y: Initial Y coordinate;
 - font: Font Size
 */
-int16_t TFT_Plus::drawCentreScreenString(const char *string, int32_t y, uint8_t font){
+int16_t ES_Display::drawCentreScreenString(const char *string, int32_t y, uint8_t font){
     return tft.drawCentreString(string, width()/2, y, font);
 }
 
@@ -429,7 +429,7 @@ int16_t TFT_Plus::drawCentreScreenString(const char *string, int32_t y, uint8_t 
 - y: Initial Y coordinate;
 - font: Font Size
 */
-int16_t TFT_Plus::drawCentreScreenString(const String& string, int32_t y, uint8_t font){
+int16_t ES_Display::drawCentreScreenString(const String& string, int32_t y, uint8_t font){
     return tft.drawCentreString(string, width()/2, y, font);
 }
 
@@ -439,7 +439,7 @@ int16_t TFT_Plus::drawCentreScreenString(const String& string, int32_t y, uint8_
 - y: Initial Y coordinate;
 - font: Font Size
 */
-int16_t TFT_Plus::drawRightString(const char *string, int32_t x, int32_t y, uint8_t font){
+int16_t ES_Display::drawRightString(const char *string, int32_t x, int32_t y, uint8_t font){
     return tft.drawRightString(string, x, y, font);
 }
 
@@ -449,7 +449,7 @@ int16_t TFT_Plus::drawRightString(const char *string, int32_t x, int32_t y, uint
 - y: Initial Y coordinate;
 - font: Font Size
 */
-int16_t TFT_Plus::drawRightString(const String& string, int32_t x, int32_t y, uint8_t font){
+int16_t ES_Display::drawRightString(const String& string, int32_t x, int32_t y, uint8_t font){
     return tft.drawRightString(string, x, y, font);
 }
 
@@ -458,7 +458,7 @@ int16_t TFT_Plus::drawRightString(const String& string, int32_t x, int32_t y, ui
 - y: Initial Y coordinate;
 - font: Font Size
 */
-int16_t TFT_Plus::drawRightScreenString(const char *string, int32_t y, uint8_t font){
+int16_t ES_Display::drawRightScreenString(const char *string, int32_t y, uint8_t font){
     return tft.drawRightString(string, width(), y, font);
 }
 
@@ -467,45 +467,45 @@ int16_t TFT_Plus::drawRightScreenString(const char *string, int32_t y, uint8_t f
 - y: Initial Y coordinate;
 - font: Font Size
 */
-int16_t TFT_Plus::drawRightScreenString(const String& string, int32_t y, uint8_t font){
+int16_t ES_Display::drawRightScreenString(const String& string, int32_t y, uint8_t font){
     return tft.drawRightString(string, width(), y, font);
 }
 
 
 /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Cor do texto >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 // Cor do texto
-void TFT_Plus::setTextColor(uint16_t fgcolor){  
+void ES_Display::setTextColor(uint16_t fgcolor){  
     tft.setTextColor(fgcolor);
 }
-void TFT_Plus::setTextColor(uint16_t fgcolor, uint16_t bgcolor){  
+void ES_Display::setTextColor(uint16_t fgcolor, uint16_t bgcolor){  
     tft.setTextColor(fgcolor, bgcolor);
 }
 /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Exibe o texto no display >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 // Exibe o texto no display
-size_t TFT_Plus::print(String label){  
+size_t ES_Display::print(String label){  
     return tft.print(label);
 }
-size_t TFT_Plus::print(int16_t x, int16_t y, uint32_t color, String label, uint32_t bgcolor){ 
+size_t ES_Display::print(int16_t x, int16_t y, uint32_t color, String label, uint32_t bgcolor){ 
     tft.setCursor(x, y);
 //    tft.setTextColor(color, bgcolor);
     tft.setTextColor(color);
     return tft.print(label);
 }
-size_t TFT_Plus::print(int16_t x, int16_t y, String label){ 
+size_t ES_Display::print(int16_t x, int16_t y, String label){ 
     tft.setCursor(x, y);
     return tft.print(label);
 }
-size_t TFT_Plus::print(uint32_t color, String label, uint32_t bgcolor){ 
+size_t ES_Display::print(uint32_t color, String label, uint32_t bgcolor){ 
 //    tft.setTextColor(color, bgcolor);
     tft.setTextColor(color);
     return tft.print(label);
 }
 /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Exibe o texto no display com quebra de linha >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
 // Exibe o texto no display com quebra de linha
-size_t TFT_Plus::println(String label){  
+size_t ES_Display::println(String label){  
     return tft.println(label);
 }
-size_t TFT_Plus::println(uint32_t color, String label, uint32_t bgcolor){ 
+size_t ES_Display::println(uint32_t color, String label, uint32_t bgcolor){ 
 //    tft.setTextColor(color, bgcolor);
     tft.setTextColor(color);
     return tft.println(label);
@@ -514,7 +514,7 @@ size_t TFT_Plus::println(uint32_t color, String label, uint32_t bgcolor){
 
 /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Retorna o nome do ultimo arquivo JPEG aberto >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 // Retorna o nome do ultimo arquivo JPEG aberto
-String TFT_Plus::getFileNameRenderJPEG(void){
+String ES_Display::getFileNameRenderJPEG(void){
     return _fileNameRenderJPEG;
 }
 
@@ -524,8 +524,8 @@ String TFT_Plus::getFileNameRenderJPEG(void){
 // - sdCard: SD = true / SPIFFs = false
 // - xpos: Referencia X no plano cartesiano do display
 // - ypos: Referencia Y no plano cartesiano do display
-//boolean TFT_Plus::renderJPEG(String fileName, boolean sdCard, int xpos, int ypos) {
-boolean TFT_Plus::renderJPEG(fs::FS& fs, const String& fileName, int xpos, int ypos) {    
+//boolean ES_Display::renderJPEG(String fileName, boolean sdCard, int xpos, int ypos) {
+boolean ES_Display::renderJPEG(fs::FS& fs, const String& fileName, int xpos, int ypos) {    
     // Se o nome do arquivo nÃƒÂ£o tiver extensÃƒÂ£o ".jpg", encerre.
     if(!_compareStr(fileName.substring(fileName.length() - 4, fileName.length()), ".jpg") ){ 
         return false;
@@ -610,7 +610,7 @@ boolean TFT_Plus::renderJPEG(fs::FS& fs, const String& fileName, int xpos, int y
 // - sdCard: SD = true / SPIFFs = false
 // - xpos: Referencia X no plano cartesiano do display
 // - ypos: Referencia Y no plano cartesiano do display
-boolean TFT_Plus::renderFirstFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos){
+boolean ES_Display::renderFirstFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos){
     String fileName = _arquivo.getFirstFileName(fs, directory.c_str());
     // Se o nome do arquivo nÃƒÂ£o tiver extensÃƒÂ£o ".jpg"
     while(!_compareStr(fileName.substring(fileName.length() - 4, fileName.length()), ".jpg") ){ 
@@ -627,7 +627,7 @@ boolean TFT_Plus::renderFirstFileJPEG(fs::FS& fs, const String& directory, int x
 // - sdCard: SD = true / SPIFFs = false
 // - xpos: Referencia X no plano cartesiano do display
 // - ypos: Referencia Y no plano cartesiano do display
-boolean TFT_Plus::renderLastFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos){
+boolean ES_Display::renderLastFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos){
     String fileName = _arquivo.getLastFileName(fs, directory.c_str());
     // Se o nome do arquivo nÃƒÂ£o tiver extensÃƒÂ£o ".jpg"
     while(!_compareStr(fileName.substring(fileName.length() - 4, fileName.length()), ".jpg") ){ 
@@ -647,8 +647,8 @@ boolean TFT_Plus::renderLastFileJPEG(fs::FS& fs, const String& directory, int xp
 //   - renderJPEG(String fileName, boolean sdCard, int xpos, int ypos)
 //   - renderFirstFileJPEG(String directory, boolean sdCard, int xpos, int ypos)
 //   - renderLastFileJPEG(String directory, boolean sdCard, int xpos = 0, int ypos = 0 )
-//boolean TFT_Plus::renderNextFileJPEG(int xpos, int ypos){
-boolean TFT_Plus::renderNextFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos){
+//boolean ES_Display::renderNextFileJPEG(int xpos, int ypos){
+boolean ES_Display::renderNextFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos){
 
     String fileName = _arquivo.getNextFileName(fs, directory);
 
@@ -669,7 +669,7 @@ boolean TFT_Plus::renderNextFileJPEG(fs::FS& fs, const String& directory, int xp
 //   - renderJPEG(String fileName, boolean sdCard, int xpos, int ypos)
 //   - renderFirstFileJPEG(String directory, boolean sdCard, int xpos, int ypos)
 //   - renderLastFileJPEG(String directory, boolean sdCard, int xpos = 0, int ypos = 0 )
-boolean TFT_Plus::renderPreviousFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos){
+boolean ES_Display::renderPreviousFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos){
 
     String fileName = _arquivo.getPreviousFileName(fs, directory);
 

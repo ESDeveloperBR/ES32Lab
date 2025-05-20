@@ -7,14 +7,14 @@ ATTENTION: ES32Lab depends on the library download
   - TFT_eSPI_ES32Lab
     https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab
 
-Example of using the CLASS ES_Display
+Example of using the CLASS ES_TFTDisplay
 - Analog clock
 */
 
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-ES_Display tft;
+ES_TFT tft;
 #define TFT_GREY 0xBDF7
 
 float sx = 0, sy = 1, mx = 1, my = 0, hx = -1, hy = 0;    // Saved H, M, S x & y multipliers

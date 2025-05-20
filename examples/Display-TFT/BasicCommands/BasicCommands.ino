@@ -7,13 +7,13 @@ ATTENTION: ES32Lab depends on the library download
   - TFT_eSPI_ES32Lab
     https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab
 
-Example of using the CLASS ES_Display
+Example of using the CLASS ES_TFTDisplay
 - Basic commands
 */
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-ES_Display display;
+ES_TFT display;
 // ********************************************************************************************************
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SETUP >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // ********************************************************************************************************

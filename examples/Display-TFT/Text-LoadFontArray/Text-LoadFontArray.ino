@@ -7,7 +7,7 @@ ATTENTION: ES32Lab depends on the library download
   - TFT_eSPI_ES32Lab
     https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab
 
-Example of using the CLASS ES_Display
+Example of using the CLASS ES_TFT
 - loadFontArray commands
 */
 #include <Arduino.h>
@@ -20,7 +20,7 @@ Example of using the CLASS ES_Display
 #include <FontsArray/NotoSansMonoSCB20.h>
 #include <FontsArray/Unicode_Test_72.h>
 
-ES_Display display;
+ES_TFT display;
 // ********************************************************************************************************
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SETUP >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // ********************************************************************************************************
@@ -30,8 +30,8 @@ void setup() {
     display.fillScreen(TFT_BLUE);     // Fill Screen
     display.setTextColor(TFT_WHITE);
     display.setCursor(10, 30);
-    display.println("ES_Display Version");
-    display.println(ES_DISPLAY_VERSION);  // Print the version of the ES_Display class
+    display.println("ES_TFT Version");
+    display.println(ES_TFT_VERSION);  // Print the version of the ES_TFT class
   
     delay(5000);
 }

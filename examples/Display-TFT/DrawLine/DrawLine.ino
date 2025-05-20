@@ -13,7 +13,7 @@ Example of using the CLASS ES_Display
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-ES_Display display;
+ES_TFT display;
 // ********************************************************************************************************
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< SETUP >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // ********************************************************************************************************
@@ -24,7 +24,7 @@ void setup() {
     display.setTextColor(TFT_WHITE);
     display.setCursor(10, 30);
     display.println("ES_Display Version");
-    display.println(ES_DISPLAY_VERSION);  // Print the version of the ES_Display class
+    display.println(ES_TFT_VERSION);  // Print the version of the ES_Display class
   
     delay(5000);
     display.fillScreen(TFT_BLACK);

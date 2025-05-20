@@ -146,7 +146,7 @@ A biblioteca da ES32Lab conta com diversas classes para programação orientada 
 - [ES_File](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_File#readme)
 
 
-- [ES_Display](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_Display#readme)
+- [ES_Display](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_TFT#readme)
 
 
 - [TimeInterval](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/TimeInterval#readme)

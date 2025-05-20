@@ -135,7 +135,7 @@ A biblioteca da ES32Lab conta com diversas classes para programação orientada 
 
 - [AnalogKeyboard](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/AnalogKeyboard#readme)
   
-- [DigitalButton](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/DigitalButton#readme)
+- [ES_DigitalButton](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_DigitalButton#readme)
   
 - [ES_Buzzer](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_Buzzer#readme)
 

@@ -1,4 +1,4 @@
-#include "DigitalButton.h"
+#include "ES_DigitalButton.h"
 
 // <<<<<<<<<<<<<<<<<<< Construtor >>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
@@ -6,7 +6,7 @@
  * - pin: GPIO of the button. | GPIO do botão.
  * - pullUp: Enables pull-up resistor. Defaults to false. | Ativa o resistor pull-up. O padrão é false.
  */
-DigitalButton::DigitalButton(int pin, boolean pullUp) {
+ES_DigitalButton::ES_DigitalButton(int pin, boolean pullUp) {
     _pin = pin;            // Assign the GPIO pin. | Atribui o pino GPIO.
     _pullUp = pullUp;      // Assign pull-up configuration. | Atribui a configuração de pull-up.
 }
@@ -17,7 +17,7 @@ DigitalButton::DigitalButton(int pin, boolean pullUp) {
  * | 
  * Verifica se o pino é válido. GPIOs 34-39 são restritos.
  */
-boolean DigitalButton::_isPinValid() {
+boolean ES_DigitalButton::_isPinValid() {
     if (_pin >= 34 && _pin <= 39) { 
         return false; // Invalid pins. | Pinos inválidos.
     }
@@ -30,7 +30,7 @@ boolean DigitalButton::_isPinValid() {
  * - pullUp: Enables pull-up resistor. Defaults to false. | Ativa o resistor pull-up. O padrão é false.
  * Returns true if the pin is successfully configured. | Retorna true se o pino for configurado com sucesso.
  */
-boolean DigitalButton::begin(int pin, boolean pullUp) {
+boolean ES_DigitalButton::begin(int pin, boolean pullUp) {
     _pin = pin;            // Assign the pin. | Atribui o pino.
     _pullUp = pullUp;      // Set the pull-up configuration. | Define a configuração do pull-up.
 
@@ -47,7 +47,7 @@ boolean DigitalButton::begin(int pin, boolean pullUp) {
  * | 
  * Inicializa o botão com o pino e configuração armazenados.
  */
-boolean DigitalButton::begin() {
+boolean ES_DigitalButton::begin() {
     return begin(_pin, _pullUp); // Calls the parameterized begin method. | Chama o método begin parametrizado.
 }
 
@@ -56,7 +56,7 @@ boolean DigitalButton::begin() {
  * - pin: GPIO of the button. | GPIO do botão.
  * - pullUp: Enables pull-up resistor. Defaults to false. | Ativa o resistor pull-up. O padrão é false.
  */
-boolean DigitalButton::setPino(int pin, boolean pullUp) {
+boolean ES_DigitalButton::setPino(int pin, boolean pullUp) {
     return begin(pin, pullUp); // Reuses begin logic. | Reutiliza a lógica do begin.
 }
 
@@ -66,7 +66,7 @@ boolean DigitalButton::setPino(int pin, boolean pullUp) {
  * | 
  * Retorna "true" enquanto o botão estiver pressionado.
  */
-boolean DigitalButton::hold() {
+boolean ES_DigitalButton::hold() {
     if (_pin < 0) return false; // Ensure pin is configured. | Garante que o pino esteja configurado.
     return !digitalRead(_pin); // Read pin state. | Lê o estado do pino.
 }
@@ -76,7 +76,7 @@ boolean DigitalButton::hold() {
  * | 
  * Retorna "true" quando o botão for pressionado.
  */
-boolean DigitalButton::press() {
+boolean ES_DigitalButton::press() {
     if (hold() && !_btPress) { 
         _btPress = true; // Button pressed. | Botão pressionado.
         return true;
@@ -90,7 +90,7 @@ boolean DigitalButton::press() {
  * | 
  * Retorna "true" quando o botão for solto.
  */
-boolean DigitalButton::release() {
+boolean ES_DigitalButton::release() {
     if (!hold() && !_btRelease) { 
         _btRelease = true; // Button released. | Botão solto.
         return true;

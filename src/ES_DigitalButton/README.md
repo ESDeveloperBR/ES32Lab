@@ -2,13 +2,13 @@
 | :------: |
 -----
 
-# Classe DigitalButton
+# Classe ES_DigitalButton
 
-A classe **DigitalButton** foi projetada para facilitar o monitoramento de dispositivos binários, como botões, sensores de limite, chaves de fim de curso e outros sensores digitais simples. Com sua lógica robusta e flexível, ela permite detectar os estados "pressionado", "solto" e "segurando", além de oferecer suporte para resistores internos de **pull-up** ou **pull-down**.
+A classe **ES_DigitalButton** foi projetada para facilitar o monitoramento de dispositivos binários, como botões, sensores de limite, chaves de fim de curso e outros sensores digitais simples. Com sua lógica robusta e flexível, ela permite detectar os estados "pressionado", "solto" e "segurando", além de oferecer suporte para resistores internos de **pull-up** ou **pull-down**.
 
-## Por Que Usar a DigitalButton?
+## Por Que Usar a ES_DigitalButton?
 
-Essa classe não se limita ao uso com botões digitais, mas é uma solução ideal para qualquer dispositivo que forneça dois estados binários: ligado/desligado ou ativo/inativo. Seja um botão de pressão ou um sensor digital simples, como sensores magnéticos, sensores de proximidade ou de contato, a **DigitalButton** simplifica a implementação e o gerenciamento.
+Essa classe não se limita ao uso com botões digitais, mas é uma solução ideal para qualquer dispositivo que forneça dois estados binários: ligado/desligado ou ativo/inativo. Seja um botão de pressão ou um sensor digital simples, como sensores magnéticos, sensores de proximidade ou de contato, a **ES_DigitalButton** simplifica a implementação e o gerenciamento.
 
 ---
 
@@ -23,8 +23,8 @@ Essa classe não se limita ao uso com botões digitais, mas é uma solução ide
 
 ## Construtor
 
-### `DigitalButton(int pin = -1, boolean pullUp = false)`
-Cria uma instância da classe `DigitalButton` para gerenciar dispositivos binários, como botões ou sensores digitais. O construtor permite configurar diretamente a GPIO e a ativação do resistor interno pull-up no momento da criação do objeto, tornando a inicialização mais prática para muitos cenários.
+### `ES_DigitalButton(int pin = -1, boolean pullUp = false)`
+Cria uma instância da classe `ES_DigitalButton` para gerenciar dispositivos binários, como botões ou sensores digitais. O construtor permite configurar diretamente a GPIO e a ativação do resistor interno pull-up no momento da criação do objeto, tornando a inicialização mais prática para muitos cenários.
 
 - **Parâmetros**:
   - **`pin`**: GPIO conectado ao dispositivo binário. (Padrão: `-1`, sem pino configurado).
@@ -34,15 +34,15 @@ Cria uma instância da classe `DigitalButton` para gerenciar dispositivos binár
 
 1. **Inicialização sem especificar GPIO**  
    Neste caso, a GPIO será definida posteriormente no programa utilizando o método `begin` ou `setPino`:  
-   `DigitalButton button; // Instância sem definir GPIO e pull-up.`
+   `ES_DigitalButton button; // Instância sem definir GPIO e pull-up.`
 
 2. **Inicialização com GPIO e configuração padrão de pull-down**  
    O botão ou sensor será monitorado no **GPIO 0**, com resistor **pull-down** configurado (padrão):  
-   `DigitalButton button(0); // Instância na GPIO 0 com pull-down.`
+   `ES_DigitalButton button(0); // Instância na GPIO 0 com pull-down.`
 
 3. **Inicialização com GPIO e pull-up ativado**  
    Aqui a **GPIO 0** será configurado com resistor interno **pull-up**, ideal para botões conectados ao GND:  
-   `DigitalButton digitalButton(0, true); // Instância na GPIO 0 com pull-up ativado.`
+   `ES_DigitalButton ES_DigitalButton(0, true); // Instância na GPIO 0 com pull-up ativado.`
 
 **Nota:** Caso a GPIO seja definido no construtor, o método `begin` ainda precisará ser chamado no `setup()` para inicializar o hardware.
 
@@ -50,13 +50,13 @@ Cria uma instância da classe `DigitalButton` para gerenciar dispositivos binár
 
 ## Configuração no `setup()`
 
-O método `begin` é fundamental para inicializar a instância da classe `DigitalButton` e configurar a GPIO que será usado para monitorar o dispositivo binário. Essa configuração deve ser realizada dentro da função `setup()` para garantir que o hardware esteja pronto para operação durante a execução do programa.
+O método `begin` é fundamental para inicializar a instância da classe `ES_DigitalButton` e configurar a GPIO que será usado para monitorar o dispositivo binário. Essa configuração deve ser realizada dentro da função `setup()` para garantir que o hardware esteja pronto para operação durante a execução do programa.
 
 A passagem de parâmetros ao método `begin` não é obrigatória. Quando nenhum parâmetro é especificado, o pino e o resistor pull-up ou pull-down definidos no construtor da classe serão utilizados. Isso proporciona flexibilidade tanto para inicializações rápidas quanto para configurações específicas.
 
 ### Considerações sobre a GPIO 0
 
-Nos exemplos a seguir, utilizamos a **GPIO 0** como pino de entrada. A maioria dos ESP32 em shields tem um botão conectado à **GPIO 0** para colocá-lo em modo de programação (bootloader) ao ser mantido em LOW durante o reset. Esse botão pode ser reutilizado para testes simples com a classe `DigitalButton`. **No entanto, use a GPIO 0 com moderação em projetos definitivos**, devido à sua função especial no ESP32.
+Nos exemplos a seguir, utilizamos a **GPIO 0** como pino de entrada. A maioria dos ESP32 em shields tem um botão conectado à **GPIO 0** para colocá-lo em modo de programação (bootloader) ao ser mantido em LOW durante o reset. Esse botão pode ser reutilizado para testes simples com a classe `ES_DigitalButton`. **No entanto, use a GPIO 0 com moderação em projetos definitivos**, devido à sua função especial no ESP32.
 
 ---
 
@@ -84,7 +84,7 @@ button.begin(0, true); // Inicializa o monitoramento no GPIO 0 com pull-up ativa
 
 ## Métodos da Classe
 
-A classe `DigitalButton` possui métodos fáceis de usar para detectar os estados de dispositivos binários, como botões ou sensores digitais. Esses métodos permitem que você saiba quando o dispositivo está ativo, quando foi ativado ou desativado. Vamos entender como cada um funciona:
+A classe `ES_DigitalButton` possui métodos fáceis de usar para detectar os estados de dispositivos binários, como botões ou sensores digitais. Esses métodos permitem que você saiba quando o dispositivo está ativo, quando foi ativado ou desativado. Vamos entender como cada um funciona:
 
 ---
 
@@ -138,7 +138,7 @@ if(button.release()){
 
 ## Exemplo de Uso Prático
 
-Este exemplo demonstra como utilizar a classe `DigitalButton` para monitorar os três estados de um botão digital conectado à **GPIO 0** de um ESP32: **pressionado**, **segurando** e **solto**. Quando o botão muda de estado, mensagens correspondentes são exibidas no monitor serial.
+Este exemplo demonstra como utilizar a classe `ES_DigitalButton` para monitorar os três estados de um botão digital conectado à **GPIO 0** de um ESP32: **pressionado**, **segurando** e **solto**. Quando o botão muda de estado, mensagens correspondentes são exibidas no monitor serial.
 
 O botão é configurado com o resistor interno **pull-up**, tornando este exemplo ideal para botões que conectam a GPIO ao GND quando pressionados. Este código é didático e ajuda a entender como detectar e reagir aos diferentes estados de dispositivos binários.
 
@@ -149,7 +149,7 @@ O botão é configurado com o resistor interno **pull-up**, tornando este exempl
 #include <ES32Lab.h>
 
 // Creates the object for the button on GPIO 0. | Cria o objeto para o botão na GPIO 0.
-DigitalButton button(0, true);
+ES_DigitalButton button(0, true);
 
 void setup() {
   Serial.begin(115200); // Initializes serial communication. | Inicializa a comunicação serial.

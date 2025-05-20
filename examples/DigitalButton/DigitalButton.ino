@@ -1,8 +1,7 @@
 /**
- * @file DigitalButton.ino
- * @brief This example demonstrates the use of the DigitalButton class to monitor the three states
+ * @brief This example demonstrates the use of the ES_DigitalButton class to monitor the three states
  * of a button connected to GPIO 0 on the ESP32: pressed, held, and released.
- * | Este exemplo demonstra o uso da classe DigitalButton para monitorar os três estados
+ * | Este exemplo demonstra o uso da classe ES_DigitalButton para monitorar os três estados
  * de um botão conectado à GPIO 0 no ESP32: pressionado, segurando e solto.
  * @note The GPIO 0 is used as an example and has a special function for bootloader mode on ESP32 boards.
  * Use it with caution in production environments.
@@ -16,7 +15,7 @@
 #include <ES32Lab.h>
 
 // Creates the object for the button on GPIO 0. | Cria o objeto para o botão na GPIO 0.
-DigitalButton button(0, true);
+ES_DigitalButton button(0, true);
 
 void setup() {
   Serial.begin(115200); // Initializes serial communication. | Inicializa a comunicação serial.

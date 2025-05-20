@@ -1,9 +1,9 @@
 /*
   (Português)
-  Exemplo de Utilização do Método debugRead() da Classe AnalogKeyboard
+  Exemplo de Utilização do Método debugRead() da Classe ES_AnalogKeyboard
 
   Objetivo:
-  Este exemplo demonstra como utilizar o método debugRead() da classe AnalogKeyboard para obter leituras precisas dos valores analógicos
+  Este exemplo demonstra como utilizar o método debugRead() da classe ES_AnalogKeyboard para obter leituras precisas dos valores analógicos
   correspondentes às teclas do teclado analógico da ES32Lab. O método debugRead() coleta múltiplas amostras dos valores analógicos,
   calcula os valores mínimos, máximos e a média, e imprime esses valores no terminal serial. Essa informação é útil para calibrar
   e ajustar a precisão da leitura das teclas.
@@ -14,7 +14,7 @@
   - Os resultados ajudarão a determinar os valores analógicos precisos das teclas, permitindo ajustes finos na configuração do teclado.
 
   Passos:
-  1. Conecte o teclado analógico ao pino especificado na criação do objeto AnalogKeyboard.
+  1. Conecte o teclado analógico ao pino especificado na criação do objeto ES_AnalogKeyboard.
      - A GPIO padrão do ESP32 conectada na ES32Lab para o teclado analógico é `P_KEY` (ou GPIO 33).
      - YouTube (https://www.youtube.com/watch?v=xpoNbSA8pPM&t=324s)
   2. Carregue o código no ESP32 e abra o terminal serial na velocidade de 115200 bps.
@@ -32,10 +32,10 @@
 
 /*
   (English)
-  Example of Using the debugRead() Method from the AnalogKeyboard Class
+  Example of Using the debugRead() Method from the ES_AnalogKeyboard Class
 
   Objective:
-  This example demonstrates how to use the debugRead() method from the AnalogKeyboard class to obtain precise readings of the analog values
+  This example demonstrates how to use the debugRead() method from the ES_AnalogKeyboard class to obtain precise readings of the analog values
   corresponding to the keys of the ES32Lab analog keyboard. The debugRead() method collects multiple samples of the analog values,
   calculates the minimum, maximum, and average values, and prints these values to the serial terminal. This information is useful for calibrating
   and adjusting the accuracy of key readings.
@@ -46,7 +46,7 @@
   - The results will help determine the precise analog values of the keys, allowing for fine adjustments in the keyboard configuration.
 
   Steps:
-  1. Connect the analog keyboard to the specified pin when creating the AnalogKeyboard object.
+  1. Connect the analog keyboard to the specified pin when creating the ES_AnalogKeyboard object.
      - The default ESP32 GPIO connected to the ES32Lab analog keyboard is `P_KEY` (or GPIO 33).
      - YouTube (https://www.youtube.com/watch?v=xpoNbSA8pPM&t=324s)
   2. Upload the code to the ESP32 and open the serial terminal at 115200 bps.
@@ -65,7 +65,7 @@
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-AnalogKeyboard keyboard(P_KEY);
+ES_AnalogKeyboard keyboard(P_KEYBOARD);
 
 void setup() {
   Serial.begin(115200);

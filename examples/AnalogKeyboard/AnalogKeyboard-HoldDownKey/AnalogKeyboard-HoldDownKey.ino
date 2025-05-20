@@ -1,9 +1,9 @@
 /*
   (Português)
-  Exemplo de Utilização do Método hold() da Classe AnalogKeyboard
+  Exemplo de Utilização do Método hold() da Classe ES_AnalogKeyboard
 
   Objetivo:
-  Este exemplo demonstra como utilizar o método hold() da classe AnalogKeyboard para verificar se as teclas do teclado analógico
+  Este exemplo demonstra como utilizar o método hold() da classe ES_AnalogKeyboard para verificar se as teclas do teclado analógico
   da ES32Lab estão sendo mantidas pressionadas. O método hold() verifica continuamente se uma tecla específica está sendo pressionada
   e imprime uma mensagem no terminal serial correspondente a cada tecla.
 
@@ -13,7 +13,7 @@
   - Quando uma tecla é mantida pressionada, uma mensagem é enviada ao terminal serial.
 
   Passos:
-  1. Conecte o teclado analógico ao pino especificado na criação do objeto AnalogKeyboard.
+  1. Conecte o teclado analógico ao pino especificado na criação do objeto ES_AnalogKeyboard.
      - A GPIO padrão do ESP32 conectada na ES32Lab para o teclado analógico é `P_KEY` (ou GPIO 33).
      - YouTube (https://www.youtube.com/watch?v=xpoNbSA8pPM&t=324s)
   2. Carregue o código no ESP32 e abra o terminal serial na velocidade de 115200 bps.
@@ -30,10 +30,10 @@
 */
 /*
   (English)
-  Example of Using the hold() Method from the AnalogKeyboard Class
+  Example of Using the hold() Method from the ES_AnalogKeyboard Class
 
   Objective:
-  This example demonstrates how to use the hold() method from the AnalogKeyboard class to check if the keys of the ES32Lab analog keyboard
+  This example demonstrates how to use the hold() method from the ES_AnalogKeyboard class to check if the keys of the ES32Lab analog keyboard
   are being held down. The hold() method continuously checks if a specific key is being pressed and prints a message to the serial terminal
   corresponding to each key.
 
@@ -43,7 +43,7 @@
   - When a key is held down, a message is sent to the serial terminal.
 
   Steps:
-  1. Connect the analog keyboard to the specified pin when creating the AnalogKeyboard object.
+  1. Connect the analog keyboard to the specified pin when creating the ES_AnalogKeyboard object.
      - The default ESP32 GPIO connected to the ES32Lab analog keyboard is `P_KEY` (or GPIO 33).
      - YouTube (https://www.youtube.com/watch?v=xpoNbSA8pPM&t=324s)
   2. Upload the code to the ESP32 and open the serial terminal at 115200 bps.
@@ -61,7 +61,7 @@
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-AnalogKeyboard keyboard(P_KEY); // Criação do objeto AnalogKeyboard conectado ao pino especificado | Creation of the AnalogKeyboard object connected to the specified pin
+ES_AnalogKeyboard keyboard(P_KEYBOARD); // Criação do objeto ES_AnalogKeyboard conectado ao pino especificado | Creation of the ES_AnalogKeyboard object connected to the specified pin
 
 void setup() {
   Serial.begin(115200); // Inicializa a comunicação serial | Initializes serial communication

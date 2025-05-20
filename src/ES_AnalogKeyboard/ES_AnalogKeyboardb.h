@@ -5,12 +5,12 @@
   Criação: 05/31/2022       (mm/dd/yyyy)
 */
 
-#ifndef _ANALOGKEYBOARD_h
-#define _ANALOGKEYBOARD_h
+#ifndef ES_ANALOGKEYBOARD_h
+#define ES_ANALOGKEYBOARD_h
 
 #include <Arduino.h>
 
-#define ANALOGKEYBOARD_VERSION "0.4.2 date 08/07/2024" // (mm/dd/yyyy)
+#define ES_ANALOGKEYBOARD_VERSION "0.5.1 date 05/20/2024" // (mm/dd/yyyy)
 
 // Definindo as teclas individuais | Defining individual keys
 #define KEY_CENTER 0     // Centro | Center
@@ -33,13 +33,13 @@
 #define KEY_UP_DOWN_RIGHT_LEFT 470      // Cima + Baixo + Direita + Esquerda | Up + Down + Right + Left
 
 /**
- * @brief Classe AnalogKeyboard para ler e gerenciar um teclado analógico. | AnalogKeyboard class to read and manage an analog keyboard.
+ * @brief Classe ES_AnalogKeyboard para ler e gerenciar um teclado analógico. | ES_AnalogKeyboard class to read and manage an analog keyboard.
  * 
  * @param pinKeyboard Pino de leitura analógica do teclado. | Analog read pin of the keyboard.
  * @param readingAccuracy Precisão de leitura dos valores analógicos (em %). | Reading accuracy of analog values (in %).
  *
  */
-class AnalogKeyboard {
+class ES_AnalogKeyboard {
     private:    
         uint8_t  _pinKeyboard;    // Pino de leitura do teclado | Keyboard read pin
         boolean  _keyPress[16] = {false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false}; // Verifica se a tecla foi pressionada | Checks if the key is pressed
@@ -48,7 +48,7 @@ class AnalogKeyboard {
         uint8_t  _getIndex(uint16_t address); // Retorna o endereço do Array correspodente a determinada tecla. | Returns the array index corresponding to a specific key.
     
     public:
-        AnalogKeyboard(uint8_t pinKeyboard, uint8_t readingAccuracy = 20);
+        ES_AnalogKeyboard(uint8_t pinKeyboard, uint8_t readingAccuracy = 20);
         boolean hold(uint16_t key);
         boolean press(uint16_t key);
         boolean release(uint16_t key);

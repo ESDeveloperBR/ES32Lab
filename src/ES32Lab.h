@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.12.3 update 20/05/2025"   // dd/mm/yyyy
+    #define ES32LAB_VERSION "0.12.4 update 20/05/2025"   // dd/mm/yyyy
 
     // ---- Label impresso na ES32Lab ----
     #define P00      0
@@ -61,7 +61,7 @@
     #define CL_TFT  18
 
     // ---- Peripherals ----
-    #define P_KEY       33
+    #define P_KEYBOARD  33
     #define P_LED_GREEN 17
     #define P_LED_YELLOW 16
     #define P_LED_RED   13
@@ -75,7 +75,7 @@
 
 
     // ---- Classe da LIB ES32Lab ----
-    #include "AnalogKeyboard/AnalogKeyboardb.h"
+    #include "ES_AnalogKeyboard/ES_AnalogKeyboardb.h"
     #include "ES_Buzzer/ES_Buzzer.h"
     #include "ES_File/ES_File.h"
     #include "TimeInterval/TimeInterval.h"

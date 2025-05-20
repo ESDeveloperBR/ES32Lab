@@ -1,9 +1,9 @@
 /*
   (Português)
-  Exemplo de Utilização dos Métodos press(), release() e hold() da Classe AnalogKeyboard
+  Exemplo de Utilização dos Métodos press(), release() e hold() da Classe ES_AnalogKeyboard
 
   Objetivo:
-  Este exemplo demonstra como utilizar os métodos press(), release() e hold() da classe AnalogKeyboard para verificar se as teclas do teclado
+  Este exemplo demonstra como utilizar os métodos press(), release() e hold() da classe ES_AnalogKeyboard para verificar se as teclas do teclado
   analógico da ES32Lab foram pressionadas, soltas ou estão sendo mantidas pressionadas. O método press() verifica se uma tecla foi pressionada,
   enquanto o método release() verifica se uma tecla foi solta, e o método hold() verifica se uma tecla está sendo mantida pressionada.
   Mensagens correspondentes são impressas no terminal serial para cada tecla monitorada.
@@ -16,7 +16,7 @@
   - Quando uma tecla é pressionada, solta ou mantida pressionada, uma mensagem é enviada ao terminal serial.
 
   Passos:
-  1. Conecte o teclado analógico ao pino especificado na criação do objeto AnalogKeyboard.
+  1. Conecte o teclado analógico ao pino especificado na criação do objeto ES_AnalogKeyboard.
      - A GPIO padrão do ESP32 conectada na ES32Lab para o teclado analógico é `P_KEY` (ou GPIO 33).
      - YouTube: https://www.youtube.com/watch?v=xpoNbSA8pPM&t=324s
   2. Carregue o código no ESP32 e abra o terminal serial na velocidade de 115200 bps.
@@ -34,10 +34,10 @@
 
 /*
   (English)
-  Example of Using the press(), release(), and hold() Methods of the AnalogKeyboard Class
+  Example of Using the press(), release(), and hold() Methods of the ES_AnalogKeyboard Class
 
   Objective:
-  This example demonstrates how to use the press(), release(), and hold() methods of the AnalogKeyboard class to check if the keys of the ES32Lab
+  This example demonstrates how to use the press(), release(), and hold() methods of the ES_AnalogKeyboard class to check if the keys of the ES32Lab
   analog keyboard have been pressed, released, or are being held down. The press() method checks if a key has been pressed, the release() method
   checks if a key has been released, and the hold() method checks if a key is being held down. Corresponding messages are printed to the serial
   terminal for each monitored key.
@@ -50,7 +50,7 @@
   - When a key is pressed, released, or held down, a message is sent to the serial terminal.
 
   Steps:
-  1. Connect the analog keyboard to the pin specified in the creation of the AnalogKeyboard object.
+  1. Connect the analog keyboard to the pin specified in the creation of the ES_AnalogKeyboard object.
      - The default GPIO of the ESP32 connected to the ES32Lab for the analog keyboard is `P_KEY` (or GPIO 33).
      - YouTube: https://www.youtube.com/watch?v=xpoNbSA8pPM&t=324s
   2. Load the code onto the ESP32 and open the serial terminal at a speed of 115200 bps.
@@ -69,7 +69,7 @@
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-AnalogKeyboard keyboard(P_KEY); // Criação do objeto AnalogKeyboard conectado ao pino especificado | Creation of the AnalogKeyboard object connected to the specified pin
+ES_AnalogKeyboard keyboard(P_KEYBOARD); // Criação do objeto ES_AnalogKeyboard conectado ao pino especificado | Creation of the ES_AnalogKeyboard object connected to the specified pin
 
 void setup() {
   Serial.begin(115200); // Inicializa a comunicação serial | Initializes serial communication

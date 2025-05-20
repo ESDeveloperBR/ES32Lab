@@ -133,7 +133,7 @@ Seguindo essa linha de raciocínio, a constante de controle do LED vermelho ser�
 
 A biblioteca da ES32Lab conta com diversas classes para programação orientada a objeto, que têm como objetivo facilitar a criação de programas em C++ para controle da placa de desenvolvimento e prototipagem ES32Lab. Abaixo estão as classes disponíveis:
 
-- [AnalogKeyboard](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/AnalogKeyboard#readme)
+- [ES_AnalogKeyboard](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_AnalogKeyboard#readme)
   
 - [ES_DigitalButton](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_DigitalButton#readme)
   

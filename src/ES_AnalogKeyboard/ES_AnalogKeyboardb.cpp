@@ -4,11 +4,11 @@
   YouTube: https://www.youtube.com/@ESDeveloperBR
   Criação: 05/31/2022       (mm/dd/yyyy)
 */
-#include "AnalogKeyboardb.h"
+#include "ES_AnalogKeyboardb.h"
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< _getIndex >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // Mapeia os valores analógicos para índices no array | Maps analog values to indices in the array
-uint8_t AnalogKeyboard::_getIndex(uint16_t address) {
+uint8_t ES_AnalogKeyboard::_getIndex(uint16_t address) {
     switch (address) {
         case KEY_CENTER: return 0;
         case KEY_UP: return 1;
@@ -31,7 +31,7 @@ uint8_t AnalogKeyboard::_getIndex(uint16_t address) {
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Constructor >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-AnalogKeyboard::AnalogKeyboard(uint8_t pinKeyboard, uint8_t readingAccuracy) {
+ES_AnalogKeyboard::ES_AnalogKeyboard(uint8_t pinKeyboard, uint8_t readingAccuracy) {
     _pinKeyboard = pinKeyboard;
     _readingAccuracy = readingAccuracy;
 }
@@ -44,7 +44,7 @@ AnalogKeyboard::AnalogKeyboard(uint8_t pinKeyboard, uint8_t readingAccuracy) {
  * @return `true` se a tecla está sendo pressionada ou `false` se a tecla não está sendo pressionada.
  * @return | `true` if the key is being pressed or `false` if the key is not being pressed.
  */
-boolean AnalogKeyboard::hold(uint16_t key) {
+boolean ES_AnalogKeyboard::hold(uint16_t key) {
     uint16_t readValue = analogRead(_pinKeyboard);
     uint16_t toleranceValue = key * (float(_readingAccuracy) / 100);
 
@@ -62,7 +62,7 @@ boolean AnalogKeyboard::hold(uint16_t key) {
  * @return `true` se a tecla foi pressionada ou `false` se a tecla não foi pressionada.
  * @return | `true` if the key was pressed or `false` if the key was not pressed.
  */
-boolean AnalogKeyboard::press(uint16_t key) {
+boolean ES_AnalogKeyboard::press(uint16_t key) {
     uint8_t index = _getIndex(key);
     if (index == 0xFF) return false; // Verifica se o endereço é válido
 
@@ -83,7 +83,7 @@ boolean AnalogKeyboard::press(uint16_t key) {
  * @return `true` se a tecla foi solta ou `false` se a tecla não foi solta.
  * @return | `true` if the key was released or `false` if the key was not released.
  */
-boolean AnalogKeyboard::release(uint16_t key) {
+boolean ES_AnalogKeyboard::release(uint16_t key) {
     uint8_t index = _getIndex(key);
     if (index == 0xFF) return false; // Verifica se o endereço é válido
 
@@ -100,7 +100,7 @@ boolean AnalogKeyboard::release(uint16_t key) {
 /**
  * @brief Método para depuração que lê e imprime o valor atual da leitura analógica. | Debug method that reads and prints the current analog read value.
  */
-void AnalogKeyboard::debugRead() {
+void ES_AnalogKeyboard::debugRead() {
     const int numSamples = 200; // Número de amostras para calcular as estatísticas
     uint16_t readings[numSamples];
     uint16_t minValue = 65535; // Valor máximo possível para uint16_t

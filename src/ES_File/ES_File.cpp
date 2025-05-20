@@ -680,15 +680,12 @@ bool ES_File::directoryExists(fs::FS& fs, const String& directory) {
 bool ES_File::println(const String& fileName, const String& content, bool createNew) {
     return println(*_fileSystem, fileName, content, createNew);
 }
-
 bool ES_File::println(const String& fileName, int content, bool createNew) {
     return println(*_fileSystem, fileName, String(content), createNew);
 }
-
 bool ES_File::println(const String& fileName, double content, bool createNew, uint8_t decimalPlaces) {
     return println(*_fileSystem, fileName, String(content, (unsigned int)decimalPlaces), createNew);
 }
-
 bool ES_File::println(fs::FS& fs, const String& fileName, const String& content, bool createNew) {
     return _writeContent(&fs, fileName, content, true, createNew);
 }
@@ -698,15 +695,12 @@ bool ES_File::println(fs::FS& fs, const String& fileName, const String& content,
 bool ES_File::print(const String& fileName, const String& content, bool createNew) {
     return print(*_fileSystem, fileName, content, createNew);
 }
-
 bool ES_File::print(const String& fileName, int content, bool createNew) {
     return print(*_fileSystem, fileName, String(content), createNew);
 }
-
 bool ES_File::print(const String& fileName, double content, bool createNew, uint8_t decimalPlaces) {
     return print(*_fileSystem, fileName, String(content, (unsigned int)decimalPlaces), createNew);
 }
-
 bool ES_File::print(fs::FS& fs, const String& fileName, const String& content, bool createNew) {
     return _writeContent(&fs, fileName, content, false, createNew);
 }

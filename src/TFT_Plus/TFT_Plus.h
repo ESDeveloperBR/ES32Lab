@@ -11,7 +11,7 @@
 //#include "ES_FileManager/ES_FileManager.h"
 #include "ES_File/ES_File.h" // Biblioteca de gerenciamento de arquivos
 
-#define TFT_PLUS_VERSION "0.8.3 update 21/04/2022"  // mm/dd/yyyy
+#define TFT_PLUS_VERSION "0.9.0 update 19/05/2024"  // mm/dd/yyyy
 
 // Classe TFT_Plus 
 class TFT_Plus{
@@ -360,7 +360,7 @@ class TFT_Plus{
 
 
         void    loadFontArray(const uint8_t array[]);
-        void    loadFontFile(String fontName, boolean sdCard);
+        void    loadFontFile(fs::FS& fs, const String& fontName);
 
         void    unloadFont(void);                     /* Desvincula arquivo de font*/
 
@@ -376,11 +376,13 @@ class TFT_Plus{
       size_t  println(uint32_t color, String label, uint32_t bgcolor = 0);/* Exibe o texto no display */
 
       String  getFileNameRenderJPEG(void);
-      boolean renderJPEG(String fileName, boolean sdCard, int xpos = 0, int ypos = 0);
-      boolean renderFirstFileJPEG(String directory, boolean sdCard, int xpos = 0, int ypos = 0 );
-      boolean renderLastFileJPEG(String directory, boolean sdCard, int xpos = 0, int ypos = 0 );
-      boolean renderNextFileJPEG(int xpos = 0, int ypos = 0 );
-      boolean renderBackFileJPEG(int xpos = 0, int ypos = 0 );
+      boolean renderJPEG(fs::FS& fs, const String& fileName, int xpos = 0, int ypos = 0);
+      boolean renderFirstFileJPEG(fs::FS& fs, const String& directory = "/", int xpos = 0, int ypos = 0 );
+      boolean renderLastFileJPEG(fs::FS& fs, const String& directory = "/", int xpos = 0, int ypos = 0 );
+
+      boolean renderNextFileJPEG(fs::FS& fs, const String& directory = "", int xpos = 0, int ypos = 0 );
+
+      boolean renderPreviousFileJPEG(fs::FS& fs, const String& directory = "", int xpos = 0, int ypos = 0 );
       
   };
 #endif

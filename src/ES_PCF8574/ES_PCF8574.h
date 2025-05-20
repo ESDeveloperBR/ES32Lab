@@ -3,9 +3,9 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-#include "TimeInterval/TimeInterval.h"
+#include "ES_TimeInterval/ES_TimeInterval.h"
 
-#define ES_PCF8574_VERSION "0.7.3 update 04/05/2024"  // mm/dd/yyyy
+#define ES_PCF8574_VERSION "0.7.4 update 05/20/2025"  // mm/dd/yyyy
 
 #define ES_PCF8574_TASK_PWM_SIM_STACK_DEPTH 1200  // Sets the amount of memory available for local variables and function calls within the PWM simulator. | Define a quantidade de memória disponível para as variáveis locais e chamadas de função dentro do simulador PWM.
 #define ES_PCF8574_TASK_PWM_SIM_PRIORITY 2         // Represents the task priority. Higher values indicate higher priority. | Representa a prioridade da tarefa. Valores maiores indicam maior prioridade.
@@ -32,7 +32,7 @@ class ES_PCF8574 {
 
     float   _pwmDutyCycle[8] = {0, 0, 0, 0, 0, 0, 0, 0};  // Matrix where each address represents a GPIO of the I2C expansion, where the length of the Duty Cycle will be stored. | Matriz onde cada endereço representa uma GPIO da expansão i2C, onde será armazenado o tamanho do Duty Cycle.
     float   _pwmFrequency[8] = {0, 0, 0, 0, 0, 0, 0, 0};  // Matrix where each address represents a GPIO of the I2C expansion, where the PWM frequency will be stored independently for each GPIO. | Matriz onde cada endereço representa uma GPIO da expansão i2C, onde será armazenada a frequência PWM de forma independente para cada GPIO.
-    TimeInterval _pwmDutyTime[8]; // Matrix of type 'TimeInterval' responsible for controlling the cycle time of each GPIO to be used to generate PWM pulse. | Matriz do tipo 'TimeInterval' responsável por controlar o tempo de ciclo de cada GPIO a ser utilizada para gerar o pulso PWM.
+    ES_TimeInterval _pwmDutyTime[8]; // Matrix of type 'TimeInterval' responsible for controlling the cycle time of each GPIO to be used to generate PWM pulse. | Matriz do tipo 'TimeInterval' responsável por controlar o tempo de ciclo de cada GPIO a ser utilizada para gerar o pulso PWM.
 
     uint8_t _motorFrequency[4] = {20, 20, 20, 20};
     uint8_t _motorPin1[4];

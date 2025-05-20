@@ -8,16 +8,16 @@ ATTENTION: ES32Lab depends on the library download
     https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab
     
 Objective:
-- Use the "TimeInterval" class to create a stopwatch to identify how long it takes to execute some "Serial.print()" commands.
+- Use the "ES_TimeInterval" class to create a stopwatch to identify how long it takes to execute some "Serial.print()" commands.
 
 Objetivo:
-- Utilizar a classe "TimeInterval" para criar um cronometro para identificar quanto tempo leva para executar alguns comandos "Serial.print()".
+- Utilizar a classe "ES_TimeInterval" para criar um cronometro para identificar quanto tempo leva para executar alguns comandos "Serial.print()".
 */
 
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-TimeInterval intervalTest;
+ES_TimeInterval intervalTest;
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<< Setup >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 void setup() {
@@ -27,7 +27,7 @@ void setup() {
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<< Loop >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 void loop() {
   /*
-    void TimeInterval::stopwatchStartMicros()
+    void ES_TimeInterval::stopwatchStartMicros()
     Initializes the stopwatch in microseconds
   */
   intervalTest.stopwatchStartMicros();
@@ -37,7 +37,7 @@ void loop() {
   Serial.println("*************");
 
   /*
-    long TimeInterval::stopwatchStopMicros()
+    long ES_TimeInterval::stopwatchStopMicros()
     Stop stopwatch - Microseconds and return the obtained value  
   */
   long returnStopwatch = intervalTest.stopwatchStopMicros();

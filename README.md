@@ -145,11 +145,9 @@ A biblioteca da ES32Lab conta com diversas classes para programação orientada 
 
 - [ES_File](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_File#readme)
 
-
 - [ES_TFT](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_TFT#readme)
 
-
-- [TimeInterval](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/TimeInterval#readme)
+- [ES_TimeInterval](https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_TimeInterval#readme)
 
 Essas classes podem ser utilizadas para facilitar o desenvolvimento de programas na ES32Lab, oferecendo recursos específicos e abstrações que simplificam o processo de criação de projetos. Cada classe possui sua própria documentação detalhada, que pode ser acessada através dos links fornecidos acima.
 

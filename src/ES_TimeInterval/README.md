@@ -7,8 +7,8 @@
 
 
 
-### Classe TimeInterval
-A classe _TimeInterval_ tem como objetivo facilitar a utilização dos comandos _”micros()”_ e _“millis()”_, tornando assim mais intuitivo o controle de tempo sem a paralização do programa principal.
+### Classe ES_TimeInterval
+A classe _ES_TimeInterval_ tem como objetivo facilitar a utilização dos comandos _”micros()”_ e _“millis()”_, tornando assim mais intuitivo o controle de tempo sem a paralização do programa principal.
 
 #### Métodos
 * _**boolean intervalMillis(long millisTime):**_ Retorna “verdadeiro” quando o tempo em milissegundos passado por parâmetro _(millisTime)_ chegar ao final;
@@ -23,18 +23,18 @@ A classe _TimeInterval_ tem como objetivo facilitar a utilização dos comandos 
 
 #### Exemplos práticos
 
-**Exemplo 1:** O exemplos abaixo utiliza a classe "TimeInterval" para gerencia o tempo através do comando "intervalMillis()", não parando o código em execução
+**Exemplo 1:** O exemplos abaixo utiliza a classe "ES_TimeInterval" para gerencia o tempo através do comando "intervalMillis()", não parando o código em execução
 
 ```C++
 #include <ES32Lab.h>
 
-TimeInterval intervalTest;
+ES_TimeInterval intervalTest;
 void setup() {
   Serial.begin(115200);
 }
 void loop() {
   /*
-    boolean TimeInterval::intervalMillis(long millisTime)
+    boolean ES_TimeInterval::intervalMillis(long millisTime)
     Returns "true" when the time in milliseconds has elapsed
     - millisTime: Time in milliseconds
   */
@@ -45,18 +45,18 @@ void loop() {
 }
 ```
 
-**Exemplo 2:** Utilizar a classe "TimeInterval" para criar um cronometro para identificar quanto tempo leva para executar alguns comandos "Serial.print()".
+**Exemplo 2:** Utilizar a classe "ES_TimeInterval" para criar um cronometro para identificar quanto tempo leva para executar alguns comandos "Serial.print()".
 
 ```C++
 #include <ES32Lab.h>
 
-TimeInterval intervalTest;
+ES_TimeInterval intervalTest;
 void setup() {
   Serial.begin(115200);
 }
 void loop() {
   /*
-    void TimeInterval::stopwatchStartMicros()
+    void ES_TimeInterval::stopwatchStartMicros()
     Initializes the stopwatch in microseconds
   */
   intervalTest.stopwatchStartMicros();
@@ -66,7 +66,7 @@ void loop() {
   Serial.println("*************");
 
   /*
-    long TimeInterval::stopwatchStopMicros()
+    long ES_TimeInterval::stopwatchStopMicros()
     Stop stopwatch - Microseconds and return the obtained value  
   */
   long returnStopwatch = intervalTest.stopwatchStopMicros();

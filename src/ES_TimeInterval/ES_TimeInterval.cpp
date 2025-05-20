@@ -1,11 +1,11 @@
-#include "TimeInterval.h"
+#include "ES_TimeInterval.h"
 // <<<<<<<<< Retorna "true" quando o tempo em milissegundos tiver terminado >>>>>>>>>>
 /*
 Returns “true” when the time in milliseconds passed by parameter (millisTime) reaches the end;
 --- (Português BR) ---
 Retorna “verdadeiro” quando o tempo em milissegundos passado por parâmetro (millisTime) chegar ao final;
 */
-boolean TimeInterval::intervalMillis(long millisTime){
+boolean ES_TimeInterval::intervalMillis(long millisTime){
     long tempMillisAtual = millis();
     if( (tempMillisAtual - _start_Millis) >= millisTime ){
         _start_Millis = millis();
@@ -21,7 +21,7 @@ Reset millisecond counter associated with intervalMillis() method.
 --- (Português BR) ---
 Reiniciar o contador de milissegundos associado ao método intervalMillis().
 */
-void TimeInterval::resetMillis(){
+void ES_TimeInterval::resetMillis(){
     _start_Millis = millis();
 }
 
@@ -31,7 +31,7 @@ Returns “true” when the time in microseconds passed by parameter (microsTime
 --- (Português BR) ---
 Retorna “verdadeiro” quando o tempo em microssegundos passado por parâmetro (microsTime) chegar ao final;
 */
-boolean TimeInterval::intervalMicros(long microsTime){
+boolean ES_TimeInterval::intervalMicros(long microsTime){
     long tempMicrosAtual = micros();
 
     if( (tempMicrosAtual - _start_Micros) >= microsTime ){
@@ -48,7 +48,7 @@ Reset the microseconds counter associated with the intervalMicros() method.
 --- (Português BR) ---
 Reiniciar o contador de microssegundos associado ao método intervalMicros().
 */
-void TimeInterval::resetMicros(){
+void ES_TimeInterval::resetMicros(){
     _start_Micros = micros();
 }
 
@@ -58,7 +58,7 @@ Initializes the stopwatch in milliseconds.
 --- (Português BR) ---
 Inicializa um cronômetro em Milissegundos.
 */
-void TimeInterval::stopwatchStartMillis(){
+void ES_TimeInterval::stopwatchStartMillis(){
     _start_Millis = millis();
 }
 
@@ -68,7 +68,7 @@ Stop stopwatch - Return the obtained value in milliseconds.
 --- (Português BR) ---
 Parar cronômetro - Retornar o valor obtido em milissegundos.
 */
-long TimeInterval::stopwatchStopMillis(){
+long ES_TimeInterval::stopwatchStopMillis(){
     return  millis() - _start_Millis; 
 }
 
@@ -77,7 +77,7 @@ long TimeInterval::stopwatchStopMillis(){
 --- (Português BR) ---
 Inicializa um cronômetro em Microssegundos.
 */
-void TimeInterval::stopwatchStartMicros(){
+void ES_TimeInterval::stopwatchStartMicros(){
     _start_Micros = micros();
 }
 
@@ -87,7 +87,7 @@ Stop stopwatch - Return the value obtained in microseconds.
 --- (Português BR) ---
 Parar cronômetro - Retornar o valor obtido em microssegundos.
 */
-long TimeInterval::stopwatchStopMicros(){
+long ES_TimeInterval::stopwatchStopMicros(){
     return  micros() - _start_Micros; 
 }
 // <<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>

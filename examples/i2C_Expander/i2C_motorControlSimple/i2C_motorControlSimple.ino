@@ -1,29 +1,27 @@
 /**
- * @file i2C_motorControlSimple.ino
- * @brief This example demonstrates how to use the ES32Lab I2C PCF8574 expander to control a motor 
- * through an H-bridge circuit. The motor is gradually accelerated until it reaches 100% speed. 
- * When the speed reaches 100%, the 'speed' variable is reset to 0, and the cycle starts again.
- * | Este exemplo demonstra como usar o expansor I2C PCF8574 da ES32Lab para controlar um motor através 
- * de um circuito H-bridge. O motor é gradualmente acelerado até atingir 100% de velocidade. Quando a 
- * velocidade atinge 100%, a variável 'speed' é redefinida para 0, e o ciclo recomeça.
- * @warning Ensure that the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) and its dependency 
- * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) are installed.
- * | Certifique-se de que a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) e sua dependência 
- * TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) estejam instaladas.
- * @attention If the I2C address is incorrect, the program will not work. Use the command 
- * `expander.scanI2C()` to find the correct address. For more details, refer to the example available at: 
+ * @brief Example: Simple motor speed control using the I2C GPIO expander (PCF8574) and ES32Lab
+ * | Exemplo: Controle simples de velocidade de motor utilizando o expansor de GPIO I2C (PCF8574) e ES32Lab
+ *
+ * This example demonstrates how to perform a simple speed control of a DC motor using an H-bridge connected to GPIO pins of the PCF8574 I2C expander with the ES32Lab library.
+ * The code shows how to initialize the motor control by specifying which GPIOs of the expander are connected to the H-bridge inputs. In the main loop, the motor is activated in direction A, and its speed is gradually increased from 0% to 100% in steps of 5%, with a 2-second pause at each step. When the speed exceeds 100%, it resets to 0% and the cycle repeats.
+ * This approach allows you to expand the number of motors controlled by your project using only two wires (SDA and SCL), freeing up microcontroller pins and enabling remote or distributed motor control. The example is ideal for understanding the basics of speed control and how to use the ES32Lab library to interface with I2C expanders for motor applications.
+ * The expander must be configured with the correct I2C address. If you do not know the I2C address of your device, use the I2C scanner example available at:
  * https://github.com/ESDeveloperBR/ES32Lab/blob/main/examples/i2C_Expander/i2C_scanI2C/i2C_scanI2C.ino
- * | Atenção: Se o endereço I2C estiver incorreto, o programa não funcionará. Use o comando 
- * `expander.scanI2C()` para encontrar o endereço correto. Para mais detalhes, consulte o exemplo disponível 
- * em: https://github.com/ESDeveloperBR/ES32Lab/blob/main/examples/i2C_Expander/i2C_scanI2C/i2C_scanI2C.ino
- * @note To correctly configure the jumpers for the H-bridge connection, watch the video tutorial at: 
- * https://www.youtube.com/watch?v=xpoNbSA8pPM&t=383s
- * | Nota: Para configurar corretamente os jumpers para a conexão da ponte-H, assista ao tutorial em vídeo em: 
- * https://www.youtube.com/watch?v=xpoNbSA8pPM&t=383s
+ *
+ * | Este exemplo demonstra como realizar um controle simples de velocidade de um motor DC utilizando uma ponte H conectada aos pinos GPIO do expansor I2C PCF8574 com a biblioteca ES32Lab.
+ * O código mostra como inicializar o controle do motor, especificando quais GPIOs do expansor estão conectadas às entradas da ponte H. No loop principal, o motor é ativado no sentido A e sua velocidade é aumentada gradualmente de 0% a 100% em passos de 5%, com uma pausa de 2 segundos em cada etapa. Quando a velocidade ultrapassa 100%, ela retorna para 0% e o ciclo se repete.
+ * Essa abordagem permite expandir a quantidade de motores controlados no seu projeto utilizando apenas dois fios (SDA e SCL), liberando pinos do microcontrolador e possibilitando controle remoto ou distribuído dos motores. O exemplo é ideal para compreender os conceitos básicos de controle de velocidade e como utilizar a biblioteca ES32Lab para interfacear com expansores I2C em aplicações de motores.
+ * O expansor deve ser configurado com o endereço I2C correto. Caso você não saiba o endereço I2C do seu dispositivo, utilize o exemplo de scanner I2C disponível em:
+ * https://github.com/ESDeveloperBR/ES32Lab/blob/main/examples/i2C_Expander/i2C_scanI2C/i2C_scanI2C.ino
+ *
+ * @warning Ensure that the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) is installed and properly configured.
+ * | Certifique-se de que a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) esteja instalada e configurada corretamente.
+ *
+ * @see Official documentation: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
+ * | Documentação oficial: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
+ *
  * @see Official board: https://www.esdeveloper.com.br
  * | Placa oficial disponível em: https://www.esdeveloper.com.br
- * @see ES_PCF8574 documentation: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
- * | Documentação da classe ES_PCF8574: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
  */
 
 #include <Arduino.h>

@@ -1,17 +1,27 @@
 /**
- * @file i2C_digitalWriteExpander.ino
- * @brief This example demonstrates how to use the ES32Lab I2C PCF8574 expander to control GPIO 0 (EX0) of the expansion and make an LED blink intermittently.
- * | Este exemplo demonstra como usar o expansor I2C PCF8574 da ES32Lab para controlar a GPIO 0 (EX0) da expansão e fazer um LED piscar intermitentemente.
- * @warning Ensure that the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) and its dependency TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) are installed.
- * | Certifique-se de que a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) e sua dependência TFT_eSPI_ES32Lab (https://github.com/ESDeveloperBR/TFT_eSPI_ES32Lab) estejam instaladas.
- * @attention If the I2C address is incorrect, the program will not work. Use the command `expander.scanI2C()` to find the correct address. For more details, refer to the example available at: 
+ * @brief Example: Writing to a digital output with the I2C GPIO expander (PCF8574) and ES32Lab
+ * | Exemplo: Escrita em saída digital com o expansor de GPIO I2C (PCF8574) e ES32Lab
+ *
+ * This example demonstrates how to control a digital output (such as an LED or relay) connected to a GPIO pin of the PCF8574 I2C expander using the ES32Lab library.
+ * The code instantiates the ES_PCF8574 object with the I2C address 0x20 and initializes the expander. In the main loop, it alternately sets the EX0 pin (GPIO 0 of the expander) to HIGH and LOW using the digitalWrite() method, turning the connected device on and off every second.
+ * This allows you to expand the number of digital outputs available in your project via I2C, making it possible to control LEDs, relays, or other actuators with just two wires (SDA and SCL).
+ * If you do not know the I2C address of your device, use the I2C scanner example available at:
  * https://github.com/ESDeveloperBR/ES32Lab/blob/main/examples/i2C_Expander/i2C_scanI2C/i2C_scanI2C.ino
- * | Atenção: Se o endereço I2C estiver incorreto, o programa não funcionará. Use o comando `expander.scanI2C()` para encontrar o endereço correto. Para mais detalhes, consulte o exemplo disponível em:
+ *
+ * | Este exemplo demonstra como controlar uma saída digital (como um LED ou relé) conectada a um pino GPIO do expansor I2C PCF8574 utilizando a biblioteca ES32Lab.
+ * O código instancia o objeto ES_PCF8574 com o endereço I2C 0x20 e inicializa o expansor. No loop principal, alterna o estado do pino EX0 (GPIO 0 do expansor) entre HIGH e LOW usando o método digitalWrite(), ligando e desligando o dispositivo conectado a cada segundo.
+ * Isso permite expandir a quantidade de saídas digitais disponíveis no seu projeto via I2C, possibilitando o controle de LEDs, relés ou outros atuadores utilizando apenas dois fios (SDA e SCL).
+ * Caso você não saiba o endereço I2C do seu dispositivo, utilize o exemplo de scanner I2C disponível em:
  * https://github.com/ESDeveloperBR/ES32Lab/blob/main/examples/i2C_Expander/i2C_scanI2C/i2C_scanI2C.ino
+ *
+ * @warning Ensure that the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) is installed and properly configured.
+ * | Certifique-se de que a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) esteja instalada e configurada corretamente.
+ *
+ * @see Official documentation: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
+ * | Documentação oficial: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
+ *
  * @see Official board: https://www.esdeveloper.com.br
  * | Placa oficial disponível em: https://www.esdeveloper.com.br
- * @see ES_PCF8574 documentation: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
- * | Documentação da classe ES_PCF8574: https://github.com/ESDeveloperBR/ES32Lab/tree/main/src/ES_PCF8574#readme
  */
 
 #include <Arduino.h>

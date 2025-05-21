@@ -73,7 +73,6 @@
  * | Placa oficial disponível em: https://www.esdeveloper.com.br
  */
 
-
 #include <Arduino.h>    
 #include <WiFi.h>       // Wi-Fi library | Biblioteca Wi-Fi
 #include <ES32Lab.h>    // Library ES32Lab | Biblioteca ES32Lab

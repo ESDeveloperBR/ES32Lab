@@ -27,23 +27,74 @@ Além disso, a classe permite salvar imagens capturadas em sistemas de arquivos 
 ## Índice
 
 1. [Construtor](#construtor)
-2. [Configuração no `setup()`](#configuração-no-setup)
-3. [Métodos da Classe](#métodos-da-classe)
-   - [Configuração de Brilho](#configuração-de-brilho)
-   - [Configuração de Contraste](#configuração-de-contraste)
-   - [Configuração de Saturação](#configuração-de-saturação)
-   - [Balanço de Branco](#balanço-de-branco)
-   - [Controle de Exposição](#controle-de-exposição)
-   - [Efeitos Especiais](#efeitos-especiais)
-   - [Correção de Lente e Cor](#correção-de-lente-e-cor)
-   - [Nitidez](#nitidez)
-   - [Espelhamento](#espelhamento)
-   - [Barra de Cores](#barra-de-cores)
-   - [Tamanho do Quadro](#tamanho-do-quadro)
-   - [Qualidade JPEG](#qualidade-jpeg)
-   - [Métodos de Captura e Salvamento](#métodos-de-captura-e-salvamento)
-   - [Métodos de Streaming](#métodos-de-streaming)
-4. [Exemplo: Captura e Streaming de Vídeo](#exemplo-captura-e-streaming-de-vídeo)
+2. [Configuração no setup()](#configuração-no-setup)
+3. [Configuração de Brilho](#configuração-de-brilho)
+    - [`setBrightness(int8_t level)`](#setbrightnessint8_t-level)
+    - [`getBrightness()`](#getbrightness)
+4. [Configuração de Contraste](#configuração-de-contraste)
+    - [`setContrast(int8_t level)`](#setcontrastint8_t-level)
+    - [`getContrast()`](#getcontrast)
+5. [Configuração de Saturação](#configuração-de-saturação)
+    - [`setSaturation(int8_t level)`](#setsaturationint8_t-level)
+    - [`getSaturation()`](#getsaturation)
+6. [Balanço de Branco](#balanço-de-branco)
+    - [`setWhiteBalance(bool enable)`](#setwhitebalancebool-enable)
+    - [`getWhiteBalance()`](#getwhitebalance)
+    - [`setWhiteBalanceGain(bool enable)`](#setwhitebalancegainbool-enable)
+    - [`getWhiteBalanceGain()`](#getwhitebalancegain)
+7. [Controle de Exposição](#controle-de-exposição)
+    - [`setExposure(bool enable)`](#setexposurebool-enable)
+    - [`getExposure()`](#getexposure)
+    - [`setExposureAdvanced(bool enable)`](#setexposureadvancedbool-enable)
+    - [`getExposureAdvanced()`](#getexposureadvanced)
+    - [`setExposureLevel(int8_t level)`](#setexposurelevelint8_t-level)
+    - [`getExposureLevel()`](#getexposurelevel)
+    - [`setExposureValue(uint16_t value)`](#setexposurevalueuint16_t-value)
+    - [`getExposureValue()`](#getexposurevalue)
+    - [`setExposureGain(uint8_t gain)`](#setexposuregainuint8_t-gain)
+    - [`getExposureGain()`](#getexposuregain)
+8. [Efeitos Especiais](#efeitos-especiais)
+    - [`setSpecialEffect(uint8_t effect)`](#setspecialeffectuint8_t-effect)
+    - [`getSpecialEffect()`](#getspecialeffect)
+9. [Correção de Lente e Cor](#correção-de-lente-e-cor)
+    - [`setLensCorrection(bool enable)`](#setlenscorrectionbool-enable)
+    - [`getLensCorrection()`](#getlenscorrection)
+    - [`setColorCorrection(bool enable)`](#setcolorcorrectionbool-enable)
+    - [`getColorCorrection()`](#getcolorcorrection)
+10. [Correção de Cor RAW](#correção-de-cor-raw)
+    - [`setRawColorCorrection(bool enable)`](#setrawcolorcorrectionbool-enable)
+    - [`getRawColorCorrection()`](#getrawcolorcorrection)
+11. [Nitidez](#nitidez)
+    - [`setSharpness(int8_t level)`](#setsharpnessint8_t-level)
+    - [`getSharpness()`](#getsharpness)
+12. [Espelhamento](#espelhamento)
+    - [`setHorizontalMirror(bool enable)`](#sethorizontalmirrorbool-enable)
+    - [`getHorizontalMirror()`](#gethorizontalmirror)
+    - [`setVerticalMirror(bool enable)`](#setverticalmirrorbool-enable)
+    - [`getVerticalMirror()`](#getverticalmirror)
+13. [Barra de Cores](#barra-de-cores)
+    - [`setColorBar(bool enable)`](#setcolorbarbool-enable)
+    - [`getColorBar()`](#getcolorbar)
+14. [Tamanho do Quadro](#tamanho-do-quadro)
+    - [`setFrameSize(framesize_t frameSize)`](#setframesizeframesize_t-framesize)
+    - [`getFrameSize()`](#getframesize)
+    - [`getFrameWidth()`](#getframewidth)
+    - [`getFrameHeight()`](#getframeheight)    
+15. [Configuração de Compressão JPEG](#configuração-de-compressão-jpeg)
+    - [`setJpegCompression(int8_t jpegQuality)`](#setjpegcompressionint8_t-jpegquality)
+    - [`getJpegCompression()`](#getjpegcompression)
+16. [Captura de Frame no Formato Nativo](#captura-de-frame-no-formato-nativo)
+    - [`getFrameBuffer(uint8_t** buf, size_t* bufLen)`](#getframebufferuint8_t-buf-size_t-buflen)
+17. [Captura de Frame no Formato JPEG](#captura-de-frame-no-formato-jpeg)
+    - [`getFrameJpegBuffer(uint8_t** jpegBuf, size_t* jpegBufLen, framesize_t frameSize, int8_t jpegQuality)`](#getframejpegbufferuint8_t-jpegbuf-size_t-jpegbuflen-framesize_t-framesize-int8_t-jpegquality)
+18. [Salvamento de Frame no Formato JPEG](#salvamento-de-frame-no-formato-jpeg)
+    - [`saveFrameToJpegFile(fs::FS &fs, const char* filePath, framesize_t frameSize, int8_t jpegQuality)`](#saveframetojpegfilefsfs-const-char-filepath-framesize_t-framesize-int8_t-jpegquality)
+19. [Métodos de Streaming](#métodos-de-streaming)
+    - [`handleStreamRequest(httpd_req_t *req)`](#handlestreamrequesthttpd_req_t-req)
+    - [`createStreamEndpoint(const char* streamUri)`](#createstreamendpointconst-char-streamuri)
+    - [`getStreamUri()`](#getstreamuri)
+20. [Exemplo: Configuração de Streaming de Vídeo](#exemplo-configuração-de-streaming-de-vídeo)
+21. [Exemplos Oficiais](#exemplos-oficiais)
 
 
 ---
@@ -793,6 +844,28 @@ Obtém o tamanho do quadro atual configurado no sensor da câmera. Este método 
   - Use este método para monitorar o estado do tamanho do quadro e garantir que os ajustes realizados estejam de acordo com as expectativas.
 
 
+#### `getFrameWidth()`
+Obtém a largura (em pixels) do quadro atual configurado na câmera. Este método é útil para saber a resolução horizontal da imagem capturada, especialmente ao trabalhar com diferentes tamanhos de quadro.
+
+- **Retorno**:
+  - Retorna um valor inteiro representando a largura do quadro atual em pixels.
+  - Retorna `0` caso ocorra algum erro ou se o tamanho do quadro não for reconhecido.
+
+- **Nota**:
+  - Use este método para ajustar operações de processamento de imagem, exibição em display ou salvamento de arquivos, garantindo que a largura utilizada corresponde à configuração atual da câmera.
+
+
+#### `getFrameHeight()`
+Obtém a altura (em pixels) do quadro atual configurado na câmera. Este método é útil para saber a resolução vertical da imagem capturada, especialmente ao trabalhar com diferentes tamanhos de quadro.
+
+- **Retorno**:
+  - Retorna um valor inteiro representando a altura do quadro atual em pixels.
+  - Retorna `0` caso ocorra algum erro ou se o tamanho do quadro não for reconhecido.
+
+- **Nota**:
+  - Use este método para ajustar operações de processamento de imagem, exibição em display ou salvamento de arquivos, garantindo que a altura utilizada corresponde à configuração atual da câmera.
+
+
 ---
 
 
@@ -836,6 +909,55 @@ Obtém a qualidade de compressão JPEG atual configurada no sensor da câmera. E
 ---
 
 
+### Captura de Frame no Formato Nativo
+
+Este método captura um frame no formato nativo configurado na câmera (por exemplo, RGB565, GRAYSCALE ou JPEG) e armazena os dados em um buffer fornecido pelo usuário. Ele é útil para aplicações que precisam processar, exibir ou manipular imagens diretamente no formato original capturado pelo sensor, sem conversão para JPEG.
+
+#### `getFrameBuffer(uint8_t** buf, size_t* bufLen)`
+Captura um frame no formato nativo atual da câmera, armazenando os dados em um buffer fornecido pelo usuário. Este método é ideal para aplicações que exigem acesso rápido ao frame para exibição em displays TFT, processamento de imagem ou integração com outros periféricos.
+
+- **Parâmetros**:
+  - `buf`: Ponteiro para o buffer onde os dados do frame capturado serão armazenados.
+  - `bufLen`: Ponteiro para a variável onde o tamanho dos dados do frame será armazenado.
+
+- **Retorno**:
+  - Retorna `true` se o frame foi capturado com sucesso.
+  - Retorna `false` caso contrário.
+
+- **Funcionamento**:
+  - O método captura o frame diretamente no formato configurado em `begin()` (ex: RGB565, GRAYSCALE ou JPEG).
+  - Não realiza conversão de formato, garantindo máxima performance e menor uso de memória.
+  - O buffer retornado deve ser utilizado imediatamente, pois pertence ao driver da câmera e será liberado após o uso.
+
+- **Dica de otimização**:
+  - Utilize este método para exibir imagens em displays TFT, onde o formato RGB565 é o mais eficiente.
+  - Para salvar ou transmitir imagens em JPEG, utilize o método `getFrameJpegBuffer()`.
+
+- **Nota**:
+  - O conteúdo e o tamanho do buffer dependem do formato configurado na inicialização da câmera.
+  - Não é necessário liberar o buffer manualmente, pois ele é gerenciado pelo driver da câmera.
+  - Caso precise de JPEG, utilize o método `getFrameJpegBuffer()`.
+
+> **Atenção:**  
+> Se você precisa de imagens em JPEG para armazenamento ou transmissão, prefira inicializar a câmera diretamente em `PIXFORMAT_JPEG` usando o método `begin()`, ou utilize o método `getFrameJpegBuffer()` para realizar a conversão (sujeito à disponibilidade de memória RAM).
+
+#### Exemplo de Uso: Captura de Frame no Formato Nativo
+```cpp
+uint8_t* buf = nullptr;
+size_t bufLen = 0;
+
+if (camera.getFrameBuffer(&buf, &bufLen)) {
+    // Processa ou exibe o buffer capturado (ex: display TFT)
+    Serial.printf("Frame capturado com sucesso! Tamanho: %zu bytesXn", bufLen);
+    // Não é necessário liberar o buffer manualmente
+} else {
+    Serial.println("Falha ao capturar o frame.");
+}
+```
+
+---
+
+
 ### Captura de Frame no Formato JPEG
 Este método captura um frame no formato JPEG e armazena os dados em um buffer fornecido pelo usuário. Ele é útil para aplicações que precisam processar, salvar ou exibir imagens capturadas pela câmera.
 
@@ -869,6 +991,13 @@ Captura um frame no formato JPEG com o tamanho de quadro e a qualidade de compre
 - **Nota**:
   - Caso o ajuste do tamanho do quadro ou da qualidade JPEG falhe, o método retorna `false` e registra um erro no log.
 
+> **Atenção:**  
+> A conversão de frames de outros formatos (como RGB565) para JPEG pode falhar por falta de memória RAM no ESP32.  
+> Para evitar esse problema, **inicialize a câmera diretamente em [PIXFORMAT_JPEG](http://_vscodecontentref_/2)** usando o método [begin()](http://_vscodecontentref_/3), por exemplo:
+> ```cpp
+> camera.begin(FRAMESIZE_QVGA, 12, FRAMESIZE_VGA, PIXFORMAT_JPEG);
+> ```
+> Isso garante que os frames já serão capturados em JPEG, economizando memória e evitando falhas na conversão ou no salvamento de imagens.
 
 #### Exemplo de Uso 1: Captura de Frame com Configuração Padrão
 ```cpp
@@ -898,7 +1027,6 @@ if (camera.getFrameJpegBuffer(&jpegBuf, &jpegBufLen, FRAMESIZE_VGA, 10)) {
     Serial.println("Falha ao capturar o frame.");
 }
 ```
-
 
 ### Salvamento de Frame no Formato JPEG
 
@@ -935,6 +1063,13 @@ Este método captura um frame no formato JPEG com o tamanho de quadro e a qualid
   - Caso o ajuste do tamanho do quadro ou da qualidade JPEG falhe, o método retorna `false` e registra um erro no log.
   - Este método é útil para capturas pontuais. Para capturas contínuas, combine este método com bibliotecas de rede para enviar os arquivos para um servidor ou nuvem.
 
+> **Atenção:**  
+> A conversão de frames de outros formatos (como RGB565) para JPEG pode falhar por falta de memória RAM no ESP32.  
+> Para evitar esse problema, **inicialize a câmera diretamente em [PIXFORMAT_JPEG](http://_vscodecontentref_/2)** usando o método [begin()](http://_vscodecontentref_/3), por exemplo:
+> ```cpp
+> camera.begin(FRAMESIZE_QVGA, 12, FRAMESIZE_VGA, PIXFORMAT_JPEG);
+> ```
+> Isso garante que os frames já serão capturados em JPEG, economizando memória e evitando falhas na conversão ou no salvamento de imagens.
 
 ---
 
@@ -1027,6 +1162,14 @@ Este método manipula solicitações de streaming HTTP, permitindo que a câmera
 - **Nota**:
   - Caso a captura de frames falhe, o método interrompe o streaming e retorna um erro.
   - Este método é projetado para ser usado em conjunto com um servidor HTTP, como o ESP-IDF HTTP Server.
+
+> **Atenção:**  
+> A conversão de frames de outros formatos (como RGB565) para JPEG pode falhar por falta de memória RAM no ESP32.  
+> Para evitar esse problema, **inicialize a câmera diretamente em [PIXFORMAT_JPEG](http://_vscodecontentref_/2)** usando o método [begin()](http://_vscodecontentref_/3), por exemplo:
+> ```cpp
+> camera.begin(FRAMESIZE_QVGA, 12, FRAMESIZE_VGA, PIXFORMAT_JPEG);
+> ```
+> Isso garante que os frames já serão capturados em JPEG, economizando memória e evitando falhas na conversão ou no salvamento de imagens.
 
 
 #### Exemplo de Uso
@@ -1153,6 +1296,17 @@ void loop() {
 }
 
 ```
+
+---
+
+## Exemplos Oficiais
+
+A biblioteca ES32Lab oferece exemplos práticos e completos para facilitar o uso da classe `ES_Camera` em diferentes cenários, como captura de imagens, salvamento em arquivos e streaming de vídeo via HTTP.  
+Você pode acessar os exemplos oficiais diretamente no repositório do projeto:
+
+- [Exemplos Oficiais da Classe ES_Camera](https://github.com/ESDeveloperBR/ES32Lab/tree/main/examples/Camera/Camera-StreamHTTP)
+
+Esses exemplos demonstram as melhores práticas de inicialização, configuração, captura, salvamento e streaming com a `ES_Camera`, servindo como referência para o desenvolvimento dos seus próprios projetos.
 
 ---
 

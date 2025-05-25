@@ -805,12 +805,12 @@ bool ES_File::remove(fs::FS& fs, const String& path, bool recursive) {
         }else if(normalizedPath == "/") {   // If the path is the root directory | Se o caminho for o diretório raiz.
             return _removeDirectory(fs, normalizedPath);
         }else{
-            ESP_LOGE("ES_File", "Path does not exist: %s", normalizedPath.c_str());
+            //ESP_LOGE("ES_File", "Path does not exist: %s", normalizedPath.c_str());
             return false;
         }
     }else{  // If the file system is NOT SPIFFS. | Se o sistema de arquivos NÃO for SPIFFS.
         if (!exists(fs, normalizedPath)) {  // Check if the path exists | Verifica se o caminho existe
-            ESP_LOGE("ES_File", "Path does not exist: %s", normalizedPath.c_str());
+            //ESP_LOGE("ES_File", "Path does not exist: %s", normalizedPath.c_str());
             return false;
         }
 
@@ -1157,7 +1157,6 @@ String ES_File::getNextFileName(fs::FS& fs, const String& directory) {
 File ES_File::getFile(const String& fileName, bool edit) {
     return getFile(*_fileSystem, fileName, edit);
 }
-
 File ES_File::getFile(fs::FS& fs, const String& fileName, bool edit) {
     if (!_initFileSystem(&fs)) {
         ESP_LOGE("ES_File", "Failed to initialize file system");

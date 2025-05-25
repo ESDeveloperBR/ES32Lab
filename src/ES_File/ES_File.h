@@ -8,7 +8,7 @@
 #include <LittleFS.h>
 #include <vector>
 
-#define ES_FILE_VERSION "3.3.3 update 05/12/2025"   // mm/dd/yyyy
+#define ES_FILE_VERSION "3.3.4 update 05/23/2025"   // mm/dd/yyyy
 
 class ES_File {
 private:

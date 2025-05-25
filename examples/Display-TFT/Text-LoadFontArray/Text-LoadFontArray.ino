@@ -42,37 +42,37 @@ void setup() {
 void loop() {
     display.fillScreen(TFT_BLACK);
     display.setCursor(0, 0);
-    display.loadFontArray(Final_Frontier_28);
+    display.loadFont(Final_Frontier_28);
     display.println("Final_Frontier_28");
     delay(3000);
 
     display.fillScreen(TFT_BLACK);
     display.setCursor(0, 0);
-    display.loadFontArray(Latin_Hiragana_24);
+    display.loadFont(Latin_Hiragana_24);
     display.println("Latin_Hiragana_24");
     delay(3000);
     
     display.fillScreen(TFT_BLACK);
     display.setCursor(0, 0);
-    display.loadFontArray(NotoSansBold15);
+    display.loadFont(NotoSansBold15);
     display.println("NotoSansBold15");
     delay(3000);
 
     display.fillScreen(TFT_BLACK);
     display.setCursor(0, 0);
-    display.loadFontArray(NotoSansBold36);
+    display.loadFont(NotoSansBold36);
     display.println("NotoSansBold36");
     delay(3000);
 
     display.fillScreen(TFT_BLACK);
     display.setCursor(0, 0);
-    display.loadFontArray(NotoSansMonoSCB20);
+    display.loadFont(NotoSansMonoSCB20);
     display.println("NotoSansMonoSCB20");
     delay(3000);
 
     display.fillScreen(TFT_BLACK);
     display.setCursor(0, 0);
-    display.loadFontArray(Unicode_Test_72);
+    display.loadFont(Unicode_Test_72);
     display.println("Unicode_Test_72");
     delay(3000);
 }

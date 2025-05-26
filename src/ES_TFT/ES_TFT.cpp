@@ -1,16 +1,13 @@
 #include "ES_TFT.h"
 
-// Compara duas strings (case insensitive)
+// <<< Compares two strings (case insensitive) | Compara duas strings (case insensitive) >>>
 bool ES_TFT::_compareStr(String str1, String str2) {
     str1.toUpperCase();
     str2.toUpperCase();
     return str1 == str2;
 }
 
-
-
-
-
+// <<< Renders a decoded JPEG image | Renderiza uma imagem JPEG decodificada >>>
 bool ES_TFT::_renderDecodedJPEG(int xpos, int ypos) {
     uint16_t *pImg;
     uint16_t mcu_w = JpegDec.MCUWidth;
@@ -59,56 +56,32 @@ bool ES_TFT::_renderDecodedJPEG(int xpos, int ypos) {
 }
 
 
-// Construtor
+// <<< Constructor of the class | Construtor da classe >>>
 ES_TFT::ES_TFT(void) : TFT_eSPI() {}
 
 
-
-
-
-
-
-// Renderiza um arquivo JPEG do FS ajustando para o tamanho do display
-bool ES_TFT::renderJPEGScaled(fs::FS& fs, const String& fileName, int xpos, int ypos, int targetWidth, int targetHeight) {
-    String normalizedPath = fileName;
-    if (!normalizedPath.endsWith(".jpg") && !normalizedPath.endsWith(".JPG")) {
-        normalizedPath += ".jpg";
-    }
-    if (!_arquivo.exists(fs, normalizedPath)) return false;
-    if (!JpegDec.decodeFsFile(_arquivo.getFile(fs, normalizedPath))) return false;
-
-    int jpegWidth = JpegDec.width;
-    int jpegHeight = JpegDec.height;
-
-    float scaleX = (float)targetWidth / jpegWidth;
-    float scaleY = (float)targetHeight / jpegHeight;
-
-    // Renderização simples por amostragem (nearest neighbor)
-    for (int y = 0; y < targetHeight; y++) {
-        int srcY = y / scaleY;
-        JpegDec.read();
-        uint16_t* srcLine = JpegDec.pImage + srcY * jpegWidth;
-        for (int x = 0; x < targetWidth; x++) {
-            int srcX = x / scaleX;
-            uint16_t color = srcLine[srcX];
-            drawPixel(xpos + x, ypos + y, color);
-        }
-    }
-    return true;
+// <<< Draws a centered string on the screen | Desenha uma string centralizada na tela >>>
+int16_t ES_TFT::drawCentreScreenString(const char *string, int32_t y, uint8_t font){
+    return drawCentreString(string, width()/2, y, font);
+}
+// <<< Draws a centered string on the screen | Desenha uma string centralizada na tela >>>
+int16_t ES_TFT::drawCentreScreenString(const String& string, int32_t y, uint8_t font){
+    return drawCentreString(string, width()/2, y, font);
 }
 
 
+// <<< Draws a right-aligned string on the screen | Desenha uma string alinhada à direita na tela >>>
+int16_t ES_TFT::drawRightScreenString(const char *string, int32_t y, uint8_t font){
+    return drawRightString(string, width(), y, font);
+}
+// <<< Draws a right-aligned string on the screen | Desenha uma string alinhada à direita na tela >>>
+int16_t ES_TFT::drawRightScreenString(const String& string, int32_t y, uint8_t font){
+//    return TFT_eSPI::drawRightString(string, width(), y, font);
+    return drawRightString(string, width(), y, font);
+}
 
 
-
-
-
-
-
-
-
-
-// Renderiza um arquivo JPEG do FS
+// <<< Renders a JPEG image from the file system | Renderiza uma imagem JPEG do sistema de arquivos >>>
 bool ES_TFT::renderJPEG(fs::FS& fs, const String& fileName, int xpos, int ypos) {
     String normalizedPath = fileName;
     if (!normalizedPath.endsWith(".jpg") && !normalizedPath.endsWith(".JPG")) {
@@ -123,14 +96,15 @@ bool ES_TFT::renderJPEG(fs::FS& fs, const String& fileName, int xpos, int ypos) 
     return result;
 }
 
-// Renderiza um JPEG a partir de um buffer na RAM
+
+// <<< Renders a JPEG image from a buffer | Renderiza uma imagem JPEG de um buffer >>>
 bool ES_TFT::renderJpegBuffer(const uint8_t* jpegBuf, size_t jpegLen, int xpos, int ypos) {
     if (!JpegDec.decodeArray(jpegBuf, jpegLen)) return false;
     return _renderDecodedJPEG(xpos, ypos);
 }
 
 
-// Renderiza um frame da câmera
+// <<< Renders a camera frame | Renderiza um quadro da câmera >>>
 bool ES_TFT::renderCameraFrame(ES_Camera& camera, int xpos, int ypos) {
     camera_fb_t* fb = esp_camera_fb_get();
     if (!fb) return false;
@@ -149,13 +123,7 @@ bool ES_TFT::renderCameraFrame(ES_Camera& camera, int xpos, int ypos) {
 }
 
 
-
-
-
-
-
-
-// Navegação de arquivos JPEG
+// <<< Renders the first JPEG file in a directory | Renderiza o primeiro arquivo JPEG em um diretório >>>
 bool ES_TFT::renderFirstFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos) {
     String fileName = _arquivo.getFirstFileName(fs, directory.c_str());
     while (!_compareStr(fileName.substring(fileName.length() - 4), ".jpg")) {
@@ -165,6 +133,8 @@ bool ES_TFT::renderFirstFileJPEG(fs::FS& fs, const String& directory, int xpos, 
     return renderJPEG(fs, fileName, xpos, ypos);
 }
 
+
+// <<< Renders the last JPEG file in a directory | Renderiza o último arquivo JPEG em um diretório >>>
 bool ES_TFT::renderLastFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos) {
     String fileName = _arquivo.getLastFileName(fs, directory.c_str());
     while (!_compareStr(fileName.substring(fileName.length() - 4), ".jpg")) {
@@ -174,24 +144,30 @@ bool ES_TFT::renderLastFileJPEG(fs::FS& fs, const String& directory, int xpos, i
     return renderJPEG(fs, fileName, xpos, ypos);
 }
 
-bool ES_TFT::renderNextFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos) {
-    String fileName = _arquivo.getNextFileName(fs, directory);
+
+// <<< Renders the next JPEG file in a directory | Renderiza o próximo arquivo JPEG em um diretório >>>
+bool ES_TFT::renderNextFileJPEG(fs::FS& fs, const String& path, int xpos, int ypos) {
+    String fileName = _arquivo.getNextFileName(fs, path);
     while (!_compareStr(fileName.substring(fileName.length() - 4), ".jpg")) {
-        fileName = _arquivo.getNextFileName(fs, directory);
+        fileName = _arquivo.getNextFileName(fs, path);
         if (!_arquivo.exists(fs, fileName.c_str())) return false;
     }
     return renderJPEG(fs, fileName, xpos, ypos);
 }
 
-bool ES_TFT::renderPreviousFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos) {
-    String fileName = _arquivo.getPreviousFileName(fs, directory);
+
+// <<< Renders the previous JPEG file in a directory | Renderiza o arquivo JPEG anterior em um diretório >>>
+bool ES_TFT::renderPreviousFileJPEG(fs::FS& fs, const String& path, int xpos, int ypos) {
+    String fileName = _arquivo.getPreviousFileName(fs, path);
     while (!_compareStr(fileName.substring(fileName.length() - 4), ".jpg")) {
-        fileName = _arquivo.getPreviousFileName(fs, directory);
+        fileName = _arquivo.getPreviousFileName(fs, path);
         if (!_arquivo.exists(fs, fileName.c_str())) return false;
     }
     return renderJPEG(fs, fileName, xpos, ypos);
 }
 
+
+// <<< Loads a font file from the file system | Carrega um arquivo de fonte do sistema de arquivos >>>
 void ES_TFT::loadFontFile(fs::FS& fs, const String& fontName) {
     Serial.println(fontName);
 

@@ -68,7 +68,6 @@ void loop() {
     if(keyboard.press(KEY_LEFT)) {
         display.renderPreviousFileJPEG(SD); // Render the previous JPEG file from the SD card | Renderiza o arquivo JPEG anterior do cartão SD
     }
-
     if(keyboard.press(KEY_RIGHT)) {
         display.renderNextFileJPEG(SD); // Render the next JPEG file from the SD card | Renderiza o próximo arquivo JPEG do cartão SD
     }

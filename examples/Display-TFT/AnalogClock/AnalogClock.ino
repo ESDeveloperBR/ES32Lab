@@ -29,7 +29,6 @@ static uint8_t conv2d(const char* p) {
     v = *p - '0';
   return 10 * v + *++p - '0';
 }
-
 uint8_t hh=conv2d(__TIME__), mm=conv2d(__TIME__+3), ss=conv2d(__TIME__+6);  // Get H, M, S from compile time
 
 bool initial = 1;

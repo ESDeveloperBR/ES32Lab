@@ -18,12 +18,12 @@ Com essas funcionalidades, a classe `ES_PCF8574` torna-se uma solução completa
 
 ## Construtor
 
-### `ES_PCF8574(uint8_t address)`
+### `ES_PCF8574(uint8_t address = 0x20)`
 
-O construtor `ES_PCF8574` inicializa uma instância da classe para o controle do expansor PCF8574 através do protocolo I2C. Esse endereço é essencial para garantir que a comunicação com o dispositivo seja direcionada ao módulo correto no barramento I2C, especialmente em setups que envolvem múltiplos dispositivos I2C.
+O construtor `ES_PCF8574` inicializa uma instância da classe para o controle do expansor PCF8574 através do protocolo I2C. O parâmetro `address` define o endereço do PCF8574 no barramento I2C, possibilitando a identificação única do expansor durante a comunicação e evitando conflitos com outros dispositivos conectados. Caso não seja informado, o endereço padrão utilizado é `0x20`.
 
 - **Parâmetro**:
-  - `address`: Define o endereço do PCF8574 no barramento I2C, possibilitando a identificação única do expansor durante a comunicação e evitando conflitos com outros dispositivos conectados.
+  - `address`: (opcional) Endereço do PCF8574 no barramento I2C. O valor padrão é `0x20`.
 
 ---
 
@@ -31,30 +31,42 @@ O construtor `ES_PCF8574` inicializa uma instância da classe para o controle do
 
 Os métodos descritos nesta seção são utilizados na função `setup()` para a configuração inicial do expansor PCF8574, integrado à ES32Lab. O método principal é o `begin()`, que deve ser sempre chamado para iniciar a comunicação I2C com o expansor. Métodos adicionais, como `pwmBegin()` e `motorBegin()`, são opcionais e devem ser utilizados apenas quando for necessário habilitar funcionalidades extras, como o simulador de PWM ou o controle de motores.
 
+
 ### begin()
 
 O método `begin` é o principal para configurar o expansor. Ele inicializa a comunicação I2C, permitindo operações básicas de leitura e escrita nas GPIOs do PCF8574. Além disso, oferece a opção de ativar o simulador PWM, permitindo que as GPIOs do expansor gerem sinais PWM com frequência e duty cycle configuráveis (até 200 Hz). 
 
 Caso não seja necessário utilizar o simulador PWM ou outras funções extras, basta chamar `begin()` sem parâmetros. Para ativar o simulador PWM, utilize `begin(true)`.
 
-#### Sintaxe:
-`boolean begin(boolean pwmSimulation)`
+#### Sintaxes disponíveis:
 
-#### Parâmetro:
-  - `pwmSimulation`: Define se o simulador PWM será ativado. Utilize `true` para ativar o PWM ou `false` (ou omita o parâmetro) para operar apenas com leitura e escrita digitais.
+**1. Sintaxe básica:**
+`boolean begin(boolean pwmSimulation = false)`
+
+**2. Sintaxe com endereço personalizado:**
+`boolean begin(uint8_t address, boolean pwmSimulation = false)`
+
+#### Parâmetros:
+  - `pwmSimulation`: (opcional) Define se o simulador PWM será ativado. Utilize `true` para ativar o PWM ou `false` (padrão) para operar apenas com leitura e escrita digitais.
+  - `address`: (opcional) Permite definir um endereço I2C diferente do configurado no construtor durante a inicialização.
 
 #### Retorno:
   - Retorna `true` se a comunicação com o expansor foi inicializada com sucesso e o PWM ativado, se solicitado. Retorna `false` caso ocorra algum erro na inicialização.
 
-#### Exemplo de uso:
+#### Exemplos de uso:
 
 **`expander.begin();`**
 
-Inicializa a comunicação I2C com o PCF8574 integrado à ES32Lab sem ativar o simulador PWM. Essa configuração é suficiente para operações básicas de leitura e escrita digitais.
+Inicializa a comunicação I2C com o PCF8574 usando o endereço configurado no construtor, sem ativar o simulador PWM. Essa configuração é suficiente para operações básicas de leitura e escrita digitais.
 
 **`expander.begin(true);`**
 
-Inicia a comunicação I2C com o PCF8574 e ativa o simulador PWM, permitindo o controle PWM com frequência máxima de 200 Hz.
+Inicia a comunicação I2C com o PCF8574 usando o endereço do construtor e ativa o simulador PWM, permitindo o controle PWM com frequência máxima de 200 Hz.
+
+**`expander.begin(0x21, true);`**
+
+Inicializa a comunicação I2C com um endereço específico (0x21) e ativa o simulador PWM, sobrescrevendo temporariamente o endereço configurado no construtor.
+
 
 ### pwmBegin()
 

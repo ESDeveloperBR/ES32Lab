@@ -50,6 +50,18 @@ String ES_PCF8574::scanI2C() {
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< begin | início >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
+ * Initializes the I2C communication and configures the PCF8574 with the specified address and optional PWM simulation.
+ * |
+ * Inicializa a comunicação I2C e configura o PCF8574 com o endereço especificado e simulação PWM opcional.
+ * @param address The I2C address of the PCF8574 expander. | Endereço I2C do expansor PCF8574.
+ * @param pwmSimulation When true, activates the PWM simulator through the I2C expander. | Quando o valor for verdadeiro, ativa o simulador PWM através do expansor i2C.
+ * @return Returns true if the I2C communication was successfully initialized, otherwise returns false. | Retorna true se a comunicação I2C foi iniciada com sucesso, caso contrário, retorna false.
+ */
+boolean ES_PCF8574::begin(uint8_t address, boolean pwmSimulation){
+  _address = address; // Set the I2C address for the PCF8574 expander. | Define o endereço I2C para o expansor PCF8574.
+  return begin(pwmSimulation); // Call the begin method with the PWM simulation parameter. | Chama o método begin com o parâmetro de simulação PWM.
+}
+/**
  * Initializes the I2C communication and configures the PCF8574. Returns true if the communication was successfully initialized, otherwise returns false.
  * | 
  * Inicializa a comunicação I2C e configura o PCF8574. Retorna true se a comunicação foi iniciada com sucesso, caso contrário, retorna false.

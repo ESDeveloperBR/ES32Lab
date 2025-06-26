@@ -14,6 +14,8 @@ Entre suas funcionalidades, a `ES_PCF8574` oferece:
 
 Com essas funcionalidades, a classe `ES_PCF8574` torna-se uma solução completa e prática para gerenciar múltiplos dispositivos e componentes, ampliando a flexibilidade e o potencial de projetos desenvolvidos com a ES32Lab.
 
+**Nota:** O chip PCF8574 possui um pino de interrupção (INT) que detecta automaticamente mudanças de estado nas GPIOs. Este pino pode ser conectado ao ESP32 para implementar monitoramento eficiente por interrupção, reduzindo o uso de polling e melhorando a responsividade do sistema. O uso do pino INT é opcional e recomendado para aplicações que necessitam de detecção rápida de mudanças ou economia de energia.
+
 ---
 
 ## Construtor

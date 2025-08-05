@@ -4,6 +4,36 @@
 
 # Documentação da Classe ES_PCF8574
 
+
+## Índice
+
+1. [Construtor](#construtor)
+2. [Configuração no setup()](#configuração-no-setup)
+3. [Métodos de Inicialização](#begin)
+4. [PWM: Simulação e Controle](#simulação-de-pwm)
+    - [`pwmBegin()`](#pwmbegin)
+    - [`pwmWrite(pin, dutyCycle, frequency)`](#pwmwrite)
+5. [Controle de Motores](#controle-de-motores)
+    - [`motorBegin(motorID, controlPin1, controlPin2)`](#motorbegin)
+    - [`motorRotationA(motorID, speed)`](#motorrotationa)
+    - [`motorRotationB(motorID, speed)`](#motorrotationb)
+    - [`motorStop(motorID)`](#motorstop)
+    - [`invertMotorCommands(motorID)`](#invertmotorcommands)
+    - [`invertMotorStatus(motorID)`](#invertmotorstatus)
+    - [`getMotorFrequency(motorID)`](#getmotorfrequency)
+    - [`setMotorFrequency(motorID, frequency)`](#setmotorfrequency)
+6. [Scanner I2C](#scanner-i2c)
+    - [`scanI2C()`](#scani2c)
+7. [Controle das GPIOs](#métodos-para-controle-das-gpios)
+    - [`digitalWrite(pin, value)`](#digitalwrite)
+    - [`digitalRead(pin)`](#digitalread)
+8. [Controle de Botões](#controle-de-botões)
+    - [`btHold(pin, pullUp)`](#bthold)
+    - [`btPress(pin, pullUp)`](#btpress)
+    - [`btRelease(pin, pullUp)`](#btrelease)
+9. [Exemplo de Uso: Controle de Botões](#exemplo-de-uso-controle-de-botões-no-expansor-i2c)
+10. [Notas e Recomendações](#atenção-se-for-utilizar-a-ponte-h-da-es32lab-certifique-se-de-que-os-jumpers-estão-conectando-as-gpios-do-expansor-ao-circuito-da-ponte-h)
+
 A classe `ES_PCF8574` foi desenvolvida especificamente para o controle do expansor de portas I2C PCF8574 em projetos com ESP32, integrados à ES32Lab. Essa classe permite uma interação direta e eficiente com as GPIOs do expansor, utilizando métodos dedicados para operações digitais e avançadas.
 
 Entre suas funcionalidades, a `ES_PCF8574` oferece:
@@ -36,19 +66,21 @@ Os métodos descritos nesta seção são utilizados na função `setup()` para a
 
 ### begin()
 
-O método `begin` é o principal para configurar o expansor. Ele inicializa a comunicação I2C, permitindo operações básicas de leitura e escrita nas GPIOs do PCF8574. Além disso, oferece a opção de ativar o simulador PWM, permitindo que as GPIOs do expansor gerem sinais PWM com frequência e duty cycle configuráveis (até 200 Hz). 
 
-Caso não seja necessário utilizar o simulador PWM ou outras funções extras, basta chamar `begin()` sem parâmetros. Para ativar o simulador PWM, utilize `begin(true)`.
+O método `begin` é o principal para configurar o expansor. Ele inicializa a comunicação I2C, permitindo operações básicas de leitura e escrita nas GPIOs do PCF8574. Agora, além de ativar o simulador PWM, também permite definir se as GPIOs começam em nível lógico LOW (0) ou HIGH (1) através do novo parâmetro `gpioInitLow`.
+
+Se não for necessário utilizar o simulador PWM ou outras funções extras, basta chamar `begin()` sem parâmetros. Para ativar o simulador PWM, utilize `begin(true)`. Para definir o estado inicial das GPIOs, utilize o parâmetro `gpioInitLow`.
 
 #### Sintaxes disponíveis:
 
 **1. Sintaxe básica:**
-`boolean begin(boolean pwmSimulation = false)`
+`boolean begin(boolean gpioInitLow = true, boolean pwmSimulation = false)`
 
 **2. Sintaxe com endereço personalizado:**
-`boolean begin(uint8_t address, boolean pwmSimulation = false)`
+`boolean begin(uint8_t address, boolean gpioInitLow = true, boolean pwmSimulation = false)`
 
 #### Parâmetros:
+  - `gpioInitLow`: (opcional) Define se as GPIOs do expansor iniciam em LOW (0) ou HIGH (1). Use `true` para iniciar em LOW (padrão) ou `false` para iniciar em HIGH.
   - `pwmSimulation`: (opcional) Define se o simulador PWM será ativado. Utilize `true` para ativar o PWM ou `false` (padrão) para operar apenas com leitura e escrita digitais.
   - `address`: (opcional) Permite definir um endereço I2C diferente do configurado no construtor durante a inicialização.
 
@@ -59,15 +91,19 @@ Caso não seja necessário utilizar o simulador PWM ou outras funções extras, 
 
 **`expander.begin();`**
 
-Inicializa a comunicação I2C com o PCF8574 usando o endereço configurado no construtor, sem ativar o simulador PWM. Essa configuração é suficiente para operações básicas de leitura e escrita digitais.
+Inicializa a comunicação I2C com o PCF8574 usando o endereço configurado no construtor, com as GPIOs iniciando em LOW e sem ativar o simulador PWM. Essa configuração é suficiente para operações básicas de leitura e escrita digitais.
 
-**`expander.begin(true);`**
+**`expander.begin(false);`**
 
-Inicia a comunicação I2C com o PCF8574 usando o endereço do construtor e ativa o simulador PWM, permitindo o controle PWM com frequência máxima de 200 Hz.
+Inicializa a comunicação I2C com o PCF8574 usando o endereço do construtor, com as GPIOs iniciando em HIGH e sem ativar o simulador PWM.
 
-**`expander.begin(0x21, true);`**
+**`expander.begin(true, true);`**
 
-Inicializa a comunicação I2C com um endereço específico (0x21) e ativa o simulador PWM, sobrescrevendo temporariamente o endereço configurado no construtor.
+Inicializa a comunicação I2C com o PCF8574 usando o endereço do construtor, com as GPIOs em LOW e ativa o simulador PWM, permitindo o controle PWM com frequência máxima de 200 Hz.
+
+**`expander.begin(0x21, false, true);`**
+
+Inicializa a comunicação I2C com um endereço específico (0x21), com as GPIOs em HIGH e ativa o simulador PWM, sobrescrevendo temporariamente o endereço configurado no construtor.
 
 
 ### pwmBegin()
@@ -113,9 +149,13 @@ Configura o motor 1, associando as GPIOs EX4 e EX5 do expansor PCF8574 para o co
 
 ### Resumo para Configuração no `setup()`
 
-1. Sempre utilize **`expander.begin();`** no `setup()` para inicializar a comunicação I2C.
-2. Caso precise de funcionalidades adicionais, como PWM ou controle de motores:
-   - Use **`expander.begin(true);`** ou **`expander.pwmBegin();`** para ativar o simulador PWM.
+
+1. Sempre utilize **`expander.begin();`** no `setup()` para inicializar a comunicação I2C, com as GPIOs iniciando em LOW (padrão).
+2. Caso precise de funcionalidades adicionais, como PWM, controle de motores ou queira definir o estado inicial das GPIOs:
+   - Use **`expander.begin(false);`** para inicializar as GPIOs em HIGH.
+   - Use **`expander.begin(true, true);`** para inicializar as GPIOs em LOW e ativar o simulador PWM.
+   - Use **`expander.begin(false, true);`** para inicializar as GPIOs em HIGH e ativar o simulador PWM.
+   - Use **`expander.pwmBegin();`** como atalho para ativar apenas o simulador PWM (GPIOs iniciam em LOW).
    - Use **`expander.motorBegin(motorID, controlPin1, controlPin2);`** para configurar motores.
 3. Certifique-se de que todas as configurações sejam realizadas no `setup()` antes de utilizar os métodos correspondentes no `loop()`.
 
@@ -199,7 +239,7 @@ Este exemplo demonstra como utilizar o método `digitalWrite()` para controlar o
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-ES_PCF8574 expander(0x38);  // Instancia o objeto 'expander' com o endereço fornecido do PCF8574
+ES_PCF8574 expander(0x20);  // Instancia o objeto 'expander' com o endereço fornecido do PCF8574
 
 void setup() {
   expander.begin();  // Inicializa o expansor I2C PCF8574
@@ -244,7 +284,7 @@ Este exemplo demonstra como utilizar o método `digitalRead()` para realizar uma
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-ES_PCF8574 expander(0x38);  // Instancia o objeto 'expander' com o endereço fornecido do PCF8574
+ES_PCF8574 expander(0x20);  // Instancia o objeto 'expander' com o endereço fornecido do PCF8574
 
 void setup() {
   Serial.begin(115200);  // Inicializa a comunicação serial
@@ -267,14 +307,17 @@ A classe `ES_PCF8574`, integrada à ES32Lab, oferece métodos dedicados para mon
 
 ### btHold()
 
-O método `btHold` verifica se um botão conectado a uma GPIO do expansor está pressionado, retornando `true` enquanto o botão permanece pressionado, de acordo com o nível lógico configurado. Ele é útil para monitorar ações de longa duração, como pressionamentos constantes ou contínuos.
+
+O método `btHold` verifica se um botão conectado a uma GPIO do expansor está pressionado, retornando `true` enquanto o botão permanece pressionado, de acordo com a configuração do parâmetro `pullUp`. Ele é útil para monitorar ações de longa duração, como pressionamentos constantes ou contínuos.
 
 #### Sintaxe:
-`boolean btHold(uint8_t pin, boolean activateHigh)`
+`boolean btHold(uint8_t pin, boolean pullUp = false)`
 
 #### Parâmetros:
   - `pin`: Número da GPIO usada como entrada de botão no expansor PCF8574 (EX0 a EX7).
-  - `activateHigh`: Define o nível lógico que representa o botão pressionado (`true` para HIGH, `false` para LOW).
+  - `pullUp`: (opcional) Define a lógica de leitura do botão:
+    - `true`: considera o botão pressionado quando o pino está em LOW (configuração típica com resistor de pull-up).
+    - `false`: considera o botão pressionado quando o pino está em HIGH (configuração sem pull-up). O padrão é `false`.
 
 #### Retorno:
   - Retorna `true` enquanto o botão estiver sendo pressionado, e `false` caso contrário.
@@ -283,18 +326,21 @@ O método `btHold` verifica se um botão conectado a uma GPIO do expansor está 
 
 **`expander.btHold(EX2, true);`**
 
-Verifica se o botão conectado à GPIO EX2 está pressionado, considerando o nível HIGH como pressionado.
+Verifica se o botão conectado à GPIO EX2 está pressionado, considerando a configuração com pull-up (pressionado = LOW).
 
 ### btPress()
 
-O método `btPress` detecta o momento exato em que ocorre a transição do estado lógico de baixo para alto (ou vice-versa, conforme configurado por `activateHigh`) na GPIO, indicando que o botão foi pressionado. Este método é ideal para detectar o primeiro instante do pressionamento do botão, ativando ações com base nesse evento.
+
+O método `btPress` detecta o momento exato em que o botão é pressionado, considerando a configuração do parâmetro `pullUp`. Este método é ideal para detectar o primeiro instante do pressionamento do botão, ativando ações com base nesse evento.
 
 #### Sintaxe:
-`boolean btPress(uint8_t pin, boolean activateHigh)`
+`boolean btPress(uint8_t pin, boolean pullUp = false)`
 
 #### Parâmetros:
   - `pin`: Número da GPIO usada como entrada de botão no expansor PCF8574 (EX0 a EX7).
-  - `activateHigh`: Define a transição lógica para detecção do botão pressionado (`true` para transição de LOW para HIGH, `false` para transição de HIGH para LOW).
+  - `pullUp`: (opcional) Define a lógica de leitura do botão:
+    - `true`: considera o botão pressionado quando o pino está em LOW (configuração típica com resistor de pull-up).
+    - `false`: considera o botão pressionado quando o pino está em HIGH (configuração sem pull-up). O padrão é `false`.
 
 #### Retorno:
   - Retorna `true` no instante em que o botão é pressionado, e `false` caso contrário.
@@ -303,18 +349,21 @@ O método `btPress` detecta o momento exato em que ocorre a transição do estad
 
 **`expander.btPress(EX3, true);`**
 
-Detecta o momento exato em que o botão conectado à GPIO EX3 é pressionado, considerando a transição de LOW para HIGH.
+Detecta o momento exato em que o botão conectado à GPIO EX3 é pressionado, considerando a configuração com pull-up (pressionado = LOW).
 
 ### btRelease()
 
-O método `btRelease` identifica o momento exato em que o botão conectado à GPIO do expansor é liberado, ou seja, quando ocorre a transição do estado lógico de alto para baixo (ou vice-versa, conforme configurado por `activateHigh`). Esse método é útil para ações que devem ser executadas no instante da liberação do botão.
+
+O método `btRelease` identifica o momento exato em que o botão conectado à GPIO do expansor é liberado, considerando a configuração do parâmetro `pullUp`. Esse método é útil para ações que devem ser executadas no instante da liberação do botão.
 
 #### Sintaxe:
-`boolean btRelease(uint8_t pin, boolean activateHigh)`
+`boolean btRelease(uint8_t pin, boolean pullUp = false)`
 
 #### Parâmetros:
   - `pin`: Número da GPIO usada como entrada de botão no expansor PCF8574 (EX0 a EX7).
-  - `activateHigh`: Define a transição lógica para detecção do botão liberado (`true` para transição de HIGH para LOW, `false` para transição de LOW para HIGH).
+  - `pullUp`: (opcional) Define a lógica de leitura do botão:
+    - `true`: considera o botão liberado quando o pino está em HIGH (configuração típica com resistor de pull-up).
+    - `false`: considera o botão liberado quando o pino está em LOW (configuração sem pull-up). O padrão é `false`.
 
 #### Retorno:
   - Retorna `true` no instante em que o botão é liberado, e `false` caso contrário.
@@ -323,19 +372,25 @@ O método `btRelease` identifica o momento exato em que o botão conectado à GP
 
 **`expander.btRelease(EX4, true);`**
 
-Detecta o momento exato em que o botão conectado à GPIO EX4 é liberado, considerando a transição de HIGH para LOW.
+Detecta o momento exato em que o botão conectado à GPIO EX4 é liberado, considerando a configuração com pull-up (liberado = HIGH).
 
 ### Exemplo de Uso: Controle de Botões no expansor i2C
 
+
 Este exemplo demonstra como utilizar os métodos `btPress()`, `btHold()`, e `btRelease()` para monitorar o estado de um botão conectado à GPIO EX0 do expansor PCF8574 na ES32Lab. Esses métodos permitem detectar os seguintes estados do botão:
 
-- **btPress()**: Detecta o momento exato em que o botão é pressionado.
-- **btHold()**: Detecta quando o botão está sendo mantido pressionado.
-- **btRelease()**: Detecta o momento exato em que o botão é solto.
+- **btPress()**: Detecta o momento exato em que o botão é pressionado, de acordo com a lógica definida pelo parâmetro `pullUp`.
+- **btHold()**: Detecta quando o botão está sendo mantido pressionado, de acordo com a lógica definida pelo parâmetro `pullUp`.
+- **btRelease()**: Detecta o momento exato em que o botão é solto, de acordo com a lógica definida pelo parâmetro `pullUp`.
+
+**Como utilizar o parâmetro `pullUp`:**
+- Se o botão estiver ligado entre a GPIO e o GND, e houver um resistor de pull-up (interno ou externo), utilize `pullUp = true`. Assim, o botão será considerado pressionado quando o pino estiver em LOW.
+- Se o botão estiver ligado entre a GPIO e o VCC, sem resistor de pull-up, utilize `pullUp = false`. Assim, o botão será considerado pressionado quando o pino estiver em HIGH.
 
 **Descrição do funcionamento:**
-- Com as configurações deste exemplo, o botão é identificado como pressionado através de um pulso lógico alto (HIGH) na GPIO do expansor.
-- Caso não tenha um botão físico conectado, você pode simular a interação utilizando um fio jumper. Conecte uma extremidade do jumper à GPIO EX0 do expansor e a outra a uma fonte de tensão de 3.3V. Ao tocar e remover o fio do terminal de 3.3V, o sistema irá detectar as ações de pressão, manutenção e liberação.
+- Com `pullUp = true`, o botão é identificado como pressionado quando a GPIO está em LOW (configuração mais comum com resistor de pull-up).
+- Com `pullUp = false`, o botão é identificado como pressionado quando a GPIO está em HIGH.
+- Caso não tenha um botão físico conectado, você pode simular a interação utilizando um fio jumper. Conecte uma extremidade do jumper à GPIO EX0 do expansor e a outra a uma fonte de tensão de 3.3V (ou GND, conforme a lógica escolhida). Ao tocar e remover o fio, o sistema irá detectar as ações de pressão, manutenção e liberação.
 
 Este exemplo é ideal para entender o comportamento do controle de botões e permite simulação básica mesmo sem o hardware completo.
 
@@ -347,7 +402,7 @@ Este exemplo é ideal para entender o comportamento do controle de botões e per
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-ES_PCF8574 expander(0x38);  // Instancia o objeto 'expander' com o endereço fornecido do PCF8574
+ES_PCF8574 expander(0x20);  // Instancia o objeto 'expander' com o endereço fornecido do PCF8574
 
 void setup() {
   Serial.begin(115200);
@@ -411,7 +466,7 @@ Este exemplo demonstra como ativar o simulador de pulso PWM no expansor I2C da E
 ```cpp
 #include <Arduino.h>
 #include <ES32Lab.h>  // Library used to facilitate the use of the ES32Lab board | LIB utilizada para facilitar a utilização da placa ES32Lab
-ES_PCF8574 expander(0x38);  // Instantiates the 'expander' object with the given address | Instancia o objeto 'expander' com o endereço fornecido.
+ES_PCF8574 expander(0x20);  // Instantiates the 'expander' object with the given address | Instancia o objeto 'expander' com o endereço fornecido.
 
 void setup() {
   Serial.begin(115200);
@@ -583,7 +638,7 @@ Este exemplo demonstra como configurar e controlar um motor com a ES32Lab usando
 #include <Arduino.h>
 #include <ES32Lab.h>  // Biblioteca para facilitar o uso da ES32Lab
 
-ES_PCF8574 expander(0x38);  // Instancia o objeto 'expander' com o endereço fornecido
+ES_PCF8574 expander(0x20);  // Instancia o objeto 'expander' com o endereço fornecido
 
 void setup() {
   expander.motorBegin(1, EX4, EX5); // Configura o motor 1 com controle nas GPIOs EX4 e EX5 do expansor PCF8574

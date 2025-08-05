@@ -54,20 +54,25 @@ String ES_PCF8574::scanI2C() {
  * |
  * Inicializa a comunicação I2C e configura o PCF8574 com o endereço especificado e simulação PWM opcional.
  * @param address The I2C address of the PCF8574 expander. | Endereço I2C do expansor PCF8574.
+ * @param gpioInitLow When true, initializes all GPIOs to LOW (0). When false, initializes all GPIOs to HIGH (1). | Quando o valor for verdadeiro, inicializa todas as GPIOs como LOW (0). Quando falso, inicializa todas as GPIOs como HIGH (1).
  * @param pwmSimulation When true, activates the PWM simulator through the I2C expander. | Quando o valor for verdadeiro, ativa o simulador PWM através do expansor i2C.
  * @return Returns true if the I2C communication was successfully initialized, otherwise returns false. | Retorna true se a comunicação I2C foi iniciada com sucesso, caso contrário, retorna false.
  */
-boolean ES_PCF8574::begin(uint8_t address, boolean pwmSimulation){
+boolean ES_PCF8574::begin(uint8_t address, boolean gpioInitLow, boolean pwmSimulation){
   _address = address; // Set the I2C address for the PCF8574 expander. | Define o endereço I2C para o expansor PCF8574.
-  return begin(pwmSimulation); // Call the begin method with the PWM simulation parameter. | Chama o método begin com o parâmetro de simulação PWM.
+  return begin(gpioInitLow, pwmSimulation); // Call the begin method with the PWM simulation parameter. | Chama o método begin com o parâmetro de simulação PWM.
 }
 /**
  * Initializes the I2C communication and configures the PCF8574. Returns true if the communication was successfully initialized, otherwise returns false.
  * | 
  * Inicializa a comunicação I2C e configura o PCF8574. Retorna true se a comunicação foi iniciada com sucesso, caso contrário, retorna false.
+ * @param gpioInitLow When true, initializes all GPIOs to LOW (0). When false, initializes all GPIOs to HIGH (1). | Quando o valor for verdadeiro, inicializa todas as GPIOs como LOW (0). Quando falso, inicializa todas as GPIOs como HIGH (1).
  * @param pwmSimulation When true, activates the PWM simulator through the I2C expander. | Quando o valor for verdadeiro, ativa o simulador PWM através do expansor i2C.
 */
-boolean ES_PCF8574::begin(boolean pwmSimulation){
+boolean ES_PCF8574::begin(boolean gpioInitLow, boolean pwmSimulation){
+  if(gpioInitLow) _value = 0; // If gpioInitLow is true, set all GPIOs to LOW (0). | Se gpioInitLow for verdadeiro, define todas as GPIOs como LOW (0).
+  else            _value = 255; // If gpioInitLow is false, set all GPIOs to HIGH (1). | Se gpioInitLow for falso, define todas as GPIOs como HIGH (1).
+
   _isI2CInitialized = Wire.begin();
   if(_isI2CInitialized){
     Wire.beginTransmission(_address);
@@ -140,62 +145,72 @@ boolean ES_PCF8574::digitalRead(uint8_t pin) {
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< btHold >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
- * Checks if the specified GPIO on the I2C expansion PCF8574 is being used as a button input and is currently held down.
- * Returns 'true' while the button remains pressed, maintaining a logical high or low level based on configuration.
- * | 
- * Verifica se a GPIO especificada na expansão I2C PCF8574 está sendo utilizada como entrada de botão e está pressionada.
- * Retorna 'true' enquanto o botão permanecer pressionado, mantendo um nível lógico alto ou baixo conforme configurado.
- * @param pin Number of the GPIO on the PCF8574 expansion to be read. | Número da GPIO na expansão PCF8574 que será lida.
- * @param activateHigh Configures whether the logical high level (true) or logical low level (false) indicates the button press. | Configura se o nível lógico alto (true) ou baixo (false) indica a pressão do botão.
- * @return 'true' if the button is being held down at the specified logical level, otherwise 'false'. | 'true' se o botão estiver sendo pressionado no nível lógico especificado, caso contrário, 'false'.
+ * Checks if the specified GPIO on the I2C PCF8574 expander is being used as a button input and is currently held down, considering the pullUp configuration.
+ * Returns 'true' while the button remains pressed, according to the pullUp logic.
+ * |
+ * Verifica se a GPIO especificada na expansão I2C PCF8574 está sendo utilizada como entrada de botão e está pressionada, considerando a configuração de pullUp.
+ * Retorna 'true' enquanto o botão permanecer pressionado, de acordo com a lógica do pullUp.
+ * @param pin Number of the GPIO on the PCF8574 expander to be read. | Número da GPIO na expansão PCF8574 que será lida.
+ * @param pullUp If true, the button is considered pressed when the pin reads LOW; if false, when the pin reads HIGH. | Se true, o botão é considerado pressionado quando o pino está em LOW; se false, quando o pino está em HIGH.
+ * @return 'true' if the button is being held down according to the pullUp logic, otherwise 'false'. | 'true' se o botão estiver sendo pressionado conforme a lógica do pullUp, caso contrário, 'false'.
  */
-boolean ES_PCF8574::btHold(uint8_t pin, boolean activateHigh){
-  digitalWrite(pin, !activateHigh);
-  if(activateHigh){
-    if( digitalRead(pin) ) { 
-      return true;
-    }
-  }else{
-    if(!digitalRead(pin) ) { 
-      return true;
-    }
+boolean ES_PCF8574::btHold(uint8_t pin, boolean pullUp){
+  // Se pullUp for true, ativa o pullUp interno (HIGH), senão desativa (LOW)
+  digitalWrite(pin, pullUp ? HIGH : LOW);
+
+  // Se pullUp, botão pressionado é LOW; senão, pressionado é HIGH
+  if (pullUp) {
+    return digitalRead(pin) == LOW;
+  } else {
+    return digitalRead(pin) == HIGH;
   }
-  return false;
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< btPress >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
- * The 'true' condition is returned at the exact moment when the expansion GPIO on the I2C PCF8574 is used as a button input, and a transition occurs from a low to high logical level, that is, when the button is pressed.
- * | 
- * A condição 'true' é retornada no exato momento em que a GPIO da expansão I2C PCF8574 é utilizada como entrada de botão e ocorre a transição do nível lógico de baixo para alto, ou seja, quando o botão é pressionado.
+ * Returns 'true' at the exact moment when the button connected to the specified GPIO on the I2C PCF8574 expander is pressed, considering the pullUp configuration.
+ * |
+ * Retorna 'true' no exato momento em que o botão conectado à GPIO especificada na expansão I2C PCF8574 é pressionado, considerando a configuração de pullUp.
  * @param pin Number of the GPIO on the PCF8574 expansion to be read. | Número da GPIO na expansão PCF8574 que será lida.
- * @param activateHigh Configures whether the transition to a logical high level (true) or a logical low level (false) indicates the button press. | Configura se a transição para o nível lógico alto (true) ou baixo (false) indica a pressão do botão.
+ * @param pullUp If true, the button is considered pressed when the pin reads LOW; if false, when the pin reads HIGH. | Se true, o botão é considerado pressionado quando o pino está em LOW; se false, quando o pino está em HIGH.
  * @return 'true' if the button is pressed at the specified logical transition, otherwise 'false'. | 'true' se o botão for pressionado na transição lógica especificada, caso contrário, 'false'.
  */
-boolean ES_PCF8574::btPress(uint8_t pin, boolean activateHigh){
-  if( !btHold(pin, activateHigh) && !_btPress[pin] ) { 
+boolean ES_PCF8574::btPress(uint8_t pin, boolean pullUp){
+  // Se pullUp for true, ativa o pullUp interno (HIGH), senão desativa (LOW)
+  digitalWrite(pin, pullUp ? HIGH : LOW);
+
+  // Se pullUp, botão pressionado é LOW; senão, pressionado é HIGH
+  boolean pressed = pullUp ? (digitalRead(pin) == LOW) : (digitalRead(pin) == HIGH);
+
+  if (pressed && !_btPress[pin]) {
     _btPress[pin] = true;
-  } else if( btHold(pin, activateHigh) && _btPress[pin] ) {
-    _btPress[pin] = false;
     return true;
+  } else if (!pressed && _btPress[pin]) {
+    _btPress[pin] = false;
   }
   return false;
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< btRelease >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
- * The 'true' condition is returned at the exact moment when the expansion GPIO on the I2C PCF8574 is used as a button input, and a transition occurs from a high to low logical level, that is, when the button is released.
- * | 
- * A condição 'true' é retornada no exato momento em que a GPIO da expansão I2C PCF8574 é utilizada como entrada de botão e ocorre a transição do nível lógico de alto para baixo, ou seja, quando o botão é solto.
+ * Returns 'true' at the exact moment when the button connected to the specified GPIO on the I2C PCF8574 expander is released, considering the pullUp configuration.
+ * |
+ * Retorna 'true' no exato momento em que o botão conectado à GPIO especificada na expansão I2C PCF8574 é solto, considerando a configuração de pullUp.
  * @param pin Number of the GPIO on the PCF8574 expansion to be read. | Número da GPIO na expansão PCF8574 que será lida.
- * @param activateHigh Configures whether the transition to a logical low level (true) or a logical high level (false) indicates the button release. | Configura se a transição para o nível lógico baixo (true) ou alto (false) indica a liberação do botão.
+ * @param pullUp If true, the button is considered released when the pin reads HIGH; if false, when the pin reads LOW. | Se true, o botão é considerado solto quando o pino está em HIGH; se false, quando o pino está em LOW.
  * @return 'true' if the button is released at the specified logical transition, otherwise 'false'. | 'true' se o botão for solto na transição lógica especificada, caso contrário, 'false'.
  */
-boolean ES_PCF8574::btRelease(uint8_t pin, boolean activateHigh){
-  if( !btHold(pin, activateHigh) && !_btRelease[pin] ) {
+boolean ES_PCF8574::btRelease(uint8_t pin, boolean pullUp){
+  // Se pullUp for true, ativa o pullUp interno (HIGH), senão desativa (LOW)
+  digitalWrite(pin, pullUp ? HIGH : LOW);
+
+  // Se pullUp, botão pressionado é LOW; senão, pressionado é HIGH
+  boolean released = pullUp ? (digitalRead(pin) == HIGH) : (digitalRead(pin) == LOW);
+
+  if (released && !_btRelease[pin]) {
     _btRelease[pin] = true;
     return true;
-  } else if(btHold(pin, activateHigh) && _btRelease[pin] ){
+  } else if (!released && _btRelease[pin]) {
     _btRelease[pin] = false;
   }
   return false;

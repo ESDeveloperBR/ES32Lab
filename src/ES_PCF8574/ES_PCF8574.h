@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include "ES_TimeInterval/ES_TimeInterval.h"
 
-#define ES_PCF8574_VERSION "0.7.6 update 06/26/2025"  // mm/dd/yyyy
+#define ES_PCF8574_VERSION "0.8.1 update 08/05/2025"  // mm/dd/yyyy
 
 #define ES_PCF8574_TASK_PWM_SIM_STACK_DEPTH 1200  // Sets the amount of memory available for local variables and function calls within the PWM simulator. | Define a quantidade de memória disponível para as variáveis locais e chamadas de função dentro do simulador PWM.
 #define ES_PCF8574_TASK_PWM_SIM_PRIORITY 2         // Represents the task priority. Higher values indicate higher priority. | Representa a prioridade da tarefa. Valores maiores indicam maior prioridade.
@@ -24,7 +24,7 @@ class ES_PCF8574 {
 
   private:
     uint8_t _address; // I2C address of the PCF8574 expander. | Endereço I2C do expansor PCF8574.
-    uint8_t _value = 255; // Default value for the GPIOs of the I2C expander. | Valor padrão para os GPIOs do expansor i2C.
+    uint8_t _value = 0; // Default value for the GPIOs of the I2C expander. | Valor padrão para os GPIOs do expansor i2C.
     boolean _btPress[8] = {false, false, false, false, false, false, false, false}; // Button pressed starts with "false" | Botão pressionado começa com "false"
     boolean _btRelease[8] = {true, true, true, true, true, true, true, true}; // The button is released "True" | O botão é liberado "True"
     boolean _pwmSimulation(uint8_t pin); // Manages a simulated PWM pulse on the I2C expander. ATTENTION: The I2C expander does not generate high-frequency PWM. | Gerencia um pulso PWM simulado no expansor i2C. ATENÇÃO: O expansor i2C não gera PWM de alta frequencia.
@@ -45,14 +45,16 @@ class ES_PCF8574 {
     ES_PCF8574(uint8_t address=0x20);
 
     String scanI2C();
-    boolean begin(boolean pwmSimulation = false);
-    boolean begin(uint8_t address, boolean pwmSimulation = false);
+
+    boolean begin(boolean gpioInitLow = true, boolean pwmSimulation = false);
+    boolean begin(uint8_t address, boolean gpioInitLow = true, boolean pwmSimulation = false);
+
     void digitalWrite(uint8_t pin, boolean value);
     boolean digitalRead(uint8_t pin);
 
-    boolean btHold(uint8_t pin,    boolean activateHigh = true);
-    boolean btPress(uint8_t pin,   boolean activateHigh = true);
-    boolean btRelease(uint8_t pin, boolean activateHigh = true);
+    boolean btHold(uint8_t pin,    boolean pullUp = false);
+    boolean btPress(uint8_t pin,   boolean pullUp = false);
+    boolean btRelease(uint8_t pin, boolean pullUp = false);
 
     boolean pwmBegin();
     void pwmWrite(uint8_t pin, uint8_t dutyCycle = 50, uint8_t frequency = 1);

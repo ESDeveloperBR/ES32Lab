@@ -63,7 +63,7 @@
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-ES_AnalogKeyboard keyboard(P_KEYBOARD); // Criação do objeto ES_AnalogKeyboard conectado ao pino especificado | Creation of the ES_AnalogKeyboard object connected to the specified pin
+ES_AnalogKeyboard keyboard; // Criação do objeto ES_AnalogKeyboard conectado ao pino especificado | Creation of the ES_AnalogKeyboard object connected to the specified pin
 
 void setup() {
   Serial.begin(115200); // Inicializa a comunicação serial | Initializes serial communication

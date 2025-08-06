@@ -9,8 +9,9 @@
 #define ES_ANALOGKEYBOARD_h
 
 #include <Arduino.h>
+#include "ES32Lab.h"
 
-#define ES_ANALOGKEYBOARD_VERSION "0.5.1 date 05/20/2024" // (mm/dd/yyyy)
+#define ES_ANALOGKEYBOARD_VERSION "0.5.2 date 08/05/2024" // (mm/dd/yyyy)
 
 // Definindo as teclas individuais | Defining individual keys
 #define KEY_CENTER 0     // Centro | Center
@@ -48,7 +49,7 @@ class ES_AnalogKeyboard {
         uint8_t  _getIndex(uint16_t address); // Retorna o endereço do Array correspodente a determinada tecla. | Returns the array index corresponding to a specific key.
     
     public:
-        ES_AnalogKeyboard(uint8_t pinKeyboard, uint8_t readingAccuracy = 20);
+        ES_AnalogKeyboard(uint8_t pinKeyboard = P_KEYBOARD, uint8_t readingAccuracy = 20);
         boolean hold(uint16_t key);
         boolean press(uint16_t key);
         boolean release(uint16_t key);

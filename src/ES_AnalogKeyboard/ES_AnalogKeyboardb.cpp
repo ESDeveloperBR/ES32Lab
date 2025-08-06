@@ -39,10 +39,8 @@ ES_AnalogKeyboard::ES_AnalogKeyboard(uint8_t pinKeyboard, uint8_t readingAccurac
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Hold >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
  * @brief Verifica se a tecla está sendo pressionada. | Checks if the key is being pressed.
- * 
  * @param key Valor analógico da tecla. | Analog value of the key.
- * @return `true` se a tecla está sendo pressionada ou `false` se a tecla não está sendo pressionada.
- * @return | `true` if the key is being pressed or `false` if the key is not being pressed.
+ * @return `true` se a tecla está sendo pressionada ou `false` se a tecla não está sendo pressionada. | `true` if the key is being pressed or `false` if the key is not being pressed.
  */
 boolean ES_AnalogKeyboard::hold(uint16_t key) {
     uint16_t readValue = analogRead(_pinKeyboard);
@@ -57,10 +55,8 @@ boolean ES_AnalogKeyboard::hold(uint16_t key) {
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Press >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
  * @brief Verifica se a tecla foi pressionada. | Checks if the key was pressed.
- * 
  * @param key Valor analógico da tecla. | Analog value of the key.
- * @return `true` se a tecla foi pressionada ou `false` se a tecla não foi pressionada.
- * @return | `true` if the key was pressed or `false` if the key was not pressed.
+ * @return `true` se a tecla foi pressionada ou `false` se a tecla não foi pressionada. | `true` if the key was pressed or `false` if the key was not pressed.
  */
 boolean ES_AnalogKeyboard::press(uint16_t key) {
     uint8_t index = _getIndex(key);
@@ -78,10 +74,8 @@ boolean ES_AnalogKeyboard::press(uint16_t key) {
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Release >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 /**
  * @brief Verifica se a tecla foi solta. | Checks if the key was released.
- * 
  * @param key Valor analógico da tecla. | Analog value of the key.
- * @return `true` se a tecla foi solta ou `false` se a tecla não foi solta.
- * @return | `true` if the key was released or `false` if the key was not released.
+ * @return `true` se a tecla foi solta ou `false` se a tecla não foi solta. | `true` if the key was released or `false` if the key was not released.
  */
 boolean ES_AnalogKeyboard::release(uint16_t key) {
     uint8_t index = _getIndex(key);

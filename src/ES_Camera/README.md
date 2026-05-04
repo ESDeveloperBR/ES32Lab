@@ -127,6 +127,7 @@ bool begin(framesize_t frameSize, uint8_t jpegQuality, framesize_t maxFrameSize,
 - **`frameSize`**: Define o tamanho do quadro capturado pela câmera. Este parâmetro determina a resolução da imagem ou vídeo. Os valores disponíveis são:
   - `FRAMESIZE_96X96`: 96x96 pixels.
   - `FRAMESIZE_QQVGA`: 160x120 pixels.
+  - `FRAMESIZE_QCIF`: 176X144.
   - `FRAMESIZE_HQVGA`: 240x176 pixels.
   - `FRAMESIZE_240X240`: 240x240 pixels.
   - `FRAMESIZE_QVGA`: 320x240 pixels.

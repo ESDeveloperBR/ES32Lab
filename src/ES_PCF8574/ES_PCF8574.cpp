@@ -256,7 +256,7 @@ void ES_PCF8574::pwmWrite(uint8_t pin, uint8_t dutyCycle, uint8_t frequency){
 boolean ES_PCF8574::motorBegin(uint8_t motorID, uint8_t controlPin1, uint8_t controlPin2){
   _motorPin1[motorID] = controlPin1;
   _motorPin2[motorID] = controlPin2;
-  return begin(true);  // Initializes the I2C expander and activates the PWM simulator. | Inicializa o expanso i2C e ativa o simulador PWM.
+  return begin(true, true);  // Initializes the I2C expander and activates the PWM simulator. | Inicializa o expanso i2C e ativa o simulador PWM.
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< motorStop >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

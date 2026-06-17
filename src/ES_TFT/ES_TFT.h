@@ -6,15 +6,18 @@
 #include "ES_File/ES_File.h"
 #include "ES_Camera/ES_Camera.h"
 
-#define ES_TFT_VERSION "0.11.2 update 25/05/2024"
+#define ES_TFT_VERSION "0.11.3 update 17/06/2026"
 
 class ES_TFT : public TFT_eSPI {
 private:
     #define minimum(a,b)     (((a) < (b)) ? (a) : (b))
-    bool _trabalharComArquivos = false;
     ES_File _arquivo;
     bool _compareStr(String str1, String str2);
-    bool _renderDecodedJPEG(int xpos, int ypos);
+    bool _isJpegFile(const String& fileName);
+    String _normalizeJpegFileName(const String& fileName);
+    bool _renderDecodedJPEG(int xpos, int ypos, bool fitToScreen);
+    bool _renderDecodedJPEGOriginal(int xpos, int ypos);
+    bool _renderDecodedJPEGFitToScreen(int xpos, int ypos);
 
 public:
     /**
@@ -63,7 +66,7 @@ public:
      * @param ypos The vertical position to render the image | A posição vertical para renderizar a imagem
      * @return True if the image was rendered successfully, false otherwise | Verdadeiro se a imagem foi renderizada com sucesso, falso caso contrário
     */
-    bool renderJPEG(fs::FS& fs, const String& fileName, int xpos = 0, int ypos = 0);
+    bool renderJPEG(fs::FS& fs, const String& fileName, int xpos = 0, int ypos = 0, bool fitToScreen = true);
 
 
     /**
@@ -95,7 +98,7 @@ public:
      * @param ypos The vertical position to render the image | A posição vertical para renderizar a imagem
      * @return True if a JPEG file was found and rendered, false otherwise | Verdadeiro se um arquivo JPEG foi encontrado e renderizado, falso caso contrário
     */
-    bool renderFirstFileJPEG(fs::FS& fs, const String& directory = "/", int xpos = 0, int ypos = 0);
+    bool renderFirstFileJPEG(fs::FS& fs, const String& directory = "/", int xpos = 0, int ypos = 0, bool fitToScreen = true);
     /**
      * @brief Renders the last JPEG file in a directory | Renderiza o último arquivo JPEG em um diretório
      * @param fs The file system to use | O sistema de arquivos a ser usado
@@ -104,7 +107,7 @@ public:
      * @param ypos The vertical position to render the image | A posição vertical para renderizar a imagem
      * @return True if a JPEG file was found and rendered, false otherwise | Verdadeiro se um arquivo JPEG foi encontrado e renderizado, falso caso contrário
     */
-    bool renderLastFileJPEG(fs::FS& fs, const String& directory = "/", int xpos = 0, int ypos = 0);
+    bool renderLastFileJPEG(fs::FS& fs, const String& directory = "/", int xpos = 0, int ypos = 0, bool fitToScreen = true);
     /**
      * @brief Renders the next JPEG file based on the last rendered file | Renderiza o próximo arquivo JPEG com base no último arquivo renderizado
      * @param fs The file system to use | O sistema de arquivos a ser usado
@@ -113,7 +116,7 @@ public:
      * @param ypos The vertical position to render the image | A posição vertical para renderizar a imagem
      * @return True if a JPEG file was found and rendered, false otherwise | Verdadeiro se um arquivo JPEG foi encontrado e renderizado, falso caso contrário
     */
-    bool renderNextFileJPEG(fs::FS& fs, const String& path = "", int xpos = 0, int ypos = 0);
+    bool renderNextFileJPEG(fs::FS& fs, const String& path = "", int xpos = 0, int ypos = 0, bool fitToScreen = true);
     /**
      * @brief Renders the previous JPEG file based on the last rendered file | Renderiza o arquivo JPEG anterior com base no último arquivo renderizado
      * @param fs The file system to use | O sistema de arquivos a ser usado
@@ -122,7 +125,7 @@ public:
      * @param ypos The vertical position to render the image | A posição vertical para renderizar a imagem
      * @return True if a JPEG file was found and rendered, false otherwise | Verdadeiro se um arquivo JPEG foi encontrado e renderizado, falso caso contrário
      */
-    bool renderPreviousFileJPEG(fs::FS& fs, const String& path = "", int xpos = 0, int ypos = 0);
+    bool renderPreviousFileJPEG(fs::FS& fs, const String& path = "", int xpos = 0, int ypos = 0, bool fitToScreen = true);
 
 
     /**

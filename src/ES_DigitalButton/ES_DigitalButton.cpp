@@ -1,100 +1,95 @@
 #include "ES_DigitalButton.h"
 
-// <<<<<<<<<<<<<<<<<<< Construtor >>>>>>>>>>>>>>>>>>>>>>>>>>>
-/**
- * Creates the object to be used as a digital button and assigns the GPIO to be used.
- * - pin: GPIO of the button. | GPIO do botão.
- * - pullUp: Enables pull-up resistor. Defaults to false. | Ativa o resistor pull-up. O padrão é false.
- */
-ES_DigitalButton::ES_DigitalButton(int pin, boolean pullUp) {
-    _pin = pin;            // Assign the GPIO pin. | Atribui o pino GPIO.
-    _pullUp = pullUp;      // Assign pull-up configuration. | Atribui a configuração de pull-up.
+// <<< Constructor of the class | Construtor da classe >>>
+ES_DigitalButton::ES_DigitalButton() {
 }
 
-// <<<<<<<<<<<<<<<<<<< Métodos de Inicialização >>>>>>>>>>>>>>>>>>>>>>>>>>
-/**
- * Checks if the pin is valid. GPIOs 34-39 are restricted. 
- * | 
- * Verifica se o pino é válido. GPIOs 34-39 são restritos.
- */
+
+// <<< Checks if the configured GPIO is valid | Verifica se a GPIO configurada é válida >>>
 boolean ES_DigitalButton::_isPinValid() {
-    if (_pin >= 34 && _pin <= 39) { 
-        return false; // Invalid pins. | Pinos inválidos.
+    return (_pin >= 0);
+}
+
+
+// <<< Initializes the digital input | Inicializa a entrada digital >>>
+boolean ES_DigitalButton::begin(int pin, boolean activeHigh) {
+    _pin = pin;                    // Set the GPIO pin | Define o pino GPIO
+    _activeHigh = activeHigh;      // Set the active logic | Define a lógica ativa
+
+    if (!_isPinValid()) {
+        return false;              // Invalid pin | Pino inválido
     }
+
+    /*
+     * Active HIGH inputs should rest in LOW, so the class tries to enable INPUT_PULLDOWN.
+     * Active LOW inputs should rest in HIGH, so the class tries to enable INPUT_PULLUP.
+     *
+     * | Entradas ativas em HIGH devem repousar em LOW, por isso a classe tenta usar INPUT_PULLDOWN.
+     * Entradas ativas em LOW devem repousar em HIGH, por isso a classe tenta usar INPUT_PULLUP.
+     */
+    pinMode(_pin, _activeHigh ? INPUT_PULLDOWN : INPUT_PULLUP);
+
+    _btPress = false;              // Reset press state | Reinicia o estado de acionamento
+    _btRelease = true;             // Reset release state | Reinicia o estado de liberação
+
     return true;
 }
 
-/**
- * Initializes the button with the given pin and configuration.
- * - pin: GPIO of the button. | GPIO do botão.
- * - pullUp: Enables pull-up resistor. Defaults to false. | Ativa o resistor pull-up. O padrão é false.
- * Returns true if the pin is successfully configured. | Retorna true se o pino for configurado com sucesso.
- */
-boolean ES_DigitalButton::begin(int pin, boolean pullUp) {
-    _pin = pin;            // Assign the pin. | Atribui o pino.
-    _pullUp = pullUp;      // Set the pull-up configuration. | Define a configuração do pull-up.
 
-    if (!_isPinValid()) { 
-        return false; // Invalid pin. | Pino inválido.
-    }
-
-    pinMode(_pin, pullUp ? INPUT_PULLUP : INPUT); // Configures the pin. | Configura o pino.
-    return true;
-}
-
-/**
- * Initializes the button with the stored pin and configuration.
- * | 
- * Inicializa o botão com o pino e configuração armazenados.
- */
+// <<< Initializes using the stored configuration | Inicializa usando a configuração armazenada >>>
 boolean ES_DigitalButton::begin() {
-    return begin(_pin, _pullUp); // Calls the parameterized begin method. | Chama o método begin parametrizado.
+    return begin(_pin, _activeHigh);
 }
 
-/**
- * Sets the pin for the button and initializes it.
- * - pin: GPIO of the button. | GPIO do botão.
- * - pullUp: Enables pull-up resistor. Defaults to false. | Ativa o resistor pull-up. O padrão é false.
- */
-boolean ES_DigitalButton::setPino(int pin, boolean pullUp) {
-    return begin(pin, pullUp); // Reuses begin logic. | Reutiliza a lógica do begin.
+
+// <<< Sets the GPIO pin and initializes the input | Define o pino GPIO e inicializa a entrada >>>
+boolean ES_DigitalButton::setPin(int pin, boolean activeHigh) {
+    return begin(pin, activeHigh);
 }
 
-// <<<<<<<<<<<<<<<<<< Métodos de Estado >>>>>>>>>>>>>>>>>>>>>
-/**
- * Returns "true" while the button is held.
- * | 
- * Retorna "true" enquanto o botão estiver pressionado.
- */
+
+// <<< Legacy alias for setPin() | Alias legado para setPin() >>>
+boolean ES_DigitalButton::setPino(int pin, boolean activeHigh) {
+    return setPin(pin, activeHigh);
+}
+
+
+// <<< Checks if the input is active | Verifica se a entrada está ativa >>>
 boolean ES_DigitalButton::hold() {
-    if (_pin < 0) return false; // Ensure pin is configured. | Garante que o pino esteja configurado.
-    return !digitalRead(_pin); // Read pin state. | Lê o estado do pino.
+    if (!_isPinValid()) {
+        return false;
+    }
+
+    boolean pinState = digitalRead(_pin);       // Read current GPIO state | Lê o estado atual da GPIO
+    return _activeHigh ? pinState : !pinState;  // Apply active logic | Aplica a lógica ativa
 }
 
-/**
- * Returns "true" when the button is pressed.
- * | 
- * Retorna "true" quando o botão for pressionado.
- */
+
+// <<< Detects when the input becomes active | Detecta quando a entrada é acionada >>>
 boolean ES_DigitalButton::press() {
-    if (hold() && !_btPress) { 
-        _btPress = true; // Button pressed. | Botão pressionado.
+    if (hold() && !_btPress) {
+        _btPress = true;           // Store pressed state | Armazena o estado pressionado
         return true;
     }
-    if (!hold()) _btPress = false; // Reset state. | Reseta o estado.
+
+    if (!hold()) {
+        _btPress = false;          // Release allows a new press event | A liberação permite um novo evento de press()
+    }
+
     return false;
 }
 
-/**
- * Returns "true" when the button is released.
- * | 
- * Retorna "true" quando o botão for solto.
- */
+
+// <<< Detects when the input is released | Detecta quando a entrada é solta >>>
 boolean ES_DigitalButton::release() {
-    if (!hold() && !_btRelease) { 
-        _btRelease = true; // Button released. | Botão solto.
+    if (!hold() && !_btRelease) {
+        _btRelease = true;         // Store released state | Armazena o estado solto
         return true;
     }
-    if (hold()) _btRelease = false; // Reset state. | Reseta o estado.
+
+    if (hold()) {
+        _btRelease = false;        // Press allows a new release event | O acionamento permite um novo evento de release()
+    }
+
     return false;
 }

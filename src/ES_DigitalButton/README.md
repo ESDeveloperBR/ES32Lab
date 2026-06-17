@@ -1,181 +1,421 @@
-| [Índece de classes contidas na LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#conjunto-de-classes-contidas-na-lib-es32lab) |
+| [Índice de classes contidas na LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#conjunto-de-classes-contidas-na-lib-es32lab) |
 | :------: |
------
-
-# Classe ES_DigitalButton
-
-A classe **ES_DigitalButton** foi projetada para facilitar o monitoramento de dispositivos binários, como botões, sensores de limite, chaves de fim de curso e outros sensores digitais simples. Com sua lógica robusta e flexível, ela permite detectar os estados "pressionado", "solto" e "segurando", além de oferecer suporte para resistores internos de **pull-up** ou **pull-down**.
-
-## Por Que Usar a ES_DigitalButton?
-
-Essa classe não se limita ao uso com botões digitais, mas é uma solução ideal para qualquer dispositivo que forneça dois estados binários: ligado/desligado ou ativo/inativo. Seja um botão de pressão ou um sensor digital simples, como sensores magnéticos, sensores de proximidade ou de contato, a **ES_DigitalButton** simplifica a implementação e o gerenciamento.
 
 ---
 
-## Funcionalidades
+# Documentação da Classe ES_DigitalButton
 
-- **Monitoramento de estados binários**: Detecta os estados "pressionado", "solto" e "segurando".
-- **Suporte a pull-up e pull-down internos**: Configuração flexível para atender às características do sensor utilizado.
-- **Compatibilidade ampla**: Aceita qualquer GPIO do ESP32, exceto GPIOs 34-39, que possuem restrições de hardware.
-- **Validação de pinos**: Garante que apenas pinos válidos sejam configurados.
+A classe `ES_DigitalButton` é um componente da biblioteca ES32Lab desenvolvido para simplificar a leitura de botões digitais, chaves fim de curso, sensores de presença, sensores magnéticos, sensores ópticos e qualquer outro dispositivo que entregue um sinal digital simples em uma GPIO nativa do ESP32.
+
+Ela permite identificar três estados fundamentais de uma entrada digital:
+
+- **press()**: detecta o momento em que a entrada é acionada.
+- **hold()**: detecta enquanto a entrada permanece acionada.
+- **release()**: detecta o momento em que a entrada é solta.
+
+A classe foi pensada para ser simples e didática. Por isso, o construtor não recebe parâmetros. A configuração do pino e da lógica de acionamento é feita no método `begin()`, normalmente dentro do `setup()`, deixando claro em que momento o hardware é inicializado.
+
+### **Principais Recursos**
+- **Construtor Simples**: o objeto é criado sem configurar GPIOs diretamente.
+- **Configuração no begin()**: o pino e a lógica ativa são definidos no `setup()`.
+- **Lógica Ativa Configurável**: suporte a entradas ativas em `HIGH` ou em `LOW`.
+- **Configuração Automática de Pull-up/Pull-down**: a classe tenta aplicar `INPUT_PULLDOWN` para entradas ativas em `HIGH` e `INPUT_PULLUP` para entradas ativas em `LOW`.
+- **Eventos de Botão**: métodos separados para detectar acionamento, estado mantido e liberação.
+- **Uso com Botões e Sensores**: a classe não se limita a botões físicos; qualquer sinal digital pode ser tratado como entrada binária.
+
+---
+
+## Índice
+
+1. [Conceito de Funcionamento](#conceito-de-funcionamento)
+2. [Lógica Ativa: activeHigh](#lógica-ativa-activehigh)
+3. [Pull-up, Pull-down e Limitações das GPIOs](#pull-up-pull-down-e-limitações-das-gpios)
+4. [Construtor](#construtor)
+5. [Configuração no setup()](#configuração-no-setup)
+    - [`begin(int pin, boolean activeHigh)`](#beginint-pin-boolean-activehigh)
+    - [`begin()`](#begin)
+6. [Alteração de Pino em Tempo de Execução](#alteração-de-pino-em-tempo-de-execução)
+    - [`setPin(int pin, boolean activeHigh)`](#setpinint-pin-boolean-activehigh)
+    - [`setPino(int pin, boolean activeHigh)`](#setpinoint-pin-boolean-activehigh)
+7. [Leitura dos Estados](#leitura-dos-estados)
+    - [`press()`](#press)
+    - [`hold()`](#hold)
+    - [`release()`](#release)
+8. [Debounce](#debounce)
+9. [Versão da Classe](#versão-da-classe)
+10. [Exemplo Completo: Botão BOOT na GPIO 0](#exemplo-completo-botão-boot-na-gpio-0)
+11. [Exemplo Completo: Sensor Ativo em HIGH](#exemplo-completo-sensor-ativo-em-high)
+12. [Exemplos Oficiais](#exemplos-oficiais)
+
+---
+
+## Conceito de Funcionamento
+
+Uma entrada digital pode estar em dois estados elétricos: `HIGH` ou `LOW`. Porém, nem todo botão ou sensor usa o mesmo estado para indicar acionamento.
+
+Exemplos comuns:
+
+- Um botão ligado ao GND com resistor de pull-up fica em `HIGH` quando solto e vai para `LOW` quando pressionado.
+- Um sensor digital com saída ativa em `HIGH` fica em `LOW` quando inativo e vai para `HIGH` quando detecta algo.
+
+A `ES_DigitalButton` separa esse conceito usando o parâmetro `activeHigh`. Assim, o usuário informa qual estado elétrico deve ser interpretado como entrada ativa, e a classe passa a tratar `press()`, `hold()` e `release()` com base nessa lógica.
+
+---
+
+## Lógica Ativa: activeHigh
+
+O parâmetro `activeHigh` define se a entrada será considerada ativa em `HIGH` ou em `LOW`.
+
+| Valor | Interpretação | Configuração tentada pela classe | Uso comum |
+| :---: | --- | --- | --- |
+| `true` | Ativo em `HIGH` | `INPUT_PULLDOWN` | sensores digitais ativos em HIGH, botões ligados ao VCC |
+| `false` | Ativo em `LOW` | `INPUT_PULLUP` | botão BOOT/GPIO 0, botões ligados ao GND |
+
+Por padrão, `activeHigh` é `true`:
+
+```cpp
+button.begin(25);       // GPIO 25, ativo em HIGH
+button.begin(25, true); // equivalente à linha acima
+```
+
+Para entradas ativas em `LOW`, informe `false`:
+
+```cpp
+button.begin(0, false); // GPIO 0, ativo em LOW
+```
+
+Esse formato evita que o usuário precise decidir diretamente entre `INPUT`, `INPUT_PULLUP` e `INPUT_PULLDOWN` na maioria dos casos didáticos.
+
+---
+
+## Pull-up, Pull-down e Limitações das GPIOs
+
+Quando uma entrada digital não está conectada claramente a `HIGH` ou `LOW`, ela pode ficar flutuando. Isso gera leituras instáveis, alternando entre `HIGH` e `LOW` sem que o botão ou sensor tenha mudado de estado.
+
+Para evitar isso, normalmente usamos:
+
+- **Pull-up**: mantém a entrada em `HIGH` quando ela está em repouso.
+- **Pull-down**: mantém a entrada em `LOW` quando ela está em repouso.
+
+A `ES_DigitalButton` tenta configurar automaticamente o resistor interno mais coerente com a lógica ativa:
+
+```cpp
+activeHigh = true  -> pinMode(pin, INPUT_PULLDOWN)
+activeHigh = false -> pinMode(pin, INPUT_PULLUP)
+```
+
+### Limitação importante do ESP32
+
+Nem todas as GPIOs do ESP32 possuem os mesmos recursos internos. Em especial:
+
+- **GPIOs 34 a 39**: em muitos ESP32, são apenas entrada e não possuem pull-up/pull-down interno disponível.
+- **GPIOs 6 a 11**: normalmente são usadas pela memória flash do módulo e devem ser evitadas em projetos comuns.
+- **GPIO 0**: possui função especial de bootloader; é útil para testes com o botão BOOT, mas deve ser usada com cuidado em projetos finais.
+
+Se a GPIO escolhida não suportar `INPUT_PULLUP` ou `INPUT_PULLDOWN`, a classe ainda pode configurar o pino como entrada, mas o resistor interno esperado pode não existir. Nesse caso, o circuito precisa ter um resistor físico externo de pull-up ou pull-down para garantir uma leitura estável.
+
+> **Resumo prático:**  
+> A classe não bloqueia GPIOs apenas por elas não possuírem pull-up/pull-down interno. Ela permite o uso, mas cabe ao projetista garantir que o circuito externo deixe o sinal em um estado definido.
 
 ---
 
 ## Construtor
 
-### `ES_DigitalButton(int pin = -1, boolean pullUp = false)`
-Cria uma instância da classe `ES_DigitalButton` para gerenciar dispositivos binários, como botões ou sensores digitais. O construtor permite configurar diretamente a GPIO e a ativação do resistor interno pull-up no momento da criação do objeto, tornando a inicialização mais prática para muitos cenários.
+### `ES_DigitalButton()`
 
-- **Parâmetros**:
-  - **`pin`**: GPIO conectado ao dispositivo binário. (Padrão: `-1`, sem pino configurado).
-  - **`pullUp`**: Define se o resistor pull-up será ativado. (Padrão: `false`).
+Cria uma instância da classe `ES_DigitalButton`.
 
-### Exemplos de Uso
+O construtor não configura pino, lógica ativa nem modo de entrada. Essa configuração deve ser feita posteriormente com o método `begin()`.
 
-1. **Inicialização sem especificar GPIO**  
-   Neste caso, a GPIO será definida posteriormente no programa utilizando o método `begin` ou `setPino`:  
-   `ES_DigitalButton button; // Instância sem definir GPIO e pull-up.`
+#### Sintaxe:
+```cpp
+ES_DigitalButton button;
+```
 
-2. **Inicialização com GPIO e configuração padrão de pull-down**  
-   O botão ou sensor será monitorado no **GPIO 0**, com resistor **pull-down** configurado (padrão):  
-   `ES_DigitalButton button(0); // Instância na GPIO 0 com pull-down.`
+#### Exemplo:
+```cpp
+#include <Arduino.h>
+#include <ES32Lab.h>
 
-3. **Inicialização com GPIO e pull-up ativado**  
-   Aqui a **GPIO 0** será configurado com resistor interno **pull-up**, ideal para botões conectados ao GND:  
-   `ES_DigitalButton ES_DigitalButton(0, true); // Instância na GPIO 0 com pull-up ativado.`
-
-**Nota:** Caso a GPIO seja definido no construtor, o método `begin` ainda precisará ser chamado no `setup()` para inicializar o hardware.
+ES_DigitalButton button;
+```
 
 ---
 
 ## Configuração no `setup()`
 
-O método `begin` é fundamental para inicializar a instância da classe `ES_DigitalButton` e configurar a GPIO que será usado para monitorar o dispositivo binário. Essa configuração deve ser realizada dentro da função `setup()` para garantir que o hardware esteja pronto para operação durante a execução do programa.
+O método `begin()` deve ser chamado dentro do `setup()` para definir a GPIO usada e a lógica de acionamento da entrada.
 
-A passagem de parâmetros ao método `begin` não é obrigatória. Quando nenhum parâmetro é especificado, o pino e o resistor pull-up ou pull-down definidos no construtor da classe serão utilizados. Isso proporciona flexibilidade tanto para inicializações rápidas quanto para configurações específicas.
+### `begin(int pin, boolean activeHigh)`
 
-### Considerações sobre a GPIO 0
-
-Nos exemplos a seguir, utilizamos a **GPIO 0** como pino de entrada. A maioria dos ESP32 em shields tem um botão conectado à **GPIO 0** para colocá-lo em modo de programação (bootloader) ao ser mantido em LOW durante o reset. Esse botão pode ser reutilizado para testes simples com a classe `ES_DigitalButton`. **No entanto, use a GPIO 0 com moderação em projetos definitivos**, devido à sua função especial no ESP32.
-
----
-
-### begin()
-
-Inicializa o dispositivo binário, atribuindo a GPIO e preparando-o para o monitoramento.
+Inicializa o botão ou sensor digital com o pino e a lógica ativa informados.
 
 #### Sintaxe:
-`boolean begin(int pin, boolean pullUp = false)`
-
-#### Exemplos de Uso
-
-1. Inicialização rápida, utilizando a **GPIO 0** definida no construtor:
 ```cpp
-button.begin(); // Inicializa o monitoramento utilizando a configuração padrão.
+boolean begin(int pin, boolean activeHigh = true);
 ```
 
-2. Inicialização personalizada, especificando a GPIO e ativando o resistor **pull-up**:
-```cpp 
-button.begin(0, true); // Inicializa o monitoramento no GPIO 0 com pull-up ativado.
-```
-**Nota:** Ao utilizar a **GPIO 0**, certifique-se de que sua aplicação não entre em conflito com o modo de programação (bootloader). Use-a preferencialmente para testes ou projetos onde essa função especial seja considerada.
+#### Parâmetros:
+- **`pin`**: GPIO conectada ao botão ou sensor.
+- **`activeHigh`**: define a lógica ativa da entrada.
+  - `true`: entrada ativa em `HIGH`.
+  - `false`: entrada ativa em `LOW`.
 
----
+#### Retorno:
+- **`true`**: se o pino foi aceito e configurado.
+- **`false`**: se o pino informado for inválido.
 
-## Métodos da Classe
-
-A classe `ES_DigitalButton` possui métodos fáceis de usar para detectar os estados de dispositivos binários, como botões ou sensores digitais. Esses métodos permitem que você saiba quando o dispositivo está ativo, quando foi ativado ou desativado. Vamos entender como cada um funciona:
-
----
-
-### press()
-
-O método `press()` detecta o momento exato em que o dispositivo muda para o estado ativo. Ele informa quando algo foi "acionado", como um botão que acabou de ser pressionado.
-
-#### Como funciona:
-Se você quiser executar algo **apenas no momento em que o botão for pressionado**, use `press()`.
-
-#### Exemplo:
+#### Exemplo de Uso 1: Entrada Ativa em HIGH
 ```cpp
-if(button.press()){
-  Serial.println("Botão foi pressionado!");
+void setup() {
+    Serial.begin(115200);
+    button.begin(25); // GPIO 25, ativo em HIGH
+}
+```
+
+#### Exemplo de Uso 2: Entrada Ativa em LOW
+```cpp
+void setup() {
+    Serial.begin(115200);
+    button.begin(0, false); // GPIO 0, ativo em LOW
 }
 ```
 
 ---
 
-### hold()
+### `begin()`
 
-O método `hold()` verifica se o dispositivo está no estado ativo (por exemplo, um botão pressionado ou um sensor ativado). Ele retorna `true` enquanto o dispositivo estiver ativo.
+Inicializa o botão usando a configuração atualmente armazenada no objeto.
 
-#### Como funciona:
-Imagine que você quer saber se alguém está segurando um botão. Enquanto o botão estiver pressionado, `hold()` retorna `true`.
+#### Sintaxe:
+```cpp
+boolean begin();
+```
+
+#### Retorno:
+- **`true`**: se o pino armazenado foi aceito e configurado.
+- **`false`**: se ainda não houver pino válido configurado.
+
+Como o construtor atual não recebe parâmetros, a forma mais comum de uso é chamar `begin(pin, activeHigh)` diretamente. O `begin()` sem parâmetros é útil em situações em que o pino já tenha sido configurado anteriormente por `setPin()`.
+
+---
+
+## Alteração de Pino em Tempo de Execução
+
+### `setPin(int pin, boolean activeHigh)`
+
+Define uma nova GPIO e uma nova lógica ativa, reinicializando a entrada digital.
+
+#### Sintaxe:
+```cpp
+boolean setPin(int pin, boolean activeHigh = true);
+```
+
+#### Parâmetros:
+- **`pin`**: nova GPIO conectada ao botão ou sensor.
+- **`activeHigh`**: define se a entrada será ativa em `HIGH` ou em `LOW`.
+
+#### Retorno:
+- **`true`**: se o pino foi aceito e configurado.
+- **`false`**: se o pino informado for inválido.
 
 #### Exemplo:
 ```cpp
-if(button.hold()){ 
-  Serial.println("Botão está sendo pressionado!");
+button.setPin(26);        // GPIO 26, ativo em HIGH
+button.setPin(0, false);  // GPIO 0, ativo em LOW
+```
+
+---
+
+### `setPino(int pin, boolean activeHigh)`
+
+Alias legado para `setPin()`.
+
+#### Sintaxe:
+```cpp
+boolean setPino(int pin, boolean activeHigh = true);
+```
+
+#### Observação:
+Para novos projetos, prefira `setPin()`. O método `setPino()` permanece disponível por compatibilidade com códigos antigos.
+
+---
+
+## Leitura dos Estados
+
+A `ES_DigitalButton` oferece três métodos principais para leitura da entrada digital.
+
+---
+
+### `press()`
+
+Detecta o momento em que a entrada muda de inativa para ativa.
+
+Esse método retorna `true` apenas uma vez no instante do acionamento. Se o botão continuar pressionado, chamadas seguintes retornarão `false` até que ele seja solto e pressionado novamente.
+
+#### Sintaxe:
+```cpp
+boolean press();
+```
+
+#### Exemplo:
+```cpp
+if (button.press()) {
+    Serial.println("Botao pressionado.");
 }
 ```
 
 ---
 
-### release()
+### `hold()`
 
-O método `release()` detecta o momento exato em que o dispositivo muda para o estado inativo. Ele informa quando algo foi "solto", como um botão que deixa de ser pressionado.
+Verifica se a entrada está ativa no momento.
 
-#### Como funciona:
-Se você quiser saber quando alguém tirou o dedo do botão, use `release()`.
+Esse método retorna `true` durante todo o tempo em que o botão ou sensor permanecer acionado.
+
+#### Sintaxe:
+```cpp
+boolean hold();
+```
 
 #### Exemplo:
 ```cpp
-if(button.release()){
-  Serial.println("Botão foi solto!");
+if (button.hold()) {
+    Serial.println("Botao segurado.");
 }
 ```
 
 ---
 
-## Exemplo de Uso Prático
+### `release()`
 
-Este exemplo demonstra como utilizar a classe `ES_DigitalButton` para monitorar os três estados de um botão digital conectado à **GPIO 0** de um ESP32: **pressionado**, **segurando** e **solto**. Quando o botão muda de estado, mensagens correspondentes são exibidas no monitor serial.
+Detecta o momento em que a entrada muda de ativa para inativa.
 
-O botão é configurado com o resistor interno **pull-up**, tornando este exemplo ideal para botões que conectam a GPIO ao GND quando pressionados. Este código é didático e ajuda a entender como detectar e reagir aos diferentes estados de dispositivos binários.
+Esse método retorna `true` apenas uma vez no instante da liberação.
 
-**Nota:** A **GPIO 0** possui funções especiais em muitos ESP32 (modo bootloader), por isso deve ser usada com moderação. Este exemplo é adequado para aprendizado e testes simples.
+#### Sintaxe:
+```cpp
+boolean release();
+```
+
+#### Exemplo:
+```cpp
+if (button.release()) {
+    Serial.println("Botao solto.");
+}
+```
+
+---
+
+## Debounce
+
+A classe `ES_DigitalButton` não implementa debounce interno.
+
+Botões mecânicos podem gerar pequenos ruídos elétricos durante o pressionamento ou liberação. Isso pode causar múltiplos eventos de `press()` ou `release()` em alguns circuitos.
+
+Para aplicações didáticas simples, normalmente isso não impede o uso. Para projetos finais, considere:
+
+- usar debounce por hardware;
+- usar um pequeno capacitor no circuito do botão;
+- tratar debounce na lógica da aplicação;
+- evitar executar ações críticas diretamente sem validação adicional.
+
+---
+
+## Versão da Classe
+
+A versão da classe é definida pela macro:
+
+```cpp
+ES_DIGITALBUTTON_VERSION
+```
+
+Exemplo:
+
+```cpp
+Serial.println(ES_DIGITALBUTTON_VERSION);
+```
+
+---
+
+## Exemplo Completo: Botão BOOT na GPIO 0
+
+Este exemplo usa o botão BOOT comum em placas ESP32. Normalmente esse botão está conectado à GPIO 0 e é ativo em `LOW`, por isso usamos `activeHigh = false`.
 
 ```cpp
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-// Creates the object for the button on GPIO 0. | Cria o objeto para o botão na GPIO 0.
-ES_DigitalButton button(0, true);
+ES_DigitalButton button;
 
 void setup() {
-  Serial.begin(115200); // Initializes serial communication. | Inicializa a comunicação serial.
-  button.begin();       // Initializes button monitoring. | Inicializa o monitoramento do botão.
+    Serial.begin(115200);
+    button.begin(0, false); // GPIO 0, ativo em LOW
 }
 
 void loop() {
-  // Checks if the button was pressed. | Verifica se o botão foi pressionado.
-  if (button.press()) {
-    Serial.println("Button - Press"); // Message when the button is pressed. | Mensagem quando o botão é pressionado.
-  }
+    if (button.press()) {
+        Serial.println("Button pressed. | Botao pressionado.");
+    }
 
-  // Checks if the button is being held. | Verifica se o botão está sendo segurado.
-  if (button.hold()) {
-    Serial.println("Button - Hold"); // Message while the button is held. | Mensagem enquanto o botão está sendo segurado.
-  }
+    if (button.hold()) {
+        Serial.println("Button held. | Botao segurado.");
+    }
 
-  // Checks if the button was released. | Verifica se o botão foi solto.
-  if (button.release()) {
-    Serial.println("Button - Release"); // Message when the button is released. | Mensagem quando o botão é solto.
-  }
+    if (button.release()) {
+        Serial.println("Button released. | Botao solto.");
+    }
 
-  delay(100); // Prevents excessive readings. | Evita leituras excessivas.
+    delay(100);
+}
+```
+
+> **Atenção:**  
+> A GPIO 0 participa do processo de boot do ESP32. Ela é útil para testes didáticos com o botão BOOT, mas deve ser usada com cuidado em projetos definitivos.
+
+---
+
+## Exemplo Completo: Sensor Ativo em HIGH
+
+Este exemplo mostra um sensor digital conectado à GPIO 25 e ativo em `HIGH`. Como `activeHigh = true` é o padrão, não é necessário informar o segundo parâmetro.
+
+```cpp
+#include <Arduino.h>
+#include <ES32Lab.h>
+
+ES_DigitalButton sensor;
+
+void setup() {
+    Serial.begin(115200);
+    sensor.begin(25); // GPIO 25, ativo em HIGH
 }
 
+void loop() {
+    if (sensor.press()) {
+        Serial.println("Sensor ativado.");
+    }
+
+    if (sensor.release()) {
+        Serial.println("Sensor desativado.");
+    }
+}
 ```
------
-| [Índece de classes contidas na LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#conjunto-de-classes-contidas-na-lib-es32lab) |
+
+---
+
+## Exemplos Oficiais
+
+O exemplo oficial da classe `ES_DigitalButton` está disponível na pasta:
+
+```text
+examples/DigitalButton/
+```
+
+Quando publicado no repositório, ele poderá ser acessado em:
+
+[`examples/DigitalButton`](https://github.com/ESDeveloperBR/ES32Lab/tree/main/examples/DigitalButton)
+
+---
+
+| [Índice de classes contidas na LIB ES32Lab](https://github.com/ESDeveloperBR/ES32Lab#conjunto-de-classes-contidas-na-lib-es32lab) |
 | :------: |

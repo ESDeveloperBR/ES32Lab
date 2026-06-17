@@ -7,8 +7,41 @@ bool ES_TFT::_compareStr(String str1, String str2) {
     return str1 == str2;
 }
 
+// <<< Checks if a file name has a JPEG extension | Verifica se o nome do arquivo possui extensão JPEG >>>
+bool ES_TFT::_isJpegFile(const String& fileName) {
+    String normalizedFileName = fileName;
+    normalizedFileName.toLowerCase();
+
+    return normalizedFileName.endsWith(".jpg") || normalizedFileName.endsWith(".jpeg");
+}
+
+// <<< Normalizes a JPEG file name | Normaliza o nome de um arquivo JPEG >>>
+String ES_TFT::_normalizeJpegFileName(const String& fileName) {
+    if (_isJpegFile(fileName)) return fileName;
+    return fileName + ".jpg";
+}
+
 // <<< Renders a decoded JPEG image | Renderiza uma imagem JPEG decodificada >>>
-bool ES_TFT::_renderDecodedJPEG(int xpos, int ypos) {
+bool ES_TFT::_renderDecodedJPEG(int xpos, int ypos, bool fitToScreen) {
+    if (!fitToScreen) return _renderDecodedJPEGOriginal(xpos, ypos);
+
+    int availableWidth = width() - xpos;
+    int availableHeight = height() - ypos;
+
+    if (availableWidth <= 0 || availableHeight <= 0) {
+        JpegDec.abort();
+        return false;
+    }
+
+    if (JpegDec.width <= availableWidth && JpegDec.height <= availableHeight) {
+        return _renderDecodedJPEGOriginal(xpos, ypos);
+    }
+
+    return _renderDecodedJPEGFitToScreen(xpos, ypos);
+}
+
+// <<< Renders a decoded JPEG image in original size | Renderiza uma imagem JPEG decodificada no tamanho original >>>
+bool ES_TFT::_renderDecodedJPEGOriginal(int xpos, int ypos) {
     uint16_t *pImg;
     uint16_t mcu_w = JpegDec.MCUWidth;
     uint16_t mcu_h = JpegDec.MCUHeight;
@@ -55,6 +88,129 @@ bool ES_TFT::_renderDecodedJPEG(int xpos, int ypos) {
     return true;
 }
 
+// <<< Renders a decoded JPEG image fitted to the display area | Renderiza uma imagem JPEG decodificada ajustada à área do display >>>
+bool ES_TFT::_renderDecodedJPEGFitToScreen(int xpos, int ypos) {
+    uint16_t *pImg;
+    uint16_t mcu_w = JpegDec.MCUWidth;
+    uint16_t mcu_h = JpegDec.MCUHeight;
+    uint32_t sourceWidth = JpegDec.width;
+    uint32_t sourceHeight = JpegDec.height;
+    uint16_t availableWidth = width() - xpos;
+    uint16_t availableHeight = height() - ypos;
+
+    float scaleX = (float)availableWidth / sourceWidth;
+    float scaleY = (float)availableHeight / sourceHeight;
+    float scale = (scaleX < scaleY) ? scaleX : scaleY;
+
+    if (scale <= 0.0f) {
+        JpegDec.abort();
+        return false;
+    }
+
+    uint16_t targetWidth = (uint16_t)(sourceWidth * scale);
+    uint16_t targetHeight = (uint16_t)(sourceHeight * scale);
+
+    if (targetWidth == 0) targetWidth = 1;
+    if (targetHeight == 0) targetHeight = 1;
+    if (targetWidth > availableWidth) targetWidth = availableWidth;
+    if (targetHeight > availableHeight) targetHeight = availableHeight;
+
+    uint32_t *xMap = new uint32_t[targetWidth];
+    uint32_t *yMap = new uint32_t[targetHeight];
+    uint32_t scaledBlockCapacity = (uint32_t)(mcu_w + 2) * (uint32_t)(mcu_h + 2);
+    uint16_t *scaledBlock = new uint16_t[scaledBlockCapacity];
+
+    if (!xMap || !yMap || !scaledBlock) {
+        delete[] xMap;
+        delete[] yMap;
+        delete[] scaledBlock;
+        JpegDec.abort();
+        return false;
+    }
+
+    for (uint16_t x = 0; x < targetWidth; x++) {
+        xMap[x] = ((uint32_t)x * sourceWidth) / targetWidth;
+        if (xMap[x] >= sourceWidth) xMap[x] = sourceWidth - 1;
+    }
+
+    for (uint16_t y = 0; y < targetHeight; y++) {
+        yMap[y] = ((uint32_t)y * sourceHeight) / targetHeight;
+        if (yMap[y] >= sourceHeight) yMap[y] = sourceHeight - 1;
+    }
+
+    bool swapBytes = getSwapBytes();
+    setSwapBytes(true);
+
+    while (JpegDec.read()) {
+        pImg = JpegDec.pImage;
+
+        uint32_t sourceX = JpegDec.MCUx * mcu_w;
+        uint32_t sourceY = JpegDec.MCUy * mcu_h;
+        uint32_t sourceBlockWidth = ((sourceX + mcu_w) <= sourceWidth) ? mcu_w : (sourceWidth - sourceX);
+        uint32_t sourceBlockHeight = ((sourceY + mcu_h) <= sourceHeight) ? mcu_h : (sourceHeight - sourceY);
+
+        int32_t targetX0 = xpos + ((sourceX * targetWidth) / sourceWidth);
+        int32_t targetY0 = ypos + ((sourceY * targetHeight) / sourceHeight);
+        int32_t targetX1 = xpos + (((sourceX + sourceBlockWidth) * targetWidth + sourceWidth - 1) / sourceWidth);
+        int32_t targetY1 = ypos + (((sourceY + sourceBlockHeight) * targetHeight + sourceHeight - 1) / sourceHeight);
+
+        int32_t blockWidth = targetX1 - targetX0;
+        int32_t blockHeight = targetY1 - targetY0;
+
+        if (blockWidth <= 0 || blockHeight <= 0) continue;
+        if (targetX0 >= width() || targetY0 >= height()) continue;
+
+        if (targetX0 < 0 || targetY0 < 0 || (targetX0 + blockWidth) > width() || (targetY0 + blockHeight) > height()) {
+            JpegDec.abort();
+            setSwapBytes(swapBytes);
+            delete[] xMap;
+            delete[] yMap;
+            delete[] scaledBlock;
+            return false;
+        }
+
+        if ((uint32_t)(blockWidth * blockHeight) > scaledBlockCapacity) {
+            JpegDec.abort();
+            setSwapBytes(swapBytes);
+            delete[] xMap;
+            delete[] yMap;
+            delete[] scaledBlock;
+            return false;
+        }
+
+        for (int32_t y = 0; y < blockHeight; y++) {
+            uint32_t targetRelativeY = targetY0 + y - ypos;
+            if (targetRelativeY >= targetHeight) targetRelativeY = targetHeight - 1;
+            uint32_t mappedSourceY = yMap[targetRelativeY];
+
+            if (mappedSourceY < sourceY) mappedSourceY = sourceY;
+            if (mappedSourceY >= sourceY + sourceBlockHeight) mappedSourceY = sourceY + sourceBlockHeight - 1;
+
+            uint32_t sourceOffsetY = mappedSourceY - sourceY;
+
+            for (int32_t x = 0; x < blockWidth; x++) {
+                uint32_t targetRelativeX = targetX0 + x - xpos;
+                if (targetRelativeX >= targetWidth) targetRelativeX = targetWidth - 1;
+                uint32_t mappedSourceX = xMap[targetRelativeX];
+
+                if (mappedSourceX < sourceX) mappedSourceX = sourceX;
+                if (mappedSourceX >= sourceX + sourceBlockWidth) mappedSourceX = sourceX + sourceBlockWidth - 1;
+
+                uint32_t sourceOffsetX = mappedSourceX - sourceX;
+                scaledBlock[(y * blockWidth) + x] = pImg[(sourceOffsetY * mcu_w) + sourceOffsetX];
+            }
+        }
+
+        pushImage(targetX0, targetY0, blockWidth, blockHeight, scaledBlock);
+    }
+
+    setSwapBytes(swapBytes);
+    delete[] xMap;
+    delete[] yMap;
+    delete[] scaledBlock;
+    return true;
+}
+
 
 // <<< Constructor of the class | Construtor da classe >>>
 ES_TFT::ES_TFT(void) : TFT_eSPI() {}
@@ -82,17 +238,16 @@ int16_t ES_TFT::drawRightScreenString(const String& string, int32_t y, uint8_t f
 
 
 // <<< Renders a JPEG image from the file system | Renderiza uma imagem JPEG do sistema de arquivos >>>
-bool ES_TFT::renderJPEG(fs::FS& fs, const String& fileName, int xpos, int ypos) {
-    String normalizedPath = fileName;
-    if (!normalizedPath.endsWith(".jpg") && !normalizedPath.endsWith(".JPG")) {
-        normalizedPath += ".jpg";
-    }
+bool ES_TFT::renderJPEG(fs::FS& fs, const String& fileName, int xpos, int ypos, bool fitToScreen) {
+    String normalizedPath = _normalizeJpegFileName(fileName);
 
-    //if (!_compareStr(fileName.substring(fileName.length() - 4), ".jpg")) return false;
     if (!_arquivo.exists(fs, normalizedPath)) return false;
 
-    if (!JpegDec.decodeFsFile(_arquivo.getFile(fs, normalizedPath))) return false;
-    bool result = _renderDecodedJPEG(xpos, ypos);
+    File jpegFile = _arquivo.getFile(fs, normalizedPath);
+    if (!jpegFile) return false;
+
+    if (!JpegDec.decodeFsFile(jpegFile)) return false;
+    bool result = _renderDecodedJPEG(xpos, ypos, fitToScreen);
     return result;
 }
 
@@ -100,7 +255,7 @@ bool ES_TFT::renderJPEG(fs::FS& fs, const String& fileName, int xpos, int ypos) 
 // <<< Renders a JPEG image from a buffer | Renderiza uma imagem JPEG de um buffer >>>
 bool ES_TFT::renderJpegBuffer(const uint8_t* jpegBuf, size_t jpegLen, int xpos, int ypos) {
     if (!JpegDec.decodeArray(jpegBuf, jpegLen)) return false;
-    return _renderDecodedJPEG(xpos, ypos);
+    return _renderDecodedJPEG(xpos, ypos, false);
 }
 
 
@@ -124,53 +279,75 @@ bool ES_TFT::renderCameraFrame(ES_Camera& camera, int xpos, int ypos) {
 
 
 // <<< Renders the first JPEG file in a directory | Renderiza o primeiro arquivo JPEG em um diretório >>>
-bool ES_TFT::renderFirstFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos) {
+bool ES_TFT::renderFirstFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos, bool fitToScreen) {
     String fileName = _arquivo.getFirstFileName(fs, directory.c_str());
-    while (!_compareStr(fileName.substring(fileName.length() - 4), ".jpg")) {
-        fileName = _arquivo.getNextFileName(fs, fileName.c_str());
-        if (!_arquivo.exists(fs, fileName.c_str())) return false;
+    String startFileName = fileName;
+
+    while (fileName.length() > 0 && !_isJpegFile(fileName)) {
+        String nextFileName = _arquivo.getNextFileName(fs, fileName.c_str());
+        if (nextFileName.length() == 0 || nextFileName == fileName || nextFileName == startFileName) return false;
+        fileName = nextFileName;
     }
-    return renderJPEG(fs, fileName, xpos, ypos);
+
+    if (!_isJpegFile(fileName)) return false;
+
+    return renderJPEG(fs, fileName, xpos, ypos, fitToScreen);
 }
 
 
 // <<< Renders the last JPEG file in a directory | Renderiza o último arquivo JPEG em um diretório >>>
-bool ES_TFT::renderLastFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos) {
+bool ES_TFT::renderLastFileJPEG(fs::FS& fs, const String& directory, int xpos, int ypos, bool fitToScreen) {
     String fileName = _arquivo.getLastFileName(fs, directory.c_str());
-    while (!_compareStr(fileName.substring(fileName.length() - 4), ".jpg")) {
-        fileName = _arquivo.getPreviousFileName(fs, fileName.c_str());
-        if (!_arquivo.exists(fs, fileName.c_str())) return false;
+    String startFileName = fileName;
+
+    while (fileName.length() > 0 && !_isJpegFile(fileName)) {
+        String previousFileName = _arquivo.getPreviousFileName(fs, fileName.c_str());
+        if (previousFileName.length() == 0 || previousFileName == fileName || previousFileName == startFileName) return false;
+        fileName = previousFileName;
     }
-    return renderJPEG(fs, fileName, xpos, ypos);
+
+    if (!_isJpegFile(fileName)) return false;
+
+    return renderJPEG(fs, fileName, xpos, ypos, fitToScreen);
 }
 
 
 // <<< Renders the next JPEG file in a directory | Renderiza o próximo arquivo JPEG em um diretório >>>
-bool ES_TFT::renderNextFileJPEG(fs::FS& fs, const String& path, int xpos, int ypos) {
+bool ES_TFT::renderNextFileJPEG(fs::FS& fs, const String& path, int xpos, int ypos, bool fitToScreen) {
     String fileName = _arquivo.getNextFileName(fs, path);
-    while (!_compareStr(fileName.substring(fileName.length() - 4), ".jpg")) {
-        fileName = _arquivo.getNextFileName(fs, path);
-        if (!_arquivo.exists(fs, fileName.c_str())) return false;
+    String startFileName = fileName;
+
+    while (fileName.length() > 0 && !_isJpegFile(fileName)) {
+        String nextFileName = _arquivo.getNextFileName(fs, fileName.c_str());
+        if (nextFileName.length() == 0 || nextFileName == fileName || nextFileName == startFileName) return false;
+        fileName = nextFileName;
     }
-    return renderJPEG(fs, fileName, xpos, ypos);
+
+    if (!_isJpegFile(fileName)) return false;
+
+    return renderJPEG(fs, fileName, xpos, ypos, fitToScreen);
 }
 
 
 // <<< Renders the previous JPEG file in a directory | Renderiza o arquivo JPEG anterior em um diretório >>>
-bool ES_TFT::renderPreviousFileJPEG(fs::FS& fs, const String& path, int xpos, int ypos) {
+bool ES_TFT::renderPreviousFileJPEG(fs::FS& fs, const String& path, int xpos, int ypos, bool fitToScreen) {
     String fileName = _arquivo.getPreviousFileName(fs, path);
-    while (!_compareStr(fileName.substring(fileName.length() - 4), ".jpg")) {
-        fileName = _arquivo.getPreviousFileName(fs, path);
-        if (!_arquivo.exists(fs, fileName.c_str())) return false;
+    String startFileName = fileName;
+
+    while (fileName.length() > 0 && !_isJpegFile(fileName)) {
+        String previousFileName = _arquivo.getPreviousFileName(fs, fileName.c_str());
+        if (previousFileName.length() == 0 || previousFileName == fileName || previousFileName == startFileName) return false;
+        fileName = previousFileName;
     }
-    return renderJPEG(fs, fileName, xpos, ypos);
+
+    if (!_isJpegFile(fileName)) return false;
+
+    return renderJPEG(fs, fileName, xpos, ypos, fitToScreen);
 }
 
 
 // <<< Loads a font file from the file system | Carrega um arquivo de fonte do sistema de arquivos >>>
 void ES_TFT::loadFontFile(fs::FS& fs, const String& fontName) {
-    Serial.println(fontName);
-
     String fontNameNormalized = fontName;
     fontNameNormalized.toLowerCase();
     if (fontNameNormalized[0] == '/') fontNameNormalized = fontNameNormalized.substring(1);
@@ -178,6 +355,5 @@ void ES_TFT::loadFontFile(fs::FS& fs, const String& fontName) {
         fontNameNormalized = fontNameNormalized.substring(0, fontNameNormalized.length() - 4);
     }
     _arquivo.begin(fs);
-    Serial.println("fontNameNormalized: " + fontNameNormalized);
     TFT_eSPI::loadFont(fontNameNormalized, fs);
 }

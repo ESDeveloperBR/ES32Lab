@@ -31,7 +31,7 @@
 
 ES_PCF8574 expander(0x20);  // Instantiates the 'expander' object with the given address | Instancia o objeto 'expander' com o endereço fornecido.
 ES_Buzzer buzzer(P_BUZZER); // Instantiates the 'buzzer' object and its respective GPIO to be used. | Instancia o objeto 'buzzer' e sua respectiva GPIO a ser utilizada.
-ES_CarControl car(&expander, &buzzer);  // Instantiate the 'car' object derived from the 'ES_CarControl' class. | Instancia o objeto 'car' derivado da classe 'ES_CarControl'.
+ES_CarControl car(expander, buzzer);  // Instantiate the 'car' object derived from the 'ES_CarControl' class. | Instancia o objeto 'car' derivado da classe 'ES_CarControl'.
 
 BluetoothSerial SerialBT; // Instantiate an object derived from the 'BluetoothSerial' class. | Instancia um objeto derivado da classe 'BluetoothSerial'.
 

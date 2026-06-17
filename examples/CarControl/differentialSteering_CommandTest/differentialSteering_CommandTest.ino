@@ -27,7 +27,7 @@
 #include <ES32Lab.h>  // Library used to facilitate the use of the ES32Lab board | Biblioteca usada para facilitar o uso da placa ES32Lab
 ES_PCF8574 expander(0x20);  // Instantiates the 'expander' object with the given address | Instancia o objeto 'expander' com o endereço fornecido.
 ES_Buzzer buzzer(P_BUZZER); // Instantiates the 'buzzer' object and its respective GPIO to be used. | Instancia o objeto 'buzzer' e sua respectiva GPIO a ser utilizada.
-ES_CarControl car(&expander, &buzzer);  // Instantiate the 'car' object derived from the 'ES_CarControl' class. | Instancia o objeto 'car' derivado da classe 'ES_CarControl'.
+ES_CarControl car(expander, buzzer);  // Instantiate the 'car' object derived from the 'ES_CarControl' class. | Instancia o objeto 'car' derivado da classe 'ES_CarControl'.
 // <<<<<<<<<<<<<<<<<< SETUP >>>>>>>>>>>>>>>>>>>>>>
 void setup() {
   // The object "car," derived from the class "ES_CarControl," will be initialized, specifying the type of vehicle steering. For this project, the "DIFFERENTIAL" steering type will be used.

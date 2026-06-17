@@ -1,42 +1,36 @@
 /**
- * @brief This example demonstrates the use of the ES_DigitalButton class to monitor the three states
- * of a button connected to GPIO 0 on the ESP32: pressed, held, and released.
- * | Este exemplo demonstra o uso da classe ES_DigitalButton para monitorar os três estados
- * de um botão conectado à GPIO 0 no ESP32: pressionado, segurando e solto.
- * @note The GPIO 0 is used as an example and has a special function for bootloader mode on ESP32 boards.
- * Use it with caution in production environments.
- * | A GPIO 0 é usada como exemplo e possui uma função especial para o modo bootloader nas placas ESP32.
- * Use-a com cautela em ambientes de produção.
- * @warning Ensure you have the ES32Lab library (https://github.com/ESDeveloperBR/ES32Lab) installed.
- * | Certifique-se de que a biblioteca ES32Lab (https://github.com/ESDeveloperBR/ES32Lab) está instalada.
+ * @brief Simple example using ES_DigitalButton with the ESP32 BOOT button.
+ * | Exemplo simples usando ES_DigitalButton com o botão BOOT do ESP32.
+ *
+ * The ESP32 BOOT button is usually connected to GPIO 0 and is active in LOW.
+ * Therefore, the second parameter is false.
+ *
+ * | O botão BOOT do ESP32 normalmente está conectado à GPIO 0 e é ativo em LOW.
+ * Por isso, o segundo parâmetro é false.
  */
 
 #include <Arduino.h>
 #include <ES32Lab.h>
 
-// Creates the object for the button on GPIO 0. | Cria o objeto para o botão na GPIO 0.
-ES_DigitalButton button(0, true);
+ES_DigitalButton button; // Digital button object. | Objeto do botão digital.
 
 void setup() {
-  Serial.begin(115200); // Initializes serial communication. | Inicializa a comunicação serial.
-  button.begin();       // Initializes button monitoring. | Inicializa o monitoramento do botão.
+    Serial.begin(115200); // Starts serial communication. | Inicia a comunicação serial.
+    button.begin(0, false); // GPIO 0, active LOW. | GPIO 0, ativo em LOW.
 }
 
 void loop() {
-  // Checks if the button was pressed. | Verifica se o botão foi pressionado.
-  if (button.press()) {
-    Serial.println("Button was pressed!"); // Message when the button is pressed. | Mensagem quando o botão é pressionado.
-  }
+    if (button.press()) {
+        Serial.println("Button pressed. | Botao pressionado.");
+    }
 
-  // Checks if the button is being held. | Verifica se o botão está sendo segurado.
-  if (button.hold()) {
-    Serial.println("Button is being held!"); // Message while the button is held. | Mensagem enquanto o botão está sendo segurado.
-  }
+    if (button.hold()) {
+        Serial.println("Button held. | Botao segurado.");
+    }
 
-  // Checks if the button was released. | Verifica se o botão foi solto.
-  if (button.release()) {
-    Serial.println("Button was released!"); // Message when the button is released. | Mensagem quando o botão é solto.
-  }
+    if (button.release()) {
+        Serial.println("Button released. | Botao solto.");
+    }
 
-  delay(100); // Prevents excessive readings. | Evita leituras excessivas.
+    delay(100); // Reduces repeated hold messages. | Reduz mensagens repetidas do estado segurado.
 }

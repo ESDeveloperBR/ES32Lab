@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.12.10 update 07/06/2026"   // dd/mm/yyyy
+    #define ES32LAB_VERSION "0.14.1 update 17/06/2026"   // dd/mm/yyyy
 
     // ---- Label impresso na ES32Lab ----
     #define P00      0
@@ -12,11 +12,15 @@
     #define P04      4
     #define P05      5
     #define P12     12
+    #define P12_B   12
     #define P13     13
+    #define P13_R   13
     #define P14     14
     #define P15     15
     #define P16     16
+    #define P16_Y   16
     #define P17     17
+    #define P17_G   17
     #define P18     18
     #define P19     19 
     #define P21     21
@@ -83,6 +87,7 @@
     #include "ES_TFT/ES_TFT.h"
     #include "ES_PCF8574/ES_PCF8574.h"
     #include "ES_CarControl/ES_CarControl.h"
+    #include "ES_CarLineFollower/ES_CarLineFollower.h"
     #include "ES_Camera/ES_Camera.h"
 
     class ES32Lab {

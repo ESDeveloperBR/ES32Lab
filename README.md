@@ -1,6 +1,6 @@
 # ES32Lab
 
-![ES32Lab com câmera e display](doc/imgs/ES32Lab-Com%20camera.jpg)
+![ES32Lab com câmera e display](doc/imgs/es32lab-com_camera.jpg)
 
 A **ES32Lab** é uma placa de desenvolvimento e prototipagem para ESP32 criada para reduzir a quantidade de ligações externas, jumpers, protoboards e circuitos auxiliares em projetos didáticos, experimentais e de robótica.
 
@@ -41,7 +41,7 @@ A proposta é simples: a placa já reúne diversos circuitos prontos para uso, c
 
 ## O que é a ES32Lab?
 
-![Mais de 18 circuitos prontos para programar](doc/imgs/ganheTempo.jpg)
+![Mais de 18 circuitos prontos para programar](doc/imgs/es32lab-ganhe_tempo.jpg)
 
 A ES32Lab é uma plataforma baseada no ESP32 da Espressif, pensada para acelerar a criação de projetos eletrônicos sem exigir que o usuário monte do zero todos os circuitos auxiliares.
 
@@ -84,7 +84,7 @@ A ideia central é permitir que o usuário conecte a placa, instale a biblioteca
 
 ## Mapa Visual dos Circuitos
 
-![Mapa dos circuitos da ES32Lab](doc/imgs/ES32Lab-Circuitos.jpg)
+![Mapa dos circuitos da ES32Lab](doc/imgs/es32lab-circuitos.jpg)
 
 A imagem acima mostra a localização dos principais circuitos integrados à ES32Lab. Ela é uma referência importante durante o desenvolvimento, pois ajuda o usuário a identificar rapidamente conectores, sensores, LEDs, alimentação, expansão I2C, ponte H, display, câmera e demais recursos da placa.
 
@@ -442,7 +442,7 @@ No PlatformIO, os exemplos podem ser consultados diretamente na pasta `examples`
 - [Vídeo de introdução da ES32Lab](https://www.youtube.com/watch?v=F3Kxc9TrW4A)
 - [ESP32 sem protoboard!? Conheça cada detalhe do hardware da ES32Lab](https://www.youtube.com/watch?v=xpoNbSA8pPM)
 
-![ESP32 sem protoboard](doc/imgs/ESP32semProtoboard.jpg)
+![ESP32 sem protoboard](doc/imgs/es32lab-esp32_sem_protoboard.jpg)
 
 ---
 

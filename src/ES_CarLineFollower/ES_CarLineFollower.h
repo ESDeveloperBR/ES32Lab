@@ -6,7 +6,7 @@
 #include "ES_PCF8574/ES_PCF8574.h"
 #include "ES_TimeInterval/ES_TimeInterval.h"
 
-#define ES_CAR_LINE_FOLLOWER_VERSION "0.3.0 update 06/16/2026"  // mm/dd/yyyy
+#define ES_CAR_LINE_FOLLOWER_VERSION "0.3.1 update 06/24/2026"  // mm/dd/yyyy
 
 class ES_CarLineFollower {
   private:

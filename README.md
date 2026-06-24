@@ -30,12 +30,13 @@ A proposta é simples: a placa já reúne diversos circuitos prontos para uso, c
 6. [Dependência Obrigatória](#dependência-obrigatória)
 7. [Como Incluir no Código](#como-incluir-no-código)
 8. [GPIOs e Identificação na Placa](#gpios-e-identificação-na-placa)
-9. [Constantes de GPIO](#constantes-de-gpio)
-10. [Primeiro Exemplo](#primeiro-exemplo)
-11. [Classes Disponíveis](#classes-disponíveis)
-12. [Exemplos Prontos](#exemplos-prontos)
-13. [Links Úteis](#links-úteis)
-14. [Licença](#licença)
+9. [Jumpers e Interligações da Placa](#jumpers-e-interligações-da-placa)
+10. [Constantes de GPIO](#constantes-de-gpio)
+11. [Primeiro Exemplo](#primeiro-exemplo)
+12. [Classes Disponíveis](#classes-disponíveis)
+13. [Exemplos Prontos](#exemplos-prontos)
+14. [Links Úteis](#links-úteis)
+15. [Licença](#licença)
 
 ---
 
@@ -87,6 +88,10 @@ A ideia central é permitir que o usuário conecte a placa, instale a biblioteca
 ![Mapa dos circuitos da ES32Lab](doc/imgs/es32lab-circuitos.jpg)
 
 A imagem acima mostra a localização dos principais circuitos integrados à ES32Lab. Ela é uma referência importante durante o desenvolvimento, pois ajuda o usuário a identificar rapidamente conectores, sensores, LEDs, alimentação, expansão I2C, ponte H, display, câmera e demais recursos da placa.
+
+![ES32Lab sem acessórios conectados](doc/imgs/ES32Lab_sem_acessorios.jpg)
+
+A foto acima mostra a ES32Lab sem ESP32, shields ou periféricos conectados. Ela permite observar a placa física com as legendas impressas, jumpers, conectores, bornes, teclado, potenciômetros, buzzer, LEDs e demais circuitos onboard visíveis. Essa visão real da placa complementa o mapa ilustrado e ajuda o usuário a localizar os pontos citados ao longo desta documentação.
 
 Além do mapa visual, a própria placa possui descrições impressas próximas aos pinos e circuitos. Isso permite programar olhando diretamente para a identificação física da ES32Lab.
 
@@ -265,6 +270,40 @@ As duas formas apontam para a mesma GPIO 17. A primeira acompanha a identificaç
 
 ---
 
+## Jumpers e Interligações da Placa
+
+A ES32Lab utiliza jumpers coloridos para interligar circuitos onboard, alimentar módulos internos e permitir que o usuário escolha quais recursos ficam conectados às GPIOs do ESP32 ou ao expansor I2C da placa.
+
+Essa organização torna a placa mais flexível: em um projeto, o usuário pode usar um circuito onboard pronto; em outro, pode remover o jumper correspondente e liberar a GPIO ou o recurso compartilhado para uma ligação externa.
+
+A foto da ES32Lab sem acessórios, apresentada na seção [Mapa Visual dos Circuitos](#mapa-visual-dos-circuitos), é uma boa referência para localizar os jumpers vermelhos, verdes, azuis, brancos e pretos descritos abaixo.
+
+### Cores dos jumpers
+
+| Cor do jumper | Função principal | Exemplos na ES32Lab |
+| :------: | ------ | ------ |
+| Vermelho | Alimentação de circuitos onboard, normalmente ligada à linha de `3V3`. | Alimentação do display TFT, RTC e expansor I2C. |
+| Verde | Interligação de circuitos onboard às GPIOs nativas do ESP32. | Buzzer em `P25`, teclado em `P33` e sensor de tensão em `P34`. |
+| Azul | Seleção entre circuitos analógicos que compartilham a mesma GPIO. | `POT1/P36/LDR` e `POT2/P39/THER`. |
+| Branco | Interligação do expansor I2C onboard a circuitos auxiliares. | LEDs auxiliares e ponte H controlados por `EX0` a `EX7`. |
+| Preto | Ajustes específicos de circuitos onboard. | Configuração de endereço I2C do expansor, sensor de tensão e acoplamentos auxiliares. |
+
+> **Dica prática:**  
+> Se um circuito onboard não responder, confira se o jumper correspondente está instalado. Se uma GPIO for usada em outro projeto, remova o jumper do circuito onboard que compartilha essa GPIO para evitar conflito elétrico ou comportamento inesperado.
+
+### Expansor I2C e jumpers brancos
+
+Os jumpers brancos conectam alguns recursos da placa ao expansor I2C onboard, controlado pela classe [`ES_PCF8574`](src/ES_PCF8574/README.md). Isso permite acionar saídas e circuitos auxiliares usando as constantes `EX0` a `EX7`.
+
+Em projetos com ponte H onboard, os jumpers brancos podem conectar o expansor aos sinais dos motores. Nesse caso, os pinos `EX4`, `EX5`, `EX6` e `EX7` ficam ocupados pelo controle dos motores.
+
+Em projetos que usam sensores de linha ou outras entradas digitais no expansor, os pinos `EX2` e `EX3` costumam ser boas opções iniciais, pois normalmente ficam livres em configurações didáticas comuns da ES32Lab.
+
+> **Referência completa de hardware:**  
+> Para detalhes de conectores, faces da placa, legendas físicas, jumpers e pinagem, consulte a documentação de hardware da ES32Lab correspondente à versão da sua placa.
+
+---
+
 ## Constantes de GPIO
 
 ### Labels impressos na ES32Lab
@@ -387,6 +426,7 @@ A biblioteca ES32Lab possui classes específicas para facilitar o uso dos circui
 | `ES_CarLineFollower` | Controle didático de robô seguidor de linha. | [README](src/ES_CarLineFollower/README.md) |
 | `ES_File` | Apoio para manipulação e navegação de arquivos. | [README](src/ES_File/README.md) |
 | `ES_PCF8574` | Expansão de GPIOs via I2C usando PCF8574. | [README](src/ES_PCF8574/README.md) |
+| `ES_VL53L0X` | Leitura de distância em milímetros com sensor ToF VL53L0X via I2C. | [README](src/ES_VL53L0X/README.md) |
 | `ES_TFT` | Controle do display TFT e renderização de imagens. | [README](src/ES_TFT/README.md) |
 | `ES_TimeInterval` | Controle de intervalos de tempo sem bloquear o programa. | [README](src/ES_TimeInterval/README.md) |
 
@@ -411,6 +451,7 @@ A biblioteca ES32Lab acompanha diversos exemplos prontos para uso, organizados p
 | Potenciômetros | [examples/Potentiometer](examples/Potentiometer) |
 | Controle de carro/robô | [examples/CarControl](examples/CarControl) |
 | Robô seguidor de linha | [examples/CarLineFollower](examples/CarLineFollower) |
+| Sensor de distância VL53L0X | [examples/SensorDistance](examples/SensorDistance) e [examples/SensorDistanceTimingBudget](examples/SensorDistanceTimingBudget) |
 | Controle de tempo | [examples/TimeInterval](examples/TimeInterval) |
 | Projetos completos | [examples/FullProjects](examples/FullProjects) |
 
@@ -444,8 +485,3 @@ No PlatformIO, os exemplos podem ser consultados diretamente na pasta `examples`
 
 ![ESP32 sem protoboard](doc/imgs/es32lab-esp32_sem_protoboard.jpg)
 
----
-
-## Licença
-
-Esta biblioteca é distribuída sob a licença MIT. Consulte o arquivo [`LICENSE`](LICENSE) para mais detalhes.

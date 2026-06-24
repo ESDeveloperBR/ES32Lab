@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include "ES_TimeInterval/ES_TimeInterval.h"
 
-#define ES_PCF8574_VERSION "0.8.1 update 08/05/2025"  // mm/dd/yyyy
+#define ES_PCF8574_VERSION "0.8.2 update 06/24/2026"  // mm/dd/yyyy
 
 #define ES_PCF8574_TASK_PWM_SIM_STACK_DEPTH 1200  // Sets the amount of memory available for local variables and function calls within the PWM simulator. | Define a quantidade de memória disponível para as variáveis locais e chamadas de função dentro do simulador PWM.
 #define ES_PCF8574_TASK_PWM_SIM_PRIORITY 2         // Represents the task priority. Higher values indicate higher priority. | Representa a prioridade da tarefa. Valores maiores indicam maior prioridade.

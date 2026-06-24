@@ -16,6 +16,7 @@ ES_PCF8574	KEYWORD1
 ES_CarControl	KEYWORD1
 ES_CarLineFollower	KEYWORD1
 ES_Camera	KEYWORD1
+ES_VL53L0X	KEYWORD1
 
 #######################################
 # Methods and Public Members (KEYWORD2)
@@ -198,6 +199,22 @@ saveFrameToJpegFile	KEYWORD2
 handleStreamRequest	KEYWORD2
 createStreamEndpoint	KEYWORD2
 getStreamUri	KEYWORD2
+isInitialized	KEYWORD2
+isConnected	KEYWORD2
+setBus	KEYWORD2
+getBus	KEYWORD2
+setAddress	KEYWORD2
+getAddress	KEYWORD2
+setTimeout	KEYWORD2
+getTimeout	KEYWORD2
+timeoutOccurred	KEYWORD2
+lastStatus	KEYWORD2
+read	KEYWORD2
+lastDistance	KEYWORD2
+setDistanceOffset	KEYWORD2
+getDistanceOffset	KEYWORD2
+setMeasurementTimingBudget	KEYWORD2
+getMeasurementTimingBudget	KEYWORD2
 
 #######################################
 # Constants and Macros (LITERAL1)
@@ -213,6 +230,9 @@ ES_PCF8574_VERSION	LITERAL1
 ES_CAR_CONTROL_VERSION	LITERAL1
 ES_CAR_LINE_FOLLOWER_VERSION	LITERAL1
 ES_CAMERA_VERSION	LITERAL1
+ES_VL53L0X_VERSION	LITERAL1
+ES_VL53L0X_DEFAULT_ADDRESS	LITERAL1
+ES_VL53L0X_INVALID_DISTANCE	LITERAL1
 P00	LITERAL1
 P01	LITERAL1
 P02	LITERAL1

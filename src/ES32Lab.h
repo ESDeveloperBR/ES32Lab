@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.14.1 update 17/06/2026"   // dd/mm/yyyy
+    #define ES32LAB_VERSION "0.15.1 update 22/06/2026"   // dd/mm/yyyy
 
     // ---- Label impresso na ES32Lab ----
     #define P00      0
@@ -89,6 +89,7 @@
     #include "ES_CarControl/ES_CarControl.h"
     #include "ES_CarLineFollower/ES_CarLineFollower.h"
     #include "ES_Camera/ES_Camera.h"
+    #include "ES_VL53L0X/ES_VL53L0X.h"
 
     class ES32Lab {
         private:    

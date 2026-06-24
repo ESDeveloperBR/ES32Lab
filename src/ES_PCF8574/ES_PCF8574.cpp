@@ -223,7 +223,7 @@ boolean ES_PCF8574::btRelease(uint8_t pin, boolean pullUp){
  * Inicializa o expansor I2C com o simulador PWM ativado.
 */
 boolean ES_PCF8574::pwmBegin(){
-  return begin(true);
+  return begin(true, true);
 }
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< pwmWrite >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

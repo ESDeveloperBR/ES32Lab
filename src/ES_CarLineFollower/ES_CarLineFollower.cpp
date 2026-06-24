@@ -53,7 +53,7 @@ void ES_CarLineFollower::update() {
     }
 
     if (leftHold) {
-        _car->right(_leftSpeed);
+        _car->left(_leftSpeed);
         _lowSpeedInterval.resetMillis();
     }
 
@@ -62,7 +62,7 @@ void ES_CarLineFollower::update() {
     }
 
     if (rightHold) {
-        _car->left(_rightSpeed);
+        _car->right(_rightSpeed);
         _lowSpeedInterval.resetMillis();
     }
 

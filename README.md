@@ -484,4 +484,3 @@ No PlatformIO, os exemplos podem ser consultados diretamente na pasta `examples`
 - [ESP32 sem protoboard!? Conheça cada detalhe do hardware da ES32Lab](https://www.youtube.com/watch?v=xpoNbSA8pPM)
 
 ![ESP32 sem protoboard](doc/imgs/es32lab-esp32_sem_protoboard.jpg)
-

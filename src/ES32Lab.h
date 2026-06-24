@@ -2,7 +2,7 @@
     #define _ES32LAB_h
 
     #include <Arduino.h>
-    #define ES32LAB_VERSION "0.15.1 update 22/06/2026"   // dd/mm/yyyy
+    #define ES32LAB_VERSION "0.15.2 update 24/06/2026"   // dd/mm/yyyy
 
     // ---- Label impresso na ES32Lab ----
     #define P00      0

@@ -4,7 +4,7 @@
   YouTube: https://www.youtube.com/@ESDeveloperBR
   Criação: 05/31/2022       (mm/dd/yyyy)
 */
-#include "ES_AnalogKeyboardb.h"
+#include "ES_AnalogKeyboard.h"
 
 // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< _getIndex >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // Mapeia os valores analógicos para índices no array | Maps analog values to indices in the array
